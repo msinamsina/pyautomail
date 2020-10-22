@@ -13,6 +13,7 @@ this project send email automatically to your contact list
 
 ## for setting subject you have two option:
 1- write subject in a txt file and use --> --subject_file sub.txt key
+
 2- use --subject_txt key and write subject string directly
 
 # You can use -h or --help keys also
