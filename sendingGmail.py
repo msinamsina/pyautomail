@@ -17,6 +17,9 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("email", help="enter you Gmail account")
 parser.add_argument("contacts", help="path to csv file which contact emails are listed there")
+group = parser.add_mutually_exclusive_group()
+group.add_argument("--subject_txt", help="string of subject")
+group.add_argument("--subject_file", help="text file that 'subject' written there")
 parser.add_argument("--body", help="path to E-mail text file")
 parser.add_argument("--html", help="path to E-mail Html file")
 parser.add_argument("--attachment", help="path to pdf file that you want to attach to your E-mail")
@@ -32,7 +35,13 @@ with open(arg.contacts) as contactFile:
 port = 465  # For SSL
 password = getpass.getpass("Enter you email password  :") 
 
-subject = "An email with attachment from Python"
+subject=''
+if arg.subject_txt:
+    subject =  arg.subject_txt
+elif arg.subject_file:
+    with open(arg.subject_file) as f:
+        subject = f.read()
+
 
 message = MIMEMultipart("alternative")
 message["Subject"] = subject
