@@ -12,6 +12,15 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import argparse
 import getpass 
+import pandas as pd
+
+
+def replace_data(data, string):
+    for i in data.items():
+        print(i)
+        string = string.replace('${}$'.format(i[0]), i[1])
+    return string
+
 
 parser = argparse.ArgumentParser()
 
@@ -28,9 +37,9 @@ arg=parser.parse_args()
 
 sender_email = arg.email
 receivers_email = []
-with open(arg.contacts) as contactFile:
-    for email in contactFile:
-        receivers_email.append(email.split('\n')[0])
+
+contact_df = pd.read_csv(arg.contacts)
+
 
 port = 465  # For SSL
 password = getpass.getpass("Enter you email password  :") 
@@ -47,42 +56,45 @@ message = MIMEMultipart("alternative")
 message["Subject"] = subject
 message["From"] = sender_email
 
-if arg.body:
-    with open(arg.body) as f:
-        body = f.read()
-    message.attach(MIMEText(body, "plain"))
-    print(body)
 
-if arg.html:
-    with open(arg.html) as f:
-        html = f.read()
-    message.attach(MIMEText(html, "html"))
-    print(html)
+for i in contact_df.iterrows():
+    print(i[1]['name'])
+# for receiver in receivers_email:
+    if arg.body:
+        with open(arg.body) as f:
+            body = f.read()
+            body = replace_data(i[1], body)
+        message.attach(MIMEText(body, "plain"))
+        print(body)
+    if arg.html:
+        with open(arg.html) as f:
+            html = f.read()
+            html = replace_data(i[1], html)
+        message.attach(MIMEText(html, "html"))
+        print(html)
 
-if arg.attachment:
+    if arg.attachment:
+        filename = arg.attachment
 
-    filename = arg.attachment
+        # Open PDF file in binary mode
+        with open(filename, "rb") as attachment:
+            # Add file as application/octet-stream
+            # Email client can usually download this automatically as attachment
+            part = MIMEBase("application", "octet-stream")
+            part.set_payload(attachment.read())
 
-    # Open PDF file in binary mode
-    with open(filename, "rb") as attachment:
-        # Add file as application/octet-stream
-        # Email client can usually download this automatically as attachment
-        part = MIMEBase("application", "octet-stream")
-        part.set_payload(attachment.read())
+        # Encode file in ASCII characters to send by email
+        encoders.encode_base64(part)
 
-    # Encode file in ASCII characters to send by email    
-    encoders.encode_base64(part)
+        # Add header as key/value pair to attachment part
+        part.add_header(
+            "Content-Disposition",
+            f"attachment; filename= {filename}",
+        )
+        # Add attachment to message and convert message to string
+        message.attach(part)
 
-    # Add header as key/value pair to attachment part
-    part.add_header(
-        "Content-Disposition",
-        f"attachment; filename= {filename}",
-    )
-    # Add attachment to message and convert message to string
-    message.attach(part)
-
-for receiver in receivers_email:
-    message["To"] = receiver    
+    message["To"] = i[1]['email']
     text = message.as_string()
     
     # Create a secure SSL context
@@ -90,6 +102,6 @@ for receiver in receivers_email:
     
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
         server.login(sender_email, password)
-        server.sendmail(sender_email, receiver, text)
+        server.sendmail(sender_email, i[1]['email'], text)
         time.sleep(10)
-        print('message send to '+receiver)
+        print('message send to '+i[1]['email'])
