@@ -18,7 +18,8 @@ this project send email automatically to your contact list
 
 ## add Custom data for contacts
 1- adding columns with arbitrary names like 'data1' or 'name' and filling every row with related data
-2- In the template file, you can use the word $column-name$ for the name of each column.
-for example $data1$ or $name$
+
+2- In the template file, you can use the word \$ column-name \$  for the name of each column.
+for example \$ data1 \$ or \$ name \$
 
 # You can use -h or --help keys also
