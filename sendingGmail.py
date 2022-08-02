@@ -98,9 +98,9 @@ for i in contact_df.iterrows():
     text = message.as_string()
     
     # Create a secure SSL context
-    context = ssl.create_default_context()
+    #context = ssl.create_default_context()
     
-    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+    with smtplib.SMTP_SSL("smtp.gmail.com", port) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, i[1]['email'], text)
         time.sleep(10)
