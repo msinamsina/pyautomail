@@ -52,12 +52,13 @@ elif arg.subject_file:
         subject = f.read()
 
 
-message = MIMEMultipart("alternative")
-message["Subject"] = subject
-message["From"] = sender_email
 
 
 for i in contact_df.iterrows():
+    message = MIMEMultipart("alternative")
+    message["Subject"] = subject
+    message["From"] = sender_email
+
     print(i[1]['name'])
 # for receiver in receivers_email:
     if arg.body:
