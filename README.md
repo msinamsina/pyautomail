@@ -1,4 +1,4 @@
-# auto_Gmail_sending
+# Sending email to your contact list
 this project send email automatically to your contact list
 
 # How to use
