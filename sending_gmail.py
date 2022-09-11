@@ -100,7 +100,7 @@ for i in contact_df.iterrows():
     
     # Create a secure SSL context
     #context = ssl.create_default_context()
-    
+    # ToDo : add smtp server and port as input args
     with smtplib.SMTP_SSL("smtp.gmail.com", port) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, i[1]['email'], text)
