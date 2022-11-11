@@ -32,6 +32,7 @@ group.add_argument("--subject_file", help="text file that 'subject' written ther
 parser.add_argument("--body", help="path to E-mail text file")
 parser.add_argument("--html", help="path to E-mail Html file")
 parser.add_argument("--attachment", help="path to pdf file that you want to attach to your E-mail")
+parser.add_argument("--cpdf", action='store_true', help="custom pdf file that you want to attach to your E-mail", default=False)
 
 arg=parser.parse_args()
 
@@ -50,8 +51,6 @@ if arg.subject_txt:
 elif arg.subject_file:
     with open(arg.subject_file) as f:
         subject = f.read()
-
-
 
 
 for i in contact_df.iterrows():
@@ -94,6 +93,28 @@ for i in contact_df.iterrows():
         )
         # Add attachment to message and convert message to string
         message.attach(part)
+
+    if arg.cpdf:
+        filename = str(i[1]['cpdf'])
+
+        # Open PDF file in binary mode
+        with open(filename, "rb") as attachment:
+            # Add file as application/octet-stream
+            # Email client can usually download this automatically as attachment
+            part = MIMEBase("application", "octet-stream")
+            part.set_payload(attachment.read())
+
+        # Encode file in ASCII characters to send by email
+        encoders.encode_base64(part)
+
+        # Add header as key/value pair to attachment part
+        part.add_header(
+            "Content-Disposition",
+            f"attachment; filename= {filename}",
+        )
+        # Add attachment to message and convert message to string
+        message.attach(part)
+
 
     message["To"] = i[1]['email']
     text = message.as_string()
