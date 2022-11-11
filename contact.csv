@@ -1,4 +1,4 @@
-email,name,data1
-contact1@gmail.com,contact1,ali
-contact2@gmail.com,contact2,mohammad
-contact3@gmail.com,contact3,soheila
+email,name,data1,cpdf
+contact1@gmail.com,contact1,ali,/path/to/pdf1
+contact2@gmail.com,contact2,mohammad,/path/to/pdf2
+contact3@gmail.com,contact3,soheila,/path/to/pdf3
