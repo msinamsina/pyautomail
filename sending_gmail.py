@@ -110,7 +110,7 @@ for i in contact_df.iterrows():
         # Add header as key/value pair to attachment part
         part.add_header(
             "Content-Disposition",
-            f"attachment; filename= {filename}",
+            f"attachment; filename= {filename.split('/')[-1]}",
         )
         # Add attachment to message and convert message to string
         message.attach(part)
