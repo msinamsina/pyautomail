@@ -10,6 +10,8 @@ this project send email automatically to your contact list
   python sending_gmail.py your-email@gmail.com ./contact.csv  --html html.html 
 - sending one pdf file:
   python sending_gmail.py your-email@gmail.com ./contact.csv  --attachment document.pdf 
+- sending custom pdf file:
+  python sending_gmail.py your-email@gmail.com ./contact.csv  --cpdf
 
 ## for setting subject you have two option:
 1- write subject in a txt file and use --> --subject_file sub.txt key
