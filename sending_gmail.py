@@ -13,12 +13,13 @@ from email.mime.text import MIMEText
 import argparse
 import getpass 
 import pandas as pd
+import os
 
 
 def replace_data(data, string):
     for i in data.items():
         print(i)
-        string = string.replace('${}$'.format(i[0]), i[1])
+        string = string.replace('${}$'.format(str(i[0])), str(i[1]))
     return string
 
 
@@ -33,6 +34,7 @@ parser.add_argument("--body", help="path to E-mail text file")
 parser.add_argument("--html", help="path to E-mail Html file")
 parser.add_argument("--attachment", help="path to pdf file that you want to attach to your E-mail")
 parser.add_argument("--cpdf", action='store_true', help="custom pdf file that you want to attach to your E-mail", default=False)
+parser.add_argument("--pdf_dir", default='')
 
 arg=parser.parse_args()
 
@@ -95,7 +97,7 @@ for i in contact_df.iterrows():
         message.attach(part)
 
     if arg.cpdf:
-        filename = str(i[1]['cpdf'])
+        filename = os.path.join(arg.pdf_dir, str(i[1]['cpdf']) + '.pdf')
 
         # Open PDF file in binary mode
         with open(filename, "rb") as attachment:
