@@ -4,48 +4,59 @@ Created on Sun Oct  4 14:09:32 2020
 
 @author: Mohammad sina Allahkaram
 """
-import smtplib, ssl
-import time
-from email import encoders
-from email.mime.base import MIMEBase
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+
 import argparse
 import getpass 
 import pandas as pd
 import os
+from emailsender import EmailSender
+import logging
+import sys
 
 
-def replace_data(data, string):
-    for i in data.items():
-        print(i)
-        string = string.replace('${}$'.format(str(i[0])), str(i[1]))
-    return string
+logger = logging.getLogger('main')
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
+handler1 = logging.StreamHandler(sys.stdout)
+handler1.setFormatter(formatter)
+handler2 = logging.FileHandler('emailsender.log')
+handler2.setFormatter(formatter)
+logger.addHandler(handler1)
+logger.addHandler(handler2)
 
 
-parser = argparse.ArgumentParser()
 
-parser.add_argument("email", help="enter you Gmail account")
-parser.add_argument("contacts", help="path to csv file which contact emails are listed there")
-group = parser.add_mutually_exclusive_group()
-group.add_argument("--subject_txt", help="string of subject")
-group.add_argument("--subject_file", help="text file that 'subject' written there")
-parser.add_argument("--body", help="path to E-mail text file")
-parser.add_argument("--html", help="path to E-mail Html file")
-parser.add_argument("--attachment", help="path to pdf file that you want to attach to your E-mail")
-parser.add_argument("--cpdf", action='store_true', help="custom pdf file that you want to attach to your E-mail", default=False)
-parser.add_argument("--pdf_dir", default='')
+def arg_parser():
+    parser = argparse.ArgumentParser()
 
-arg=parser.parse_args()
+    parser.add_argument("email", help="enter you Gmail account")
+    parser.add_argument("contacts", help="path to csv file which contact emails are listed there")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--subject_txt", help="string of subject")
+    group.add_argument("--subject_file", help="text file that 'subject' written there")
+    parser.add_argument("--body", help="path to E-mail text file")
+    parser.add_argument("--html", help="path to E-mail Html file")
+    parser.add_argument("--attachment", help="path to pdf file that you want to attach to your E-mail")
+    parser.add_argument("--cpdf", action='store_true', help="custom pdf file that you want to attach to your E-mail",
+                        default=False)
+    parser.add_argument("--pdf_dir", default='')
+    parser.add_argument("--template", help="path to template file")
+
+    return parser.parse_args()
+
+logger.info("Reading arguments...")
+arg = arg_parser()
 
 sender_email = arg.email
-receivers_email = []
-
 contact_df = pd.read_csv(arg.contacts)
-
-
 port = 465  # For SSL
-password = getpass.getpass("Enter you email password  :") 
+#
+password = "1234"#getpass.getpass("Enter you email password  :")
+
+# Create a secure SSL context
+logger.info("Creating EmailSender obj...")
+sender = EmailSender(cfg="config.cfg", is_test=True)
+
 
 subject=''
 if arg.subject_txt:
@@ -54,78 +65,29 @@ elif arg.subject_file:
     with open(arg.subject_file) as f:
         subject = f.read()
 
+logger.info("Subject: {}".format(subject))
+
 
 for i in contact_df.iterrows():
-    message = MIMEMultipart("alternative")
-    message["Subject"] = subject
-    message["From"] = sender_email
 
-    print(i[1]['name'])
-# for receiver in receivers_email:
     if arg.body:
-        with open(arg.body) as f:
-            body = f.read()
-            body = replace_data(i[1], body)
-        message.attach(MIMEText(body, "plain"))
-        print(body)
+        sender.set_template(arg.body)
     if arg.html:
-        with open(arg.html) as f:
-            html = f.read()
-            html = replace_data(i[1], html)
-        message.attach(MIMEText(html, "html"))
-        print(html)
+        sender.set_template(arg.html)
+    if arg.template:
+        sender.set_template(arg.template)
 
+    filename = None
     if arg.attachment:
         filename = arg.attachment
-
-        # Open PDF file in binary mode
-        with open(filename, "rb") as attachment:
-            # Add file as application/octet-stream
-            # Email client can usually download this automatically as attachment
-            part = MIMEBase("application", "octet-stream")
-            part.set_payload(attachment.read())
-
-        # Encode file in ASCII characters to send by email
-        encoders.encode_base64(part)
-
-        # Add header as key/value pair to attachment part
-        part.add_header(
-            "Content-Disposition",
-            f"attachment; filename= {filename}",
-        )
-        # Add attachment to message and convert message to string
-        message.attach(part)
 
     if arg.cpdf:
         filename = os.path.join(arg.pdf_dir, str(i[1]['cpdf']) + '.pdf')
 
-        # Open PDF file in binary mode
-        with open(filename, "rb") as attachment:
-            # Add file as application/octet-stream
-            # Email client can usually download this automatically as attachment
-            part = MIMEBase("application", "octet-stream")
-            part.set_payload(attachment.read())
+    data = {}
+    for item in i[1].items():
+        data[item[0]] = item[1]
 
-        # Encode file in ASCII characters to send by email
-        encoders.encode_base64(part)
+    print(data)
 
-        # Add header as key/value pair to attachment part
-        part.add_header(
-            "Content-Disposition",
-            f"attachment; filename= {filename.split('/')[-1]}",
-        )
-        # Add attachment to message and convert message to string
-        message.attach(part)
-
-
-    message["To"] = i[1]['email']
-    text = message.as_string()
-    
-    # Create a secure SSL context
-    #context = ssl.create_default_context()
-    # ToDo : add smtp server and port as input args
-    with smtplib.SMTP_SSL("smtp.gmail.com", port) as server:
-        server.login(sender_email, password)
-        server.sendmail(sender_email, i[1]['email'], text)
-        time.sleep(10)
-        print('message send to '+i[1]['email'])
+    sender.send(i[1]['email'], subject, data, filename)
