@@ -1,3 +1,6 @@
 .idea
 pdfs/*
 contents*
+
+*.log
+*.pyc
