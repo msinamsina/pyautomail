@@ -51,7 +51,7 @@ sender_email = arg.email
 contact_df = pd.read_csv(arg.contacts)
 port = 465  # For SSL
 #
-password = "1234"#getpass.getpass("Enter you email password  :")
+password = getpass.getpass("Enter you email password  :")
 
 # Create a secure SSL context
 logger.info("Creating EmailSender obj...")
