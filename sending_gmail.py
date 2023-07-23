@@ -14,16 +14,17 @@ import logging
 import sys
 
 
-logger = logging.getLogger('main')
-logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
-handler1 = logging.StreamHandler(sys.stdout)
-handler1.setFormatter(formatter)
-handler2 = logging.FileHandler('emailsender.log')
-handler2.setFormatter(formatter)
-logger.addHandler(handler1)
-logger.addHandler(handler2)
-
+def init_logger():
+    logger_obj = logging.getLogger('main')
+    logger_obj.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
+    handler1 = logging.StreamHandler(sys.stdout)
+    handler1.setFormatter(formatter)
+    handler2 = logging.FileHandler('emailsender.log')
+    handler2.setFormatter(formatter)
+    logger_obj.addHandler(handler1)
+    logger_obj.addHandler(handler2)
+    return logger_obj
 
 
 def arg_parser():
@@ -44,29 +45,27 @@ def arg_parser():
 
     return parser.parse_args()
 
+
+logger = init_logger()
 logger.info("Reading arguments...")
 arg = arg_parser()
 
 sender_email = arg.email
 contact_df = pd.read_csv(arg.contacts)
-port = 465  # For SSL
-#
 password = getpass.getpass("Enter you email password  :")
 
 # Create a secure SSL context
 logger.info("Creating EmailSender obj...")
-sender = EmailSender(cfg="config.cfg", is_test=True)
+sender = EmailSender(cfg="config.cfg", user=sender_email, password=password)
 
 
-subject=''
+subject = ''
 if arg.subject_txt:
-    subject =  arg.subject_txt
+    subject = arg.subject_txt
 elif arg.subject_file:
     with open(arg.subject_file) as f:
         subject = f.read()
-
 logger.info("Subject: {}".format(subject))
-
 
 for i in contact_df.iterrows():
 
