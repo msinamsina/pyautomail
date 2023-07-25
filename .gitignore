@@ -5,3 +5,5 @@ contents*
 *.log
 *.pyc
 *.db
+
+*.egg-info/

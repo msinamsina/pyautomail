@@ -1,12 +1,12 @@
 import argparse
-from storage import Record, Process, session
+from automail.storage import Record, Process, session
 import datetime
 import pandas as pd
 import os
 import logging
 import sys
 import getpass
-from emailsender import EmailSender
+from automail.emailsender import EmailSender
 import time
 
 
@@ -23,7 +23,7 @@ def init_logger():
     formatter = logging.Formatter('[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
     handler1 = logging.StreamHandler(sys.stdout)
     handler1.setFormatter(formatter)
-    handler2 = logging.FileHandler('emailsender.log')
+    handler2 = logging.FileHandler('../emailsender.log')
     handler2.setFormatter(formatter)
     logger_obj.addHandler(handler1)
     logger_obj.addHandler(handler2)
@@ -158,25 +158,29 @@ def parser():
     register_parser.add_argument("--pdf_dir", default='')
     register_parser.set_defaults(func=registration)
 
-    start_parser = sud_parser.add_parser('start', help='Run the program')
+    start_parser = sud_parser.add_parser('start', help='Start a process that is registered by id')
     start_parser.add_argument('pid', help='process id')
     start_parser.set_defaults(func=start)
 
-    stop_parser = sud_parser.add_parser('stop', help='Run the program')
+    stop_parser = sud_parser.add_parser('stop', help='Stop a process that is running by id')
     stop_parser.add_argument('pid', help='process id')
     stop_parser.set_defaults(func=stop)
 
-    resume_parser = sud_parser.add_parser('resume', help='Run the program')
+    resume_parser = sud_parser.add_parser('resume', help='Resume a process that is paused by id')
     resume_parser.add_argument('pid', help='process id')
     resume_parser.set_defaults(func=resume_process)
 
-    list_parser = sud_parser.add_parser('list', help='Run the program')
+    list_parser = sud_parser.add_parser('list', help='List processes (all or a specific proces  by id')
     list_parser.add_argument('--pid', help='process id', default=None, required=False)
     list_parser.set_defaults(func=process_list)
     return parser_obj
 
 
-if __name__ == '__main__':
-    parser = parser()
-    args_ = parser.parse_args()
+def main():
+    parser_ = parser()
+    args_ = parser_.parse_args()
     args_.func(**vars(args_))
+
+
+if __name__ == '__main__':
+    main()

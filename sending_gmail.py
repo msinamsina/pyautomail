@@ -9,7 +9,7 @@ import argparse
 import getpass 
 import pandas as pd
 import os
-from emailsender import EmailSender
+from automail.emailsender import EmailSender
 import logging
 import sys
 
