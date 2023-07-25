@@ -146,12 +146,15 @@ class EmailSender:
         message["Subject"] = subject
         message["From"] = self.user
         message["To"] = receiver_email_address
-
-        body = self.render_template(data)
-        if self.template_type == 'html':
-            message.attach(MIMEText(body, "html"))
-        elif self.template_type == 'txt':
-            message.attach(MIMEText(body, "plain"))
+        if self.template_type is not None:
+            body = self.render_template(data)
+            if self.template_type == 'html':
+                message.attach(MIMEText(body, "html"))
+            elif self.template_type == 'txt':
+                message.attach(MIMEText(body, "plain"))
+        else:
+            self.__logger.warning("No template is set. Sending email with no body.")
+            body = ''
 
         if attachment_path:
             filename = os.path.basename(attachment_path)
