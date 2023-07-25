@@ -4,3 +4,4 @@ contents*
 
 *.log
 *.pyc
+*.db
