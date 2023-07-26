@@ -28,7 +28,7 @@ html_theme = 'alabaster'
 html_static_path = ['_static']
 
 extensions = [
-    'sphinx_rtd_theme',
+    # 'sphinx_rtd_theme',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
 ]
