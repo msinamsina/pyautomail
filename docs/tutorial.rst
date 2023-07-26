@@ -10,6 +10,7 @@ Installation
 ------------------------------------
 
 download the source code from `github <git@github.com:msinamsina/automail.git>`_ and install it with
+
 .. code-block:: bash
 
    $ git clone git@github.com:msinamsina/automail.git
@@ -28,6 +29,7 @@ Usage
    After installation, you can use the command line tool ``automail`` to send emails.
 
 For sending emails, you need to do the following steps:
+
 - register a new process
    .. code-block:: bash
 
