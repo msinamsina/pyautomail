@@ -8,3 +8,4 @@ contents*
 
 *.egg-info/
 build/
+_build/
