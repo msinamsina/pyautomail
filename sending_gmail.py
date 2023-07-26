@@ -9,22 +9,7 @@ import argparse
 import getpass 
 import pandas as pd
 import os
-from automail.emailsender import EmailSender
-import logging
-import sys
-
-
-def init_logger():
-    logger_obj = logging.getLogger('main')
-    logger_obj.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
-    handler1 = logging.StreamHandler(sys.stdout)
-    handler1.setFormatter(formatter)
-    handler2 = logging.FileHandler('emailsender.log')
-    handler2.setFormatter(formatter)
-    logger_obj.addHandler(handler1)
-    logger_obj.addHandler(handler2)
-    return logger_obj
+from automail import EmailSender, init_logger
 
 
 def arg_parser():
@@ -46,7 +31,7 @@ def arg_parser():
     return parser.parse_args()
 
 
-logger = init_logger()
+logger = init_logger('main')
 logger.info("Reading arguments...")
 arg = arg_parser()
 

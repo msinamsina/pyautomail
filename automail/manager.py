@@ -1,15 +1,33 @@
+"""This module is responsible for managing the automail pkg.
+It has below commands:
+
+1. register: register a new contact list and a new process this command will get below arguments:
+    - username: the email address of the sender
+    - contacts: the path to the csv file which contains the contacts
+    - name(optional): an arbitrary name for the process
+    - subject(optional): the subject of the email
+    - template(optional): the path to the template file
+    - cpdf(optional): this is a flag that if it is set, the pdf file will be customized for each contact based on the \
+    path to the pdf file which is in the contacts csv file in the column 'cpdf'
+    - attachment(optional): the path to the attachment file if you want to attach a same file to all emails
+    - pdf_dir(optional): the path to the directory which contains the pdf files if you want to use cpdf flag
+2. start: this command will start a process and get the process id as argument you can find the process id in the list\
+ of processes by: `automail list` command
+3. list: list processes
+4. stop: this command will stop one specific process by process id
+5. resume: this command will resume one specific process by process id
+"""
+
+
 import argparse
 from automail.storage import Record, Process, session
 import datetime
 import pandas as pd
 import os
-import logging
-import sys
 import getpass
-from automail.emailsender import EmailSender
+from automail import EmailSender
+from automail.utils import init_logger
 import time
-
-
 # TODO: add a command to delete a process
 # TODO: add a command to delete a record
 # TODO: table for process in process_list function
@@ -17,20 +35,27 @@ import time
 # TODO: add a command to edit a process
 # TODO: add a command to edit a record
 # TODO: create a logger pkg
-def init_logger():
-    logger_obj = logging.getLogger('manager')
-    logger_obj.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
-    handler1 = logging.StreamHandler(sys.stdout)
-    handler1.setFormatter(formatter)
-    handler2 = logging.FileHandler('../emailsender.log')
-    handler2.setFormatter(formatter)
-    logger_obj.addHandler(handler1)
-    logger_obj.addHandler(handler2)
-    return logger_obj
 
 
 def registration(username, contacts, name, cpdf, attachment, pdf_dir, **args):
+    """This function will register a new process and a new contact list
+    :param username: the email address of the sender
+    :type username: str
+    :param contacts: the path to the csv file which contains the contacts
+    :type contacts: str
+    :param name: an arbitrary name for the process
+    :type name: str
+    :param cpdf: this is a flag that if it is set, the pdf file will be customized for each contact based on
+    the path to the pdf file which is in the contacts csv file in the column 'cpdf'
+    :type cpdf: bool
+    :param attachment: the path to the attachment file if you want to attach a same file to all emails
+    :type attachment: str
+    :param pdf_dir: the path to the directory which contains the pdf files if you want to use cpdf flag
+    :type pdf_dir: str
+    :param args: other arguments
+    :return: None
+
+    """
     process = Process(title=name, subject=args['subject'], sender=username,
                       temp_file=args['template'], release_date=datetime.datetime.date(datetime.datetime.now()))
     session.add(process)
@@ -52,7 +77,7 @@ def registration(username, contacts, name, cpdf, attachment, pdf_dir, **args):
 
 
 def run(pid, resume=True):
-    logger = init_logger()
+    logger = init_logger('manager')
     logger.info("Reading arguments...")
     process = session.query(Process).filter(Process.id == pid).first()
     if not process:
