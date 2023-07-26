@@ -33,4 +33,6 @@ extensions = [
     'sphinx.ext.autosummary',
 ]
 
+master_doc = 'index'
+
 # html_theme = "sphinx_rtd_theme"
