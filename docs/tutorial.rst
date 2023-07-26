@@ -6,13 +6,15 @@
 Tutorial
 ====================================
 
-Setup
+Installation
 ------------------------------------
-This is the documentation for Automail. It is a Python package that
-provides a simple interface to send emails. It is built on top of
-Python's built-in smtplib and email modules. It is designed to be
-simple to use and to handle failures gracefully.
 
+download the source code from `github <git@github.com:msinamsina/automail.git>`_ and install it with
+.. code-block:: bash
+
+   $ git clone git@github.com:msinamsina/automail.git
+   $ cd automail
+   $ python setup.py install
 
 .. note::
 
@@ -22,6 +24,17 @@ simple to use and to handle failures gracefully.
 Usage
 ------------------------------------
 
-The main class in Automail is the :class:`automail.Mail` class. It
-provides a simple interface to send emails. The following example
+.. note::
+   After installation, you can use the command line tool ``automail`` to send emails.
 
+For sending emails, you need to do the following steps:
+- register a new process
+   .. code-block:: bash
+
+      $ automail register your-email-address path-to-your-contact-list
+
+   this command will return a process-id, which you will use to start the process.
+- start the process
+   .. code-block:: bash
+
+      $ automail start process-id
