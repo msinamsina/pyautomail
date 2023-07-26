@@ -1,7 +1,5 @@
 API Documentation
 =======================
-.. autosummary::
-
 
 The ``manager`` module
 ****************************
