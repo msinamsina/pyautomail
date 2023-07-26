@@ -5,14 +5,9 @@
 
 Tutorial
 ====================================
-.. autosummary::
-
 
 Setup
 ------------------------------------
-
-
-
 This is the documentation for Automail. It is a Python package that
 provides a simple interface to send emails. It is built on top of
 Python's built-in smtplib and email modules. It is designed to be
