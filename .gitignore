@@ -7,3 +7,4 @@ contents*
 *.db
 
 *.egg-info/
+build/
