@@ -19,6 +19,7 @@ To install automail, you can use pip and git to install the package directly fro
     $ pip install git+https://github.com/msinamsina/automail.git
 
 
+
 This will download and install the latest version of automail along with its dependencies.
 
 Alternatively, you can clone the repository and install the package from source:
