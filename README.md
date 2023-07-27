@@ -15,7 +15,7 @@ email campaigns can be time-consuming and error-prone.
 
 ## Installation
 ```bash
-pip install git+git@github.com:msinamsina/automail.git
+pip install git+https://github.com/msinamsina/automail.git
 ```
 
 ## How to use in command-line interface

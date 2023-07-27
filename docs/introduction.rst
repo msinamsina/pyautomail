@@ -43,7 +43,7 @@ At the moment, automail is only available on GitHub. To install the package, ple
 
 .. code-block:: bash
 
-   pip install git+git@github.com:msinamsina/automail.git
+   pip install git+https://github.com/msinamsina/automail.git
 
 or
 
