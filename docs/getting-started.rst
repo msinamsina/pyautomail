@@ -16,7 +16,7 @@ To install automail, you can use pip and git to install the package directly fro
 
 .. code-block:: bash
 
-    $ pip install git+git@github.com:msinamsina/automail.git
+    $ pip install git+https://github.com/msinamsina/automail.git
 
 
 This will download and install the latest version of automail along with its dependencies.
