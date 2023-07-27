@@ -6,10 +6,14 @@
 **automail: Automated Email Sending for Large Scale and Gmail Automation**
 ==========================================================================
 
-.. image:: _static/automail-logo.png
+.. figure:: _static/automail-logo.png
    :align: center
    :alt: automail logo
-   :width: 300px
+   :width: 100%
+
+.. raw:: html
+
+   <br>
 
 
 Welcome to the documentation for automail, a powerful Python package designed
@@ -25,6 +29,7 @@ email campaigns can be time-consuming and error-prone.
    :caption: Contents
 
    introduction
+   getting-started
    api/index
    tutorial
 
@@ -33,61 +38,58 @@ For more information about automail and its capabilities, please explore the sec
 **Keywords**: Email, Gmail, Automation, Large Scale Email Sending, Python Package, Bulk Email, Email Automation, Email Automation Python, Gmail Integration, Automated Email Communication, Email Automation Tool, Mass Email Sending, Python Email Automation.
 
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Introduction:
 
-   1. **Introduction**
+1. **Introduction**
 
-      - Overview
-      - Features
-      - Installation
+   - Overview
+   - Features
+   - Installation
 
-   2. **Getting Started**
+2. **Getting Started**
 
-      - Quickstart Guide
-      - Configuration
+   - Quickstart Guide
+   - Configuration
 
-   3. **Sending Emails**
+3. **Sending Emails**
 
-      - Single Recipient
-      - Multiple Recipients
-      - Customizing Templates
+   - Single Recipient
+   - Multiple Recipients
+   - Customizing Templates
 
-   4. **Gmail Automation**
+4. **Gmail Automation**
 
-      - Setting Up Gmail Integration
-      - Managing Labels
-      - Searching and Filtering Emails
+   - Setting Up Gmail Integration
+   - Managing Labels
+   - Searching and Filtering Emails
 
-   5. **Advanced Usage**
+5. **Advanced Usage**
 
-      - Email Attachments
-      - Error Handling
-      - Throttling and Rate Limiting
+   - Email Attachments
+   - Error Handling
+   - Throttling and Rate Limiting
 
-   6. **Best Practices**
+6. **Best Practices**
 
-      - Bulk Email Tips
-      - Avoiding Spam Filters
-      - Performance Optimization
+   - Bulk Email Tips
+   - Avoiding Spam Filters
+   - Performance Optimization
 
-   7. **FAQs**
+7. **FAQs**
 
-      - Frequently Asked Questions
+   - Frequently Asked Questions
 
-   8. **API Reference**
+8. **API Reference**
 
-      - automail Module
+   - automail Module
 
-   9. **Contributing**
+9. **Contributing**
 
-      - How to Contribute
-      - Code Guidelines
-      - Issue Tracker
+   - How to Contribute
+   - Code Guidelines
+   - Issue Tracker
 
-   10. **Changelog**
+10. **Changelog**
 
-       - Version History
+    - Version History
 
 
