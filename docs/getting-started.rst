@@ -1,16 +1,30 @@
-Getting Started with automail
+Quickstart with automail
 =============================
 
 Welcome to automail! This guide will help you get up and running with the automated
-email sending Python package in no time. Before you begin, make sure you have Python
-installed on your system, preferably Python 3.6 or higher.
+email sending Python package in no time.
 
-Quickstart Guide
-----------------
+.. note::
+    This guide assumes that you have some basic knowledge of Python and the command line.
+    If you are new to Python, you can check out the official Python tutorial
+    `here <https://docs.python.org/3/tutorial/index.html>`_.
+    If you are new to the command line, you can check out this
+    `tutorial <https://www.codecademy.com/learn/learn-the-command-line>`_.
+
+Before you begin, make sure you have Python installed on your system, preferably
+Python 3.9 or higher.
+
+.. important::
+    If you are not a Python developer, don't worry! You don't need to write any
+    Python code to use automail. You can use the command-line interface (CLI) tool
+    to send emails without writing any code. Please refer to the
+    :ref:`automail command-line interface (CLI) tool <cli>`
+
+    **Additionally a user interface will be provided in the future.**
 
 
 Installation
-~~~~~~~~~~~~
+------------
 
 To install automail, you can use pip and git to install the package directly from GitHub:
 
@@ -29,8 +43,19 @@ Alternatively, you can clone the repository and install the package from source:
     $ cd automail
     $ pip install .
 
-How to Use automail command-line interface (CLI)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+How to Use
+----------
+There are two ways to use automail to send emails. You can either use the most powerful
+command-line interface (CLI) tool without writing any Python code, or you can use the
+Python package in your custom scripts. We'll cover a quick overview of both of these
+options in this guide. For more details, please refer to :doc:`the Tutorial section <tutorial/index>`
+and the :doc:`API reference <api/index>`.
+
+.. _cli:
+
+1. Automail command-line interface (CLI) tool
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 When you install automail, you will also get a command-line interface (CLI) tool called `automail`.
 This tool can be used to send emails from the command line, without writing any Python code.
 So if you want to send a quick email without writing a script, you can use the CLI tool.
@@ -68,7 +93,9 @@ To send emails using the CLI tool, you can run the following command:
             .. code-block:: bash
 
                 $ automail list
+
 #. Now you can start a process by running the following command:
+
     .. code-block:: bash
 
         $ automail start <process_id>
@@ -84,6 +111,30 @@ To send emails using the CLI tool, you can run the following command:
             .. code-block:: bash
 
                 $ automail resume <process_id>
+
+2. Writing your own python script
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to automate your email sending process, you can also use the Python package in your custom scripts.
+This will give you more flexibility and control over the email sending process.
+You can use the Python package to send emails to multiple recipients, use custom email templates,
+and customize other settings according to your needs.
+
+There is an example script in the following:
+
+.. code-block:: python
+
+    from automail import EmailSender
+
+    # Initialize automail with your email credentials and configurations
+    automailer = EmailSender(user="your-email", password="your-password")
+
+    # Send a single email
+    automailer.set_template('body.txt')
+    data = {'name': 'Jon', 'age': 30}
+    automailer.send('dest-email', 'sub1', data)
+
+
 
 Configuration
 -------------

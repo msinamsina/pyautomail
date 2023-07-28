@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-**automail: Automated Email Sending for Large Scale and Gmail Automation**
-==========================================================================
+**AUTOMAIL: Automated Email Sending for Large Scale Email and Gmail Automation**
+================================================================================
 
 .. figure:: _static/automail-logo.png
    :align: center
@@ -16,12 +16,34 @@
    <br>
 
 
-Welcome to the documentation for automail, a powerful Python package designed
-for automated email sending, especially tailored for large scale operations
-and Gmail automation. In today's fast-paced digital world, effective email
-communication is a vital aspect of many businesses and projects.
+Welcome to the documentation for **automail**, a powerful Python package designed
+for automated email sending, especially tailored for large scale Email or Gmail automation.
+In today's fast-paced digital world, effective communication is a vital aspect of many
+businesses and projects which rely on email as a primary means of communication.
 However, manually sending individual emails or even managing bulk
 email campaigns can be time-consuming and error-prone.
+
+**Automail** comes to the rescue by providing a seamless and efficient solution for
+automating email communication. Whether you need to send personalized emails to
+a vast audience, conduct email marketing campaigns, or automate routine email
+tasks, this package is your go-to tool. Its user-friendly interface
+and versatile features make it suitable for a wide range of applications, from
+startups to enterprises, professionals, and developers.
+
+Whether you need to send bulk emails, automate Gmail tasks, or
+improve your email communication efficiency, **automail** is here to streamline
+your workflow and enhance productivity.
+
+.. note::
+   For more information about **automail**
+   and its capabilities, please explore our documentation.
+
+   - You can see a short overview and features of ``automail`` in the :doc:`Introduction <introduction>` section.
+   - If you are new to ``automail``, you can get started with our :doc:`Getting Started <getting-started>` guide.
+   - For a quick reference, you can check out the :doc:`API Reference <api/index>` section.
+   - If you want to learn more about ``automail`` and best practices, you can read our :doc:`Tutorial <tutorial/index>` section.
+
+The documentation is organized into the following sections:
 
 
 .. toctree::
@@ -30,10 +52,10 @@ email campaigns can be time-consuming and error-prone.
 
    introduction
    getting-started
+   tutorial/index
    api/index
-   tutorial
 
-For more information about automail and its capabilities, please explore the sections above. Whether you need to send bulk emails, automate Gmail tasks, or improve your email communication efficiency, automail is here to streamline your workflow and enhance productivity.
+
 
 **Keywords**: Email, Gmail, Automation, Large Scale Email Sending, Python Package, Bulk Email, Email Automation, Email Automation Python, Gmail Integration, Automated Email Communication, Email Automation Tool, Mass Email Sending, Python Email Automation.
 

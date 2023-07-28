@@ -20,6 +20,8 @@ extensions = [
     'sphinx_rtd_theme',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
+    'sphinx.ext.autosectionlabel',
+    'recommonmark'
 ]
 
 templates_path = ['_templates']
