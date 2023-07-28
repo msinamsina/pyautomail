@@ -4,12 +4,14 @@ Introduction
 Overview
 --------
 
-Automail comes to the rescue by providing a seamless and efficient solution for
-automating email communication. Whether you need to send personalized emails to
-a vast audience, conduct email marketing campaigns, or automate routine email
-tasks with Gmail, this package is your go-to tool. Its user-friendly interface
-and versatile features make it suitable for a wide range of applications, from
-startups to enterprises, professionals, and developers.
+Automail is a dynamic Python package that enhances automated email sending.
+Utilizing the built-in smtplib module, it ensures reliable communication.
+With the flexibility to send personalized emails using HTML or plain text templates,
+Automail adds a personal touch to each message. Boosted by Jinja2, it enables the
+creation of captivating and visually appealing email templates. Moreover, you can
+effortlessly attach global or personalized PDF files to enrich your emails.
+The package also offers the convenience of scheduling emails for timely delivery.
+Simplify your email campaigns and elevate your communication with **Automail**'s creative features and efficiency.
 
 .. warning::
 
@@ -17,17 +19,35 @@ startups to enterprises, professionals, and developers.
 
 Key Features
 ------------
+- **Automated Email Sending**:
+    Automail enables you to automate the entire email sending process, saving
+    you valuable time and effort. With just a few lines of code, you can send
+    personalized emails to individuals or even conduct large-scale email campaigns.
 
-- **Streamlined Automation:** Automail empowers you to automate the entire email sending process, eliminating the need for repetitive manual tasks. Save valuable time and effort while focusing on more critical aspects of your project or business.
+- **Customizable Email Templates**:
+    Personalization is key to effective communication. With automail, you can
+    create dynamic email templates using Jinja2 or simple HTML, allowing you to
+    tailor each email's content to suit the recipient.
 
-- **Scalable Bulk Email Sending:** With automail, sending emails to a large number of recipients becomes a breeze. Whether you need to reach out to a thousand users or more, automail efficiently handles the scale of your email campaigns.
+- **Attachment Support**:
+    Want to include additional content with your emails? Automail makes it easy
+    to attach global PDFs or personalized PDFs to each email, providing a seamless
+    experience for your recipients.
 
-- **Seamless Gmail Integration:** Gmail users can seamlessly integrate automail with their accounts, gaining access to powerful automation tools specific to Gmail. Manage labels, search and filter emails, and automate tasks to boost your productivity.
+- **HTML or Plain Text**:
+    Whether you prefer richly formatted HTML emails or simple plain text messages,
+    automail caters to your needs. The package supports both HTML (Jinja2 or standard)
+    and plain text templates for versatile email communication.
 
-- **Customizable Templates:** Personalize your email content using customizable templates, ensuring that each recipient receives a tailored message. Dynamic variables enable you to create dynamic and engaging email content.
+- **Scheduled Emails**:
+    Need to send emails at specific times? Automail allows you to schedule your
+    emails for future delivery, ensuring your messages reach recipients at the
+    most opportune moments.
 
-
-Whether you're a marketer, developer, or business owner, automail is a valuable addition to your toolkit. Experience the ease of automated email communication while reaching a wider audience and driving your projects towards success.
+Whether you're a marketer, developer, or business owner, automail is a valuable addition
+to your toolkit. Experience the ease of automated email communication while reaching a
+wider audience and driving your projects towards success. So if you're ready to start
+see the :doc:`Getting Started <getting-started>` to learn how to use automail.
 
 
 
@@ -35,6 +55,14 @@ Whether you're a marketer, developer, or business owner, automail is a valuable 
 
    If you encounter any issues or have suggestions for improvements, please feel free to report them on our
    `GitHub issue tracker <https://github.com/msinamsina/automail/issues>`_.
+
+
+Github
+------
+The source code for automail is available on GitHub at the following link:
+
+https://github.com/msinamsina/automail.git
+
 
 
 Installation
