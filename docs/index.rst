@@ -47,7 +47,7 @@ The documentation is organized into the following sections:
 
 
 .. toctree::
-   :maxdepth: 0
+   :maxdepth: 2
    :caption: Contents
 
    introduction
