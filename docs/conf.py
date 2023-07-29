@@ -21,7 +21,10 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.autosectionlabel',
-    'recommonmark'
+    'recommonmark',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.doctest',
+
 ]
 
 templates_path = ['_templates']
