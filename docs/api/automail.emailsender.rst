@@ -1,21 +1,18 @@
-automail.emailsender package
-============================
+automail.emailsender
+====================
 
-Submodules
-----------
-
-automail.emailsender.sender module
-----------------------------------
-
-.. automodule:: automail.emailsender.sender
+.. automodule:: automail.emailsender
    :members:
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
 
-.. automodule:: automail.emailsender
+
+automail.emailsender.sender
+---------------------------
+
+
+.. automodule:: automail.emailsender.sender
    :members:
    :undoc-members:
    :show-inheritance:

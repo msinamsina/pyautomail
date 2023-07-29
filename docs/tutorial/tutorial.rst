@@ -6,20 +6,8 @@
 Tutorial
 ====================================
 
-Installation
-------------------------------------
-
-download the source code from `github <git@github.com:msinamsina/automail.git>`_ and install it with
-
-.. code-block:: bash
-
-   $ git clone git@github.com:msinamsina/automail.git
-   $ cd automail
-   $ python setup.py install
-
 .. note::
-
-   This project is under active development.
+   To install automail please see :ref:`installation <installation>`
 
 
 Usage

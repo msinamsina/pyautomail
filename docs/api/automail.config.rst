@@ -1,21 +1,18 @@
-automail.config package
-=======================
+automail.config
+===============
 
-Submodules
-----------
-
-automail.config.config module
------------------------------
-
-.. automodule:: automail.config.config
+.. automodule:: automail.config
    :members:
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
 
-.. automodule:: automail.config
+
+automail.config.config
+----------------------
+
+
+.. automodule:: automail.config.config
    :members:
    :undoc-members:
    :show-inheritance:
