@@ -63,4 +63,4 @@ The source code for automail is available on GitHub at the following link:
 
 https://github.com/msinamsina/automail.git
 
-Please see the `tutorial` for a quick introduction on how to use Automail.
+Please see the :ref:`how to use <htu>` for a quick introduction on how to use Automail.

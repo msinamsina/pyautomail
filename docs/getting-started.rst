@@ -44,6 +44,8 @@ Alternatively, you can clone the repository and install the package from source:
     $ cd automail
     $ pip install .
 
+.. _htu:
+
 How to Use
 ----------
 There are two ways to use automail to send emails. You can either use the most powerful
