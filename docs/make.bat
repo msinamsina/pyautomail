@@ -26,9 +26,12 @@ if errorlevel 9009 (
 
 if "%1" == "" goto help
 
-if "%1" == "clean" rm -r ./api
+if "%1" == "clean" (
+    if "%2" == "--api"  rm -r ./api
+) else (
+    if "%2" == "--api" sphinx-apidoc ../automail -o api -H "API Rrf." -Mf  --tocfile index --templatedir ./_templates/apidoc -d 2
+)
 
-if "%2" == "--api" sphinx-apidoc ../automail -o api -H "API Rrf." -Mf  --tocfile index --templatedir ./_templates/apidoc -d 2
 
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
 goto end
