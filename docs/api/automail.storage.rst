@@ -1,21 +1,18 @@
-automail.storage package
-========================
+automail.storage
+================
 
-Submodules
-----------
-
-automail.storage.database module
---------------------------------
-
-.. automodule:: automail.storage.database
+.. automodule:: automail.storage
    :members:
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
 
-.. automodule:: automail.storage
+
+automail.storage.database
+-------------------------
+
+
+.. automodule:: automail.storage.database
    :members:
    :undoc-members:
    :show-inheritance:

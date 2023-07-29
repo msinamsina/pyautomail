@@ -1,8 +1,11 @@
-automail package
-================
+automail
+========
 
-Subpackages
------------
+.. automodule:: automail
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 .. toctree::
    :maxdepth: 2
@@ -11,29 +14,22 @@ Subpackages
    automail.emailsender
    automail.storage
 
-Submodules
-----------
 
-automail.manager module
------------------------
+
+automail.manager
+----------------
+
 
 .. automodule:: automail.manager
    :members:
    :undoc-members:
    :show-inheritance:
 
-automail.utils module
----------------------
+automail.utils
+--------------
+
 
 .. automodule:: automail.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: automail
    :members:
    :undoc-members:
    :show-inheritance:

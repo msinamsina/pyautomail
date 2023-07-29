@@ -22,6 +22,7 @@ Python 3.9 or higher.
 
     **Additionally a user interface will be provided in the future.**
 
+.. _install:
 
 Installation
 ------------

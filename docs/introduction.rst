@@ -63,23 +63,4 @@ The source code for automail is available on GitHub at the following link:
 
 https://github.com/msinamsina/automail.git
 
-
-
-Installation
-------------
-At the moment, automail is only available on GitHub. To install the package, please run the following command:
-
-.. code-block:: bash
-
-   pip install git+https://github.com/msinamsina/automail.git
-
-or
-
-.. code-block:: bash
-
-    git clone git@github.com:msinamsina/automail.git
-    cd automail
-    pip setup.py install
-
-
 Please see the `tutorial` for a quick introduction on how to use Automail.
