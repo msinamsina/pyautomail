@@ -4,14 +4,29 @@
    contain the root `toctree` directive.
 
 Tutorial
-====================================
+========
 
 .. note::
    To install automail please see :ref:`installation <installation>`
 
+Base usage
+==========
 
-Usage
-------------------------------------
+Below is a Python script that demonstrates how to send a single email:
+
+
+.. literalinclude:: ../../examples/base-usage.py
+   :language: python
+   :end-before: Creating a sender object
+
+
+.. literalinclude:: ../../examples/base-usage.py
+   :language: python
+   :start-after: Creating a sender object
+   :end-before: Set the template
+
+CLI Usage
+---------
 
 .. note::
    After installation, you can use the command line tool ``automail`` to send emails.

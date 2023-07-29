@@ -123,21 +123,25 @@ This will give you more flexibility and control over the email sending process.
 You can use the Python package to send emails to multiple recipients, use custom email templates,
 and customize other settings according to your needs.
 
-There is an example script in the following:
+You can also use automail in your custom Python scripts to send emails.
+Here's two basic examples of sending an email to a single recipient:
 
-.. code-block:: python
+- **First example**
+    .. code-block:: python
 
-    from automail import EmailSender
+        from automail import EmailSender
 
-    # Initialize automail with your email credentials and configurations
-    automailer = EmailSender(user="your-email", password="your-password")
+        # Initialize automail with your email credentials and configurations
+        automailer = EmailSender(email='your_email@gmail.com', password='your_email_password')
 
-    # Send a single email
-    automailer.set_template('body.txt')
-    data = {'name': 'Jon', 'age': 30}
-    automailer.send('dest-email', 'sub1', data)
+        # Send a single email
+        sender.set_template('body.txt')
+        data = {'name': 'Jon', 'age': 30}
+        sender.send('msinamsina@gmail.com', 'sub1', data)
 
-
+- **Second example**
+    .. literalinclude:: ../examples/base-usage.py
+       :language: python
 
 Configuration
 -------------
@@ -145,27 +149,6 @@ Configuration
 Before you start sending emails, you'll need to set up some configurations for automail.
 This includes providing your email credentials, choosing the email service provider (e.g., Gmail),
 and customizing other settings according to your needs.
-
-
-Sending Emails with your custom script
---------------------------------------
-
-You can also use automail in your custom Python scripts to send emails.
-Here's a basic example of sending an email to a single recipient:
-
-.. code-block:: python
-
-    from automail import EmailSender
-
-    # Initialize automail with your email credentials and configurations
-    automailer = EmailSender(email='your_email@gmail.com', password='your_email_password')
-
-    # Send a single email
-    sender.set_template('body.txt')
-    data = {'name': 'Jon', 'age': 30}
-    sender.send('msinamsina@gmail.com', 'sub1', data)
-
-
 
 For more advanced usage, such as sending emails to multiple recipients or using custom email templates,
 please refer to the relevant sections in the documentation.
@@ -177,6 +160,5 @@ You've completed the getting started guide for automail!
 You should now be ready to automate your email communication with ease.
 Feel free to explore the extensive documentation for more features, examples, and best practices.
 
-Happy automailing!
-
-**Keywords**: automail, Getting Started, Installation, Python Package, Automated Email Sending, Email Configuration, Email Credentials, Gmail Integration, SMTP Server, Custom Email Templates, Send Email.
+**Keywords**: automail, Getting Started, Installation, Python Package, Automated Email Sending,
+Email Configuration, Email Credentials, Gmail Integration, SMTP Server, Custom Email Templates, Send Email.
