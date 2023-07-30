@@ -17,10 +17,8 @@ It has below commands:
 4. stop: this command will stop one specific process by process id
 5. resume: this command will resume one specific process by process id
 """
-
-
 import argparse
-from automail.storage import Record, Process, session
+from automail.storage import Record, Process, get_session, create_tables
 import datetime
 import pandas as pd
 import os
@@ -36,24 +34,41 @@ import time
 # TODO: add a command to edit a record
 # TODO: create a logger pkg
 
+__all__ = ['registration', 'start', 'stop', 'resume_process', 'list_processes', 'run']
+
+
+session, _ = get_session()
+
 
 def registration(username, contacts, name, cpdf, attachment, pdf_dir, **args):
     """This function will register a new process and a new contact list
-    :param username: the email address of the sender
-    :type username: str
-    :param contacts: the path to the csv file which contains the contacts
-    :type contacts: str
-    :param name: an arbitrary name for the process
-    :type name: str
-    :param cpdf: this is a flag that if it is set, the pdf file will be customized for each contact based on
-    the path to the pdf file which is in the contacts csv file in the column 'cpdf'
-    :type cpdf: bool
-    :param attachment: the path to the attachment file if you want to attach a same file to all emails
-    :type attachment: str
-    :param pdf_dir: the path to the directory which contains the pdf files if you want to use cpdf flag
-    :type pdf_dir: str
-    :param args: other arguments
-    :return: None
+
+
+    Parameters
+    ----------
+    username : str
+        the email address of the sender
+    contacts : str
+        the path to the csv file which contains the contacts
+    name : str
+        an arbitrary name for the process
+    cpdf : bool
+        this is a flag that if it is set, the pdf file will be customized for each contact based on the \
+        path to the pdf file which is in the contacts csv file in the column 'cpdf'
+    attachment : str
+        the path to the attachment file if you want to attach a same file to all emails
+    pdf_dir : str
+        the path to the directory which contains the pdf files if you want to use cpdf flag
+    args : dict
+        the other arguments which are passed to the function
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    This function will register a new process plus records for each contact in the contacts csv file.
 
     """
     process = Process(title=name, subject=args['subject'], sender=username,
@@ -77,6 +92,18 @@ def registration(username, contacts, name, cpdf, attachment, pdf_dir, **args):
 
 
 def run(pid, resume=True):
+    """
+    This function will run a process with a specific id
+
+    Parameters
+    ----------
+    pid : int
+        the process id
+    resume : bool
+        if True, the program will resume the process if it is paused, otherwise it prints a warning message and \
+        return without doing anything
+    """
+
     logger = init_logger('manager')
     logger.info("Reading arguments...")
     process = session.query(Process).filter(Process.id == pid).first()
@@ -139,10 +166,12 @@ def run(pid, resume=True):
 
 
 def start(pid, **args):
+    """This function will start a process with a specific id"""
     run(pid, resume=False)
 
 
 def stop(pid, **args):
+    """This function will stop a process with a specific id"""
     process = session.query(Process).filter(Process.id == pid).first()
     if process.status == "in progress":
         process.status = "paused"
@@ -153,10 +182,19 @@ def stop(pid, **args):
 
 
 def resume_process(pid, **args):
+    """This function will resume a process with a specific id"""
     run(pid, resume=True)
 
 
-def process_list(pid=None, **kwargs):
+def list_processes(pid=None, **kwargs):
+    """This function will print the list of all processes or a specific process with a specific id
+
+    Parameters
+    ----------
+    pid : int
+        the process id if you want to see the information of a specific process or None if you want to see the \
+        information of all processes
+    """
     if pid is None:
         processes = session.query(Process).all()
     else:
@@ -168,7 +206,7 @@ def process_list(pid=None, **kwargs):
               len(session.query(Record).filter(Record.process_id == process.id, Record.status == "sent").all()))
 
 
-def parser():
+def _parser():
     parser_obj = argparse.ArgumentParser(description='Mail Manager', prog="mailmanager")
     sud_parser = parser_obj.add_subparsers(dest='command')
     register_parser = sud_parser.add_parser('register', help='Register a new user')
@@ -197,7 +235,7 @@ def parser():
 
     list_parser = sud_parser.add_parser('list', help='List processes (all or a specific proces  by id')
     list_parser.add_argument('--pid', help='process id', default=None, required=False)
-    list_parser.set_defaults(func=process_list)
+    list_parser.set_defaults(func=list_processes)
     return parser_obj
 
 

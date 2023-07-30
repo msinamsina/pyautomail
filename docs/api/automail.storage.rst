@@ -8,11 +8,20 @@ automail.storage
 
 
 
-automail.storage.database
--------------------------
+automail.storage.model
+----------------------
 
 
-.. automodule:: automail.storage.database
+.. automodule:: automail.storage.model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+automail.storage.util
+---------------------
+
+
+.. automodule:: automail.storage.util
    :members:
    :undoc-members:
    :show-inheritance:

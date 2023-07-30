@@ -11,10 +11,18 @@ automail
    :maxdepth: 2
 
    automail.config
-   automail.emailsender
    automail.storage
 
 
+
+automail.emailsender
+--------------------
+
+
+.. automodule:: automail.emailsender
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 automail.manager
 ----------------

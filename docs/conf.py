@@ -24,6 +24,7 @@ extensions = [
     'recommonmark',
     'sphinx.ext.viewcode',
     'sphinx.ext.doctest',
+    'sphinx.ext.napoleon',
 
 ]
 
@@ -41,3 +42,9 @@ html_static_path = ['_static']
 master_doc = 'index'
 add_module_names = False
 
+napoleon_use_admonition_for_examples = True
+napoleon_use_admonition_for_notes = True
+# napoleon_use_ivar = True
+# napoleon_use_param = True
+# napoleon_use_rtype = True
+napoleon_include_init_with_doc = True

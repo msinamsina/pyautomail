@@ -5,41 +5,62 @@ import inspect
 def configurable(init_func=None, *, from_config=None):
     """
     Decorate a function or a class's __init__ method so that it can be called
-    with a :class:`CfgNode` object using a :func:`from_config` function that translates
-    :class:`CfgNode` to arguments.
+    with a config file using a :func:`from_config` function that translates the
+    config file into kwargs.
 
-    Examples::
+    Examples
+    --------
+    Usage 1: Decorator on __init__::
 
-            # Usage 1: Decorator on __init__:
-            class A:
-                @configurable
-                def __init__(self, a, b=2, c=3):
-                    pass
-
-                @classmethod
-                def from_config(cls, cfg):   # 'cfg' must be the first argument
-                    # Returns kwargs to be passed to __init__
-                    return {"a": cfg.A, "b": cfg.B}
-
-            a1 = A(a=1, b=2)  # regular construction
-            a2 = A(cfg)       # construct with a cfg
-            a3 = A(cfg, b=3, c=4)  # construct with extra overwrite
-
-            # Usage 2: Decorator on any function. Needs an extra from_config argument:
-            @configurable(from_config=lambda cfg: {"a: cfg.A, "b": cfg.B})
-            def a_func(a, b=2, c=3):
+        class A:
+            @configurable
+            def __init__(self, a, b=2, c=3):
                 pass
 
-            a1 = a_func(a=1, b=2)  # regular call
-            a2 = a_func(cfg)       # call with a cfg
-            a3 = a_func(cfg, b=3, c=4)  # call with extra overwrite
+            @classmethod
+            def from_config(cls, cfg):   # 'cfg' must be the first argument
+                # Returns kwargs to be passed to __init__
+                return {"a": cfg.A, "b": cfg.B}
 
-    Args:
-        init_func (callable): a class's ``__init__`` method in usage 1. The
-            class must have a ``from_config`` classmethod which takes `cfg` as
-            the first argument.
-        from_config (callable): the from_config function in usage 2. It must take `cfg`
-            as its first argument.
+        a1 = A(a=1, b=2)  # regular construction
+        a2 = A(cfg)       # construct with a cfg
+        a3 = A(cfg, b=3, c=4)  # construct with extra overwrite
+
+    Usage 2: Decorator on any function. Needs an extra from_config argument::
+
+        @configurable(from_config=lambda cfg: {"a: cfg.A, "b": cfg.B})
+        def a_func(a, b=2, c=3):
+            pass
+
+        a1 = a_func(a=1, b=2)  # regular call
+        a2 = a_func(cfg)       # call with a cfg
+        a3 = a_func(cfg, b=3, c=4)  # call with extra overwrite
+
+
+    Parameters
+    ----------
+    init_func: callable
+        The __init__ method of a class. If this is specified, the decorator
+        will decorate the __init__ method and return the decorated method.
+
+    from_config: callable
+        A function that takes a config file and returns a dictionary of kwargs
+        to be passed to the decorated function.
+
+    Returns
+    -------
+    callable
+        If decorating a function, returns a new function that can be called with
+        a config file. If decorating a class's __init__ method, returns the
+        decorated __init__ method.
+
+    Raises
+    ------
+    TypeError
+        If the decorator is used incorrectly or if cfg is not the first argument
+    AttributeError
+        If the class does not have a from_config classmethod.
+
     """
 
     if init_func is not None:
@@ -51,7 +72,6 @@ def configurable(init_func=None, *, from_config=None):
 
         @functools.wraps(init_func)
         def wrapped(self, *args, **kwargs):
-            print("wrapped...........................")
             try:
                 from_config_func = type(self).from_config
             except AttributeError as e:
@@ -89,8 +109,11 @@ def _get_args_from_config(from_config_func, *args, **kwargs):
     """
     Use `from_config` to obtain explicit arguments.
 
-    Returns:
-        dict: arguments to be used for cls.__init__
+    Returns
+    -------
+    kwargs: dict
+        The explicit arguments to be passed to the decorated function.
+
     """
     signature = inspect.signature(from_config_func)
     if list(signature.parameters.keys())[0] != "cfg":
