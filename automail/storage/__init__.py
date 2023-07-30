@@ -1,1 +1,2 @@
-from .database import engine, Record, Process, Base, session
+from .model import Record, Process
+from .util import Base, get_session, create_tables

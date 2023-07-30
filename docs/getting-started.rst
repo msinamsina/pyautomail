@@ -69,11 +69,8 @@ columns can be added as contact information which will be used in the email temp
 
 Here's an example of a CSV file containing a list of contacts:
 
-.. code-block:: bash
-
-    name,email,custom_data1,custom_data2
-    John Doe,JohnDoe@gmail.com,John_data1,John_data2
-    Jane Doe,JaneDoe@gmail.com,Jane_data1,Jane_data2
+.. literalinclude:: ../contact.csv
+   :language: text
 
 
 To send emails using the CLI tool, you can run the following command:

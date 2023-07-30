@@ -11,18 +11,74 @@ from configparser import ConfigParser
 from automail.config import configurable
 
 
+__all__ = ['EmailSender']
+
+
 class EmailSender:
     """ This class is for sending emails to multiple users.
+
+    This class uses a template engine to render the email body. Currently, it supports two template types: '.txt' and
+    '.html'. You can use the template type that suits your needs. The template engine that is used in this class is
+    Jinja2. You can find more information about Jinja2 in the following link:
+    https://jinja.palletsprojects.com/en/2.11.x/
+
+    Examples
+    --------
+    >>> from automail import EmailSender
+    >>> sender = EmailSender(cfg="config.cfg")
+    >>> sender.set_template('body.txt')
+    >>> data = {'name': 'Jon', 'age': 30}
+    >>> sender.send('contact1@gmail.com', 'sub1', data)
+
+    a simple example of a template file:
+
+    body.txt:
+
+    .. code-block:: text
+
+        Hello {{name}}, your age is {{age}}.
+
+    a simple example of a config.cfg file:
+
+    .. code-block:: ini
+
+        [smtp]
+        host = smtp.gmail.com
+        port = 465
+        is_test = True
+
+        [account]
+        user = ""
+        password = ""
+
+    Or you can use the class without a config file::
+
+        from automail import EmailSender
+        sender = EmailSender(user="your-email-address", password="your-password")
+        sender.set_template('body.txt')
+        data = {'name': 'Jon', 'age': 30}
+        sender.send('contact1@gmail.com', 'sub1', data)
+
+    .. _NumPy Documentation HOWTO:
+        https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt
+
     """
 
     @configurable
     def __init__(self, user, password, host="smtp.gmail.com", port=465, is_test=False):
         """
-        :param user: Your email address.
-        :param password: Your email password.
-        :param host: SMTP server address.
-        :param port: SMTP server port.
-        :param is_test: If True, no email will be sent. This is useful for testing.
+        Parameters
+        ----------
+        user : str
+            The email address of the sender.
+        password : str
+            The password of the sender.
+        host : str
+            The host of the SMTP server.
+        port : int
+            The port of the SMTP server.
+        is_test : bool
+            If this flag is set, no email will be sent. This flag is useful for testing purposes.
         """
         self.__set_logger()
         self.__logger.info("Initializing EmailSender...")
