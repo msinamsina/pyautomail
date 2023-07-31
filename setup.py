@@ -15,6 +15,8 @@ setup(
         'jinja2',
         'pandas'
     ],
+    long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
     python_requires='>=3.9',
     entry_points={
         'console_scripts': [
