@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='automail',
-    version='1.1.1',
+    name='pyautomail',
+    version='1.5.0',
     packages=find_packages(),
-    url='https://github.com/msinamsina/sending-gmail',
+    url='https://github.com/msinamsina/automail',
     license='MIT',
     author='Mohammad sina Allahkaram',
     author_email="msinamsina@gmail.com",
-    description='A python package for sending E-mails',
+    description='A Python pkg and command-line interface for Sending email to your contact list',
     install_requires=[
         'sqlalchemy',
         'sqlalchemy_utils',
