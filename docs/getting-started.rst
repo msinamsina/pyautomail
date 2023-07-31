@@ -1,4 +1,4 @@
-Quickstart with automail
+Quickstart with pyautomail
 =============================
 
 Welcome to automail! This guide will help you get up and running with the automated
@@ -26,8 +26,14 @@ Python 3.9 or higher.
 
 Installation
 ------------
+To install pyautomail, you can use pip to install the package directly from PyPI:
 
-To install automail, you can use pip and git to install the package directly from GitHub:
+.. code-block:: bash
+
+    $ pip install pyautomail
+
+
+Or you can use pip and git to install the latest version directly from GitHub:
 
 .. code-block:: bash
 
@@ -48,7 +54,7 @@ Alternatively, you can clone the repository and install the package from source:
 
 How to Use
 ----------
-There are two ways to use automail to send emails. You can either use the most powerful
+There are two ways to use pyautomail to send emails. You can either use the most powerful
 command-line interface (CLI) tool without writing any Python code, or you can use the
 Python package in your custom scripts. We'll cover a quick overview of both of these
 options in this guide. For more details, please refer to :doc:`the Tutorial section <tutorial/index>`
@@ -59,7 +65,7 @@ and the :doc:`API reference <api/index>`.
 1. Automail command-line interface (CLI) tool
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When you install automail, you will also get a command-line interface (CLI) tool called `automail`.
+When you install pyautomail, you will also get a command-line interface (CLI) tool called `automail`.
 This tool can be used to send emails from the command line, without writing any Python code.
 So if you want to send a quick email without writing a script, you can use the CLI tool.
 
@@ -120,7 +126,7 @@ This will give you more flexibility and control over the email sending process.
 You can use the Python package to send emails to multiple recipients, use custom email templates,
 and customize other settings according to your needs.
 
-You can also use automail in your custom Python scripts to send emails.
+You can also use pyautomail in your custom Python scripts to send emails.
 Here's two basic examples of sending an email to a single recipient:
 
 - **First example**
