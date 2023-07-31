@@ -15,7 +15,7 @@ Revolutionize your email operations, whether it involves mass email distribution
 
 ## Installation
 
-### PyPi:
+### [PyPi](https://pypi.org/project/pyautomail/)
 ```bash
 pip install pyautomail
 ```
