@@ -8,7 +8,7 @@
 import sys
 
 sys.path.insert(0, '../')
-project = 'Automail'
+project = 'PyAutoMail'
 copyright = '2023, Mohammad Sina Allahkaram'
 author = 'Mohammad Sina Allahkaram'
 release = '1.1.1'
