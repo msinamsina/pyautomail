@@ -1,19 +1,26 @@
-# Automail: A Python pkg and command-line interface for Sending email to your contact list
+# PyAutoMail: A Python package and command-line interface for automation sending email to your contact list
 
 
-<div style="text-align: center;">
-<img  src='docs/_static/automail-logo.png'>
-</div>
+<p align="center" width="100%">
+    <img  width="80%" src="https://github.com/msinamsina/automail/blob/main/docs/_static/automail-logo.png" >
+</p>
 
-Welcome to the documentation for automail, a powerful Python package designed
-for automated email sending, especially tailored for large scale operations
-and Gmail automation. In today's fast-paced digital world, effective email
-communication is a vital aspect of many businesses and projects.
-However, manually sending individual emails or even managing bulk
-email campaigns can be time-consuming and error-prone.
+
+Pyautomail, an incredibly powerful Python package meticulously crafted for the purpose of automated email delivery, catering especially to large-scale Email or Gmail automation. In today's fast-paced digital era, effective communication stands as a crucial cornerstone for numerous businesses and projects that heavily rely on email as their primary medium of interaction. Nonetheless, the manual handling of individual emails or the management of bulk email campaigns can prove to be both time-consuming and prone to errors.
+
+Fear not, for pyautomail swoops in as the ultimate savior, offering a seamless and highly efficient solution for automating email communication. Be it the need to dispatch personalized emails to a vast audience, the execution of targeted email marketing campaigns, or the automation of repetitive email chores, this package serves as your ultimate go-to tool. With its user-friendly interface and an array of versatile features, pyautomail proves itself as a fitting choice for a wide range of applications, catering to startups, enterprises, professionals, and developers alike.
+
+Revolutionize your email operations, whether it involves mass email distribution, streamlined Gmail tasks, or the quest for enhanced email communication proficiency - pyautomail is here to streamline your workflow, elevate your efficiency, and elevate productivity to soaring heights.
 
 
 ## Installation
+
+### PyPi:
+```bash
+pip install pyautomail
+```
+
+### Github
 ```bash
 pip install git+https://github.com/msinamsina/automail.git
 ```
@@ -36,42 +43,25 @@ automail start <process-id>
     email_sender.send('msinamsina@gmail.com', 'sub1', data)
 ```
 
-For more information, you can read the [documentation](https://automail.readthedocs.io/en/latest/)
+### Documentation and Resources
 
+For more comprehensive information about **PyAutoMail** and its capabilities, please explore our detailed [documentation](https://automail.readthedocs.io/en/latest/).
 
-## Old version (This script is deprecated)
-The old version script is still available, and you can use it by following the below instruction
+- Get a brief overview and explore the features of PyAutoMail in the [Introduction](https://automail.readthedocs.io/en/latest/introduction.html) section.
+- If you're new to PyAutoMail, follow our [Getting Started](https://automail.readthedocs.io/en/latest/getting-started.html) guide to kickstart your email automation journey.
+- For a quick reference, you can check out the [API Reference](https://automail.readthedocs.io/en/latest/api/index.html) section.
+- To gain deeper insights into PyAutoMail and learn best practices, dive into our informative [Tutorial](https://automail.readthedocs.io/en/latest/tutorial/index.html) section.
 
-- sending empty message:
-```bash
-  python sending_gmail.py your-email@gmail.com ./contact.csv 
-```
-- sending simple message:
-```bash
-  python sending_gmail.py your-email@gmail.com ./contact.csv  --body body.txt 
-```
-- sending html message:
-```bash
-  python sending_gmail.py your-email@gmail.com ./contact.csv  --html html.html 
-```
-- sending one pdf file:
-```bash
-  python sending_gmail.py your-email@gmail.com ./contact.csv  --attachment document.pdf 
-```
-- sending custom pdf file:
-```bash
-  python sending_gmail.py your-email@gmail.com ./contact.csv  --cpdf
-```
+By exploring these resources, you'll harness the full potential of PyAutoMail and make the most out of its powerful email automation capabilities.
 
-### For setting subject you have two options:
-1- write subject in a txt file and use --> --subject_file sub.txt key
+### Contribution and Support
 
-2- use --subject_txt key and write subject string directly
+We welcome contributions from the community to enhance **PyAutoMail** and make it even more robust. If you're interested in contributing, here's how you can get involved:
 
-### add Custom data for contacts
-1- adding columns with arbitrary names like 'data1' or 'name' and filling every row with related data
+1. **Bug Reports and Feature Requests**: If you come across any issues or have ideas for new features, please [open an issue](https://github.com/msinamsina/automail/issues) on our GitHub repository. We appreciate detailed bug reports with steps to reproduce the problem and clear feature requests with use cases.
 
-2- In the template file, you can use the word {column-name}  for the name of each column.
-for example {data1} or {name}
+2. **Pull Requests**: If you want to contribute code to PyAutoMail, you can do so by submitting a pull request. Please ensure that your code adheres to the existing code style, and include relevant tests to maintain code quality.
 
-### You can use -h or --help keys also
+3. **Documentation**: Improving the documentation is always valuable. If you find any inconsistencies or areas that need clarification, feel free to submit documentation updates via pull requests.
+
+4. **Spread the Word**: If you find PyAutoMail useful, help us spread the word by sharing it with your peers and on social media platforms.
