@@ -4,3 +4,7 @@ jinja2
 pandas
 Sphinx==6.2.1
 sphinx-rtd-theme==1.2.2
+typer==0.3.2
+colorama==0.4.4
+shellingham==1.4.0
+pytest==6.2.4
