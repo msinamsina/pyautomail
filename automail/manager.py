@@ -37,7 +37,18 @@ import time
 __all__ = ['registration', 'start', 'stop', 'resume_process', 'list_processes', 'run']
 
 
-session, _ = get_session()
+def init(*args, **kwargs):
+    project_name = input('Enter the name of your project: ')
+    path = input('Enter the path to your project (default is current directory): ')
+    if path == '':
+        path = os.getcwd()
+    else:
+        path = os.path.abspath(path)
+    if not os.path.exists(path):
+        os.mkdir(path)
+    os.chdir(path)
+    session, engin = get_session()
+    create_tables(engin)
 
 
 def registration(username, contacts, name, cpdf, attachment, pdf_dir, **args):
@@ -209,6 +220,10 @@ def list_processes(pid=None, **kwargs):
 def _parser():
     parser_obj = argparse.ArgumentParser(description='Mail Manager', prog="mailmanager")
     sud_parser = parser_obj.add_subparsers(dest='command')
+
+    init_parser = sud_parser.add_parser('init', help='Initialize the database')
+    init_parser.set_defaults(func=init)
+
     register_parser = sud_parser.add_parser('register', help='Register a new user')
     register_parser.add_argument('username', help='Username')
     register_parser.add_argument('contacts', help='Contacts')
@@ -236,11 +251,12 @@ def _parser():
     list_parser = sud_parser.add_parser('list', help='List processes (all or a specific proces  by id')
     list_parser.add_argument('--pid', help='process id', default=None, required=False)
     list_parser.set_defaults(func=list_processes)
+
     return parser_obj
 
 
 def main():
-    parser_ = parser()
+    parser_ = _parser()
     args_ = parser_.parse_args()
     args_.func(**vars(args_))
 

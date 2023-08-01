@@ -10,3 +10,5 @@ contents*
 build/
 _build/
 dist/
+
+.pytest_cache/
