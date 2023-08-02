@@ -69,3 +69,5 @@ class Process(Base):
     """str : the subject of the email"""
     status = Column(ChoiceType(STATUSES), default='created')
     """str : the status of the process it can be choose from STATUSES"""
+    title = Column(String)
+    """str : the title of the process"""

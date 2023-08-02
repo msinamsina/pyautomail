@@ -50,8 +50,11 @@ def init(*args, **kwargs):
     session, engin = get_session()
     create_tables(engin)
 
+    session.close()
+    engin.dispose()
 
-def registration(username, contacts, name, cpdf, attachment, pdf_dir, **args):
+
+def registration(username, contacts, name="", cpdf=False, attachment="", pdf_dir="", **args):
     """This function will register a new process and a new contact list
 
 
@@ -82,6 +85,9 @@ def registration(username, contacts, name, cpdf, attachment, pdf_dir, **args):
     This function will register a new process plus records for each contact in the contacts csv file.
 
     """
+    session, engin = get_session()
+    create_tables(engin)
+
     process = Process(title=name, subject=args['subject'], sender=username,
                       temp_file=args['template'], release_date=datetime.datetime.date(datetime.datetime.now()))
     session.add(process)
@@ -101,6 +107,9 @@ def registration(username, contacts, name, cpdf, attachment, pdf_dir, **args):
         session.commit()
         print(f"ID:{record.id} => Registering record for {row['email']}")
 
+    session.close()
+    engin.dispose()
+
 
 def run(pid, resume=True):
     """
@@ -114,7 +123,11 @@ def run(pid, resume=True):
         if True, the program will resume the process if it is paused, otherwise it prints a warning message and \
         return without doing anything
     """
+    session, engin = get_session()
+    create_tables(engin)
 
+    session.close()
+    engin.dispose()
     logger = init_logger('manager')
     logger.info("Reading arguments...")
     process = session.query(Process).filter(Process.id == pid).first()
@@ -183,6 +196,11 @@ def start(pid, **args):
 
 def stop(pid, **args):
     """This function will stop a process with a specific id"""
+    session, engin = get_session()
+    create_tables(engin)
+
+    session.close()
+    engin.dispose()
     process = session.query(Process).filter(Process.id == pid).first()
     if process.status == "in progress":
         process.status = "paused"
@@ -206,6 +224,11 @@ def list_processes(pid=None, **kwargs):
         the process id if you want to see the information of a specific process or None if you want to see the \
         information of all processes
     """
+    session, engin = get_session()
+    create_tables(engin)
+
+    session.close()
+    engin.dispose()
     if pid is None:
         processes = session.query(Process).all()
     else:
@@ -218,7 +241,7 @@ def list_processes(pid=None, **kwargs):
 
 
 def _parser():
-    parser_obj = argparse.ArgumentParser(description='Mail Manager', prog="mailmanager")
+    parser_obj = argparse.ArgumentParser(description='Automail', prog="automail")
     sud_parser = parser_obj.add_subparsers(dest='command')
 
     init_parser = sud_parser.add_parser('init', help='Initialize the database')
@@ -255,9 +278,9 @@ def _parser():
     return parser_obj
 
 
-def main():
+def main(args=None):
     parser_ = _parser()
-    args_ = parser_.parse_args()
+    args_ = parser_.parse_args(args)
     args_.func(**vars(args_))
 
 
