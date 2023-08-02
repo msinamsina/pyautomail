@@ -15,6 +15,15 @@ automail
 
 
 
+automail.cli
+------------
+
+
+.. automodule:: automail.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 automail.emailsender
 --------------------
 

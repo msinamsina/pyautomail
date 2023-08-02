@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-**PYAUTOMAIL: Automated Email Sending for Large Scale Email and Gmail Automation**
-================================================================================
+**PyAutoMail: Automated Email Sending for Large Scale Email and Gmail Automation**
+===================================================================================
 
 .. figure:: _static/automail-logo.png
    :align: center
