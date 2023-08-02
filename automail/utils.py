@@ -1,5 +1,6 @@
 import logging
 import sys
+import configparser
 
 
 def init_logger(name=''):
@@ -52,3 +53,98 @@ def init_logger(name=''):
     logger_obj.addHandler(handler2)
     return logger_obj
 
+
+def create_config_file(smtp_server, smtp_port, sender_email='', password='', is_test=False):
+    """This function will create a config file for the email sender.
+
+    Parameters
+    ----------
+    smtp_server : str
+        The SMTP server address.
+    smtp_port : int
+        The SMTP server port.
+    sender_email : str
+        The email address of the sender.
+    sender_password : str
+        The password of the sender.
+
+    Notes
+    -----
+    This function will create a config file with the following format::
+
+        [SMTP]
+        server = smtp.gmail.com
+        port = 465
+
+        [SENDER]
+        email = example@gmail.com
+        password = password
+
+    """
+    with open('./config.cfg', 'w') as f:
+        f.write('[smtp]\n')
+        f.write(f'server = {smtp_server}\n')
+        f.write(f'port = {smtp_port}\n')
+        f.write(f'is_test = {is_test}\n')
+        f.write('\n')
+        f.write('[account]\n')
+        f.write(f'user = {sender_email}\n')
+        f.write(f'password = {password}\n')
+
+
+def read_config_file():
+    """This function will read the config file.
+
+    Returns
+    -------
+    config : configparser.ConfigParser
+        The config object.
+
+    Notes
+    -----
+    This function will read the config file with the following format::
+
+        [SMTP]
+        server = smtp.gmail.com
+        port = 465
+
+        [SENDER]
+        email = exxample@gmail.com
+        password = password
+
+    """
+    config = configparser.ConfigParser()
+    config.read('./config.cfg')
+    return config
+
+
+def get_config_dict():
+    """This function will get the email sender config.
+
+    Returns
+    -------
+    config : configparser.ConfigParser
+        The config object.
+
+    Notes
+    -----
+    This function will read the config file with the following format::
+
+        [SMTP]
+        server = smtp.gmail.com
+        port = 465
+
+        [SENDER]
+        email =
+        password =
+
+    """
+    config = read_config_file()
+    config_dict = {
+        'smtp_server': config.get('smtp', 'server', fallback=''),
+        'smtp_port': config.getint('smtp', 'port', fallback=0),
+        'is_test': config.getboolean('smtp', 'is_test', fallback=False),
+        'user': config.get('account', 'user', fallback=''),
+        'password': config.get('account', 'password', fallback='')
+    }
+    return config_dict
