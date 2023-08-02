@@ -85,30 +85,12 @@ def registration(username, contacts, name="", cpdf=False, attachment="", pdf_dir
     This function will register a new process plus records for each contact in the contacts csv file.
 
     """
-    session, engin = get_session()
-    create_tables(engin)
+    from automail.storage import register_new_process
 
-    process = Process(title=name, subject=args['subject'], sender=username,
-                      temp_file=args['template'], release_date=datetime.datetime.date(datetime.datetime.now()))
-    session.add(process)
-    session.commit()
-
-    print(f"ID:{process.id} => Registering user {username} with contacts {contacts}")
-    contact_df = pd.read_csv(contacts)
-    for index, row in contact_df.iterrows():
-        filename = None
-        if attachment:
-            filename = attachment
-
-        if cpdf:
-            filename = os.path.join(pdf_dir, str(row['cpdf']) + '.pdf')
-        record = Record(receiver=row['email'], data=row.to_json(), process_id=process.id, attachment_path=filename)
-        session.add(record)
-        session.commit()
-        print(f"ID:{record.id} => Registering record for {row['email']}")
-
-    session.close()
-    engin.dispose()
+    register_new_process(title=name, email=username, contact_list=contacts, custom_pdf=cpdf, attachment=attachment,
+                         custom_pdf_dir=pdf_dir, subject=args.get('subject', ""), template=args.get('template', ""))
+    print("Process registered successfully!")
+    print("You can start the process with 'automail start <process_id>' command")
 
 
 def run(pid, resume=True):
