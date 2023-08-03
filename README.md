@@ -2,7 +2,7 @@
 
 
 <p align="center" width="100%">
-    <img  width="80%" src="https://github.com/msinamsina/automail/blob/main/docs/_static/automail-logo.png" >
+    <img  width="80%" src="https://github.com/msinamsina/automail/blob/main/docs/_static/automail-logo.png?raw=true" >
 </p>
 
 
