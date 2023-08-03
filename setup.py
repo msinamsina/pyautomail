@@ -2,13 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyautomail',
-    version='1.5.0',
+    version='1.5.1.3',
     packages=find_packages(),
-    url='https://github.com/msinamsina/automail',
+    url='https://github.com/msinamsina/pyautomail',
     license='MIT',
     author='Mohammad sina Allahkaram',
     author_email="msinamsina@gmail.com",
-    description='A Python pkg and command-line interface for Sending email to your contact list',
+    description='Automated Email Sending for Large Scale Email and Gmail Automation',
     install_requires=[
         'sqlalchemy',
         'sqlalchemy_utils',
