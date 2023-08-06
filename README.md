@@ -90,7 +90,7 @@ pip install git+https://github.com/msinamsina/pyautomail.git
     email_sender.send('msinamsina@gmail.com', 'sub1', data)
 ```
 
-### Documentation and Resources
+## Documentation and Resources
 
 For more comprehensive information about **PyAutoMail** and its capabilities, please explore our detailed [documentation](https://pyautomail.readthedocs.io/en/latest/).
 
@@ -101,7 +101,9 @@ For more comprehensive information about **PyAutoMail** and its capabilities, pl
 
 By exploring these resources, you'll harness the full potential of PyAutoMail and make the most out of its powerful email automation capabilities.
 
-### Contribution and Support
+---
+
+## Contribution and Support
 
 We welcome contributions from the community to enhance **PyAutoMail** and make it even more robust. If you're interested in contributing, here's how you can get involved:
 
