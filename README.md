@@ -1,9 +1,7 @@
 # PyAutoMail: A Python package and command-line interface for automation sending email to your contact list
 
 
-<p style="text-align: center">
-    <img  width="80%" src="https://github.com/msinamsina/automail/blob/main/docs/_static/automail-logo.png?raw=true" >
-</p>
+![pyautomail-image](./docs/_static/automail-logo.png)
 
 
 Pyautomail, an incredibly powerful Python package meticulously crafted for the purpose of automated email delivery, catering especially to large-scale Email or Gmail automation. In today's fast-paced digital era, effective communication stands as a crucial cornerstone for numerous businesses and projects that heavily rely on email as their primary medium of interaction. Nonetheless, the manual handling of individual emails or the management of bulk email campaigns can prove to be both time-consuming and prone to errors.
