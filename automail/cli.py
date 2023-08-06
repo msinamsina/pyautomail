@@ -330,6 +330,7 @@ def resume(
         None,
         help="The id of the process.",
     ),
+
 ) -> None:
     """Resume sending emails."""
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
