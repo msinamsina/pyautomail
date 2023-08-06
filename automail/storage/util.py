@@ -92,7 +92,7 @@ def register_new_process(title, subject, email, template, contact_list, custom_p
     session.add(process)
     session.commit()
 
-    print(f"ID:{process.id} => Registering user {email} with contacts {contact_list}")
+    print(f"ID: {process.id} => Registering Process {email} with contacts {contact_list}")
     contact_df = pd.read_csv(contact_list)
     for index, row in contact_df.iterrows():
         filename = None
