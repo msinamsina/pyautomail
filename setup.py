@@ -13,7 +13,10 @@ setup(
         'sqlalchemy',
         'sqlalchemy_utils',
         'jinja2',
-        'pandas'
+        'pandas',
+        'coloredlogs',
+        'pytest',
+        'typer'
     ],
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
