@@ -1,7 +1,7 @@
 import logging
 import sys
 import configparser
-
+import multiprocessing
 
 def init_logger(name=''):
     """This function will initialize a logger object
@@ -43,14 +43,15 @@ def init_logger(name=''):
 
     """
     logger_obj = logging.getLogger(name)
+    # logger_obj = multiprocessing.get_logger(name)
     logger_obj.setLevel(logging.DEBUG)
     formatter = logging.Formatter('[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
     handler1 = logging.StreamHandler(sys.stdout)
     handler1.setFormatter(formatter)
-    handler2 = logging.FileHandler('../emailsender.log')
-    handler2.setFormatter(formatter)
+    # handler2 = logging.FileHandler('../emailsender.log')
+    # handler2.setFormatter(formatter)
     logger_obj.addHandler(handler1)
-    logger_obj.addHandler(handler2)
+    # logger_obj.addHandler(handler2)
     return logger_obj
 
 
@@ -83,7 +84,7 @@ def create_config_file(smtp_server, smtp_port, sender_email='', password='', is_
     """
     with open('./config.cfg', 'w') as f:
         f.write('[smtp]\n')
-        f.write(f'server = {smtp_server}\n')
+        f.write(f'host = {smtp_server}\n')
         f.write(f'port = {smtp_port}\n')
         f.write(f'is_test = {is_test}\n')
         f.write('\n')

@@ -30,9 +30,9 @@ class Record(Base):
     status = Column(ChoiceType(STATUSES), default='unsent')
     """str : the status of the record it can be choose from STATUSES"""
 
-    process_id = Column(Integer, ForeignKey("process.id"), nullable=False)
+    process_id = Column(Integer, ForeignKey("process.id", ondelete="CASCADE"), nullable=False)
     """int : the id of the process which this record belongs to"""
-    process = relationship("Process", backref=backref("records", order_by=id))
+    process = relationship("Process", backref=backref("records", order_by=id, cascade="all, delete"))
     """automail.storage.database.Process : the process of the record"""
 
 
