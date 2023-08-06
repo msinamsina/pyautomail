@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 import os
 import datetime
 import pandas as pd
+from automail.utils import init_logger
 
 Base = declarative_base()
 

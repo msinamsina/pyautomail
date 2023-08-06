@@ -2,9 +2,25 @@ from typer.testing import CliRunner
 import shutil
 import os
 from automail import cli
+import pytest
+import tempfile
 
 
 runner = CliRunner()
+
+
+@pytest.fixture(scope='module', autouse=True)
+def setup():
+
+    print("setup module fixture is called ... sinasina")
+    test_dir = tempfile.mkdtemp()
+    print('-'*50)
+    print(test_dir)
+    os.chdir(test_dir)
+    print(os.getcwd())
+    yield
+    os.chdir('..')
+    shutil.rmtree(test_dir)
 
 
 def usual_output(result):
@@ -32,7 +48,7 @@ def test_init_2():
     assert os.path.exists("test/mail.db") is True
     with open("test/config.cfg") as f:
         config = f.read()
-    assert "[smtp]\nserver = smtp.gmail.com\nport = 465\nis_test = False\n\n[account]\nuser = \npassword = \n" == config
+    assert "[smtp]\nhost = smtp.gmail.com\nport = 465\nis_test = False\n\n[account]\nuser = \npassword = \n" == config
 
 
 def test_init_3():
@@ -86,7 +102,7 @@ def test_init_7():
     assert "What is your smtp port? [465]: " in result.stdout
     with open("test/config.cfg") as f:
         config = f.read()
-    assert "[smtp]\nserver = smtp.server.com\nport = 465\nis_test = False\n\n[account]\nuser = \npassword = \n" == config
+    assert "[smtp]\nhost = smtp.server.com\nport = 465\nis_test = False\n\n[account]\nuser = \npassword = \n" == config
 
 
 def test_init_8():
@@ -94,7 +110,7 @@ def test_init_8():
     _helper_init(result)
     with open("test/config.cfg") as f:
         config = f.read()
-    assert "[smtp]\nserver = smtp.gmail.com\nport = 111\nis_test = False\n\n[account]\nuser = \npassword = \n" == config
+    assert "[smtp]\nhost = smtp.gmail.com\nport = 111\nis_test = False\n\n[account]\nuser = \npassword = \n" == config
 
 
 def test_init_9():
@@ -102,4 +118,4 @@ def test_init_9():
     _helper_init(result)
     with open("test/config.cfg") as f:
         config = f.read()
-    assert "[smtp]\nserver = smtp.gmail.com\nport = 111\nis_test = True\n\n[account]\nuser = \npassword = \n" == config
+    assert "[smtp]\nhost = smtp.gmail.com\nport = 111\nis_test = True\n\n[account]\nuser = \npassword = \n" == config

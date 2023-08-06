@@ -3,6 +3,7 @@ import os
 import sys
 import jinja2
 import logging
+import json
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
@@ -178,12 +179,15 @@ class EmailSender:
         :param data: dictionary of data to be replaced in the template.
         :return: body: the string of the rendered template.
         """
+        if isinstance(data, str):
+            data = json.loads(data)
         if self.template_type == 'html':
             self.__logger.debug("Rendering HTML template...")
             return jinja2.Template(self.template).render(data)
         elif self.template_type == 'txt':
             self.__logger.debug("Rendering TXT template...")
-            return self.template.format(**data)
+            # return self.template.format(**data)
+            return jinja2.Template(self.template).render(data)
         else:
             self.__logger.error("Template type not supported! Exiting! (please use HTML or TXT templates.)")
             raise (NotImplemented, "Template type not supported! Exiting! (please use HTML or TXT templates.)")
