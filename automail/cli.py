@@ -503,5 +503,6 @@ def list_records(
     session.close()
     engin.dispose()
 
+
 if __name__ == "__main__":
     app(prog_name=__app_name__)
