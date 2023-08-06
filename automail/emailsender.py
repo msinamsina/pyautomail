@@ -91,11 +91,12 @@ class EmailSender:
         self.port = port
         self.password = None
 
+        print(password)
+        print("-" * 100)
         if not self.__test_flg:
             self.__logger.info("Connecting to SMTP server...")
 
             self.password = password
-
             self.server = smtplib.SMTP_SSL(self.host, self.port)
             self.__logger.info("Connected to SMTP server.")
             self.__logger.info(f"Logging in to user account: {self.user}...")
