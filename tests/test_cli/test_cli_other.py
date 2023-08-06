@@ -7,6 +7,7 @@ from automail.storage import get_session, Process, Record
 import pytest
 import tempfile
 import time
+import re
 
 runner = CliRunner()
 
@@ -58,4 +59,74 @@ def test_start_2():
     assert "Sending email to: jane@gmail.com" in result.output
     assert "<h1>Hello Jane Doe!</h1>" in result.output
     assert "Program finished successfully" in result.output
+
+
+def test_list():
+    """Test if the process is listed"""
+    result = runner.invoke(cli.app, ["list"])
+    assert result.exit_code == 0
+    assert re.search(r"ID: * | Title: * | Status: .*", result.output) is not None
+
+
+def test_stop_1():
+    """Test if the process is stopped"""
+    result = runner.invoke(cli.app, ["stop"])
+    assert result.exit_code == 0
+    assert "Please enter the id of the process." in result.output
+
+
+def test_stop_2():
+    """Test if the process is stopped"""
+    result = runner.invoke(cli.app, ["stop", "134"], input="y\n")
+    assert result.exit_code == 0
+    assert "Process with id 134 does not exist." in result.output
+
+
+def test_stop_3():
+    """Test if the process is stopped"""
+    result = runner.invoke(cli.app, ["stop", "1"], input="y\n")
+    assert result.exit_code == 0
+    assert "Program is not in progress." in result.output
+
+
+def test_stop_4():
+    """Test if the process is stopped"""
+    result = runner.invoke(cli.app, ["register", "../contact.csv", "-t", '../template.html', "--title", "sasa"])
+    id = re.findall(r"ID: \d+ => Registering Process", result.output)[0].split(" ")[1]
+    session, engine = get_session()
+    process = session.query(Process).filter_by(id=id).first()
+    process.status = "in progress"
+    session.commit()
+    result = runner.invoke(cli.app, ["stop", f"{process.id}"], input="y\n")
+    assert result.exit_code == 0
+    assert "Stopping..." in result.output
+    assert f"ID: {process.id} => Pausing the program." in result.output
+
+
+def test_delete_record():
+    """Test if the record is deleted"""
+    session, engine = get_session()
+    record = session.query(Record).first()
+
+    result = runner.invoke(cli.app, ["delete-record", f"{record.id}"], input="y\n")
+    assert result.exit_code == 0
+    assert "Record with id 1 has been deleted." in result.output
+
+    record = session.query(Record).filter_by(id=record.id).first()
+    assert record is None
+
+
+def test_delete_process():
+    """Test if the process is deleted"""
+    session, engine = get_session()
+    process = session.query(Process).first()
+
+    result = runner.invoke(cli.app, ["delete-process", f"{process.id}"], input="y\n")
+    assert result.exit_code == 0
+    assert "Process with id 1 has been deleted." in result.output
+
+    process = session.query(Process).filter_by(id=process.id).first()
+    assert process is None
+
+
 

@@ -4,6 +4,7 @@ import shutil
 import os
 from automail import cli
 from automail.storage import get_session, Process, Record
+from automail.utils import get_config_dict
 import pytest
 import tempfile
 
@@ -16,7 +17,7 @@ def setup():
     test_dir = tempfile.mkdtemp()
     os.chdir(test_dir)
     # initialize the automail project
-    runner.invoke(cli.app, ["init", "-db", "test-reg", "-ss", "smtp.gmail.com", "-sp", "111", "-t"], input="y\n")
+    runner.invoke(cli.app, ["init", "-db", "test-reg", "-ss", "smtp.gmail.com", "-sp", "111", "-t", '-e', 'example@gmail.com'], input="y\n")
 
     # create a contact list
     with open("contact.csv", "w") as f:
@@ -30,14 +31,12 @@ def setup():
     # go to the project directory
     os.chdir("test-reg")
 
+    assert get_config_dict()["user"] == "example@gmail.com"
+
     yield
     # remove the directory after the test
     os.chdir("../..")
-    shutil.rmtree(test_dir)
-
-
-def _usual_output():
-    pass
+    shutil.rmtree(test_dir, ignore_errors=True)
 
 
 def test_register_1():
@@ -65,7 +64,9 @@ def test_register_3():
 
     result = runner.invoke(cli.app, ["register", "../contact.csv"])
     assert result.exit_code == 0
-    assert " => Registering user  with contacts Contact List\\contact.csv" in result.output
+    print(result.output)
+
+    assert " => Registering Process example@gmail.com with contacts Contact List\\contact.csv" in result.output
     assert " => Registering record for john@gmail.com" in result.output
     assert " => Registering record for jane@gmail.com" in result.output
     assert os.path.exists("Contact List/contact.csv")

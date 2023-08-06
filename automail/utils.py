@@ -67,8 +67,10 @@ def create_config_file(smtp_server, smtp_port, sender_email='', password='', is_
         The SMTP server port.
     sender_email : str
         The email address of the sender.
-    sender_password : str
+    password : str
         The password of the sender.
+    is_test : bool
+        If True, the email will not be sent.
 
     Notes
     -----

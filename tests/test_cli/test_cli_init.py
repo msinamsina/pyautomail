@@ -56,7 +56,7 @@ def test_init_3():
     result = runner.invoke(cli.app, ["init"], input="test")
     usual_output(result)
     assert "Directory test already exists." in result.stdout
-    assert "Do you want to delete it? [y/N]: " in result.stdout
+    assert "Do you want to delete test directory? [y/N]: " in result.stdout
     assert "Initializing automail database..." not in result.stdout
     assert "Aborted!" in result.stdout
 
@@ -64,8 +64,8 @@ def test_init_3():
 def _helper_init(result):
     assert result.exit_code == 0
     assert "Directory test already exists." in result.stdout
-    assert "Do you want to delete it? [y/N]: " in result.stdout
-    assert "Deleting..." in result.stdout
+    assert "Do you want to delete test directory? [y/N]: " in result.stdout
+    assert "Deleting test directory" in result.stdout
     assert "Initializing automail database..." in result.stdout
     assert "Done!" in result.stdout
 

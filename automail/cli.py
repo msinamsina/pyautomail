@@ -5,15 +5,15 @@ import typer
 from typing import Optional
 from pathlib import Path
 from automail import __app_name__, __version__, EmailSender
-from automail.utils import get_config_dict, read_config_file, init_logger
+from automail import utils
+from automail.utils import get_config_dict, init_logger
 from automail.storage import get_session, create_tables
-from automail.storage.model import Record, Process
-
+from automail.storage import util, Process, Record
 
 app = typer.Typer()
 
 
-def run_process(pid, is_resume=True, wait_time=5):
+def run_process(pid, is_resume=True, wait_time=.05):
     """
     This function will run a process with a specific id
 
@@ -24,6 +24,8 @@ def run_process(pid, is_resume=True, wait_time=5):
     is_resume : bool
         if True, the program will resume the process if it is paused, otherwise it prints a warning message and \
         return without doing anything
+    wait_time : int
+        the time to wait between sending emails
     """
     # initialize the logger
     logger = init_logger('cli')
@@ -97,6 +99,7 @@ def run_process(pid, is_resume=True, wait_time=5):
 
 
 def _version_callback(value: bool) -> None:
+    """Show the application's version and exit."""
     if value:
         typer.echo(f"{__app_name__} v{__version__}")
         raise typer.Exit()
@@ -104,92 +107,92 @@ def _version_callback(value: bool) -> None:
 
 @app.callback()
 def main(
-    version: Optional[bool] = typer.Option(
-        None,
-        "--version",
-        "-v",
-        help="Show the application's version and exit.",
-        callback=_version_callback,
-        is_eager=True,
-    )
-
+        version: Optional[bool] = typer.Option(
+            None,
+            "--version",
+            "-v",
+            help="Show the application's version and exit.",
+            callback=_version_callback,
+            is_eager=True,
+        )
 ) -> None:
     return
 
 
 @app.command()
 def init(
-    db_path: str = typer.Option(
-        './automail-workspace',
-        "--db-path",
-        "-db",
-        prompt="Where do you want to initialize the automail project?",
-    ),
-    smtp_server: str = typer.Option(
-        'smtp.gmail.com',
-        "--smtp-server",
-        "-ss",
-        prompt="What is your smtp server?",
-        help="Your smtp server.",
-    ),
-    smtp_port: int = typer.Option(
-        465,
-        "--smtp-port",
-        "-sp",
-        prompt="What is your smtp port?",
-        help="Your smtp port.",
-    ),
-    email: str = typer.Option(
-        '',
-        "--email",
-        "-e",
-        help="Your email address.",
-    ),
-    password: str = typer.Option(
-        '',
-        "--password",
-        "-p",
-        help="Your email password.",
-        hide_input=True,
-    ),
-    is_test: bool = typer.Option(
-        False,
-        "--test",
-        "-t",
-        help="Test output.",
-    ),
+        db_path: str = typer.Option(
+            './automail-workspace',
+            "--db-path",
+            "-db",
+            prompt="Where do you want to initialize the automail project?",
+        ),
+        smtp_server: str = typer.Option(
+            'smtp.gmail.com',
+            "--smtp-server",
+            "-ss",
+            prompt="What is your smtp server?",
+            help="Your smtp server.",
+        ),
+        smtp_port: int = typer.Option(
+            465,
+            "--smtp-port",
+            "-sp",
+            prompt="What is your smtp port?",
+            help="Your smtp port.",
+        ),
+        email: str = typer.Option(
+            '',
+            "--email",
+            "-e",
+            help="Your email address.",
+        ),
+        password: str = typer.Option(
+            '',
+            "--password",
+            "-p",
+            help="Your email password.",
+            hide_input=True,
+        ),
+        is_test: bool = typer.Option(
+            False,
+            "--test",
+            "-t",
+            help="Test output.",
+        ),
 ) -> None:
     """Initialize the mail database."""
-    from automail import utils
-    from automail import __app_name__
-
+    logger = init_logger('cli')
     if not shutil.os.path.exists(db_path):
         shutil.os.mkdir(db_path)
     else:
-        typer.secho(f"Directory {db_path} already exists.", fg=typer.colors.RED)
+        logger.error(f"Directory {db_path} already exists.")
         # delete the folder if it exists
-        if typer.confirm("Do you want to delete it?", default=False):
+        if typer.confirm(f"Do you want to delete {db_path} directory?", default=False):
             shutil.rmtree(db_path)
-            print("Deleting...")
+            logger.info(f"Deleting {db_path} directory...")
             time.sleep(0.5)
             shutil.os.mkdir(db_path)
-
         else:
-            typer.echo("Aborted!")
+            logger.info(f"Aborted!")
             raise typer.Exit(code=0)
 
-    typer.echo(f"Initializing {__app_name__} database...")
+    # create the database
+    logger.info(f"Initializing {__app_name__} database...")
     os.chdir(db_path)
     session, engin = get_session()
     create_tables(engin)
-    typer.echo("Done!")
+    logger.info(f"Creating tables...")
+    logger.info(f"Done!")
+
     # create the config file
-    typer.echo("Creating config file...")
+    logger.info(f"Creating config file...")
     utils.create_config_file(
         smtp_server=smtp_server, smtp_port=smtp_port, password=password, sender_email=email, is_test=is_test
     )
-    os.chdir("../")
+    logger.info(f"Done!")
 
+    os.chdir("../")
     session.close()
     engin.dispose()
     return
@@ -197,63 +200,61 @@ def init(
 
 @app.command()
 def register(
-    email: str = typer.Option(
-        get_config_dict().get("user", None),
-        "--email",
-        "-e",
-        prompt="What is your email address?",
-        help="Your email address.",
-    ),
-    contact_list: Path = typer.Argument(
+        email: str = typer.Option(
+            "default",
+            "--email",
+            "-e",
+            prompt="What is your email address?",
+            help="Your email address.",
+        ),
+        contact_list: Path = typer.Argument(
             ...,
             exists=True,
             help="The path to your contact list.",
         ),
-    title: str = typer.Option(
-        "Contact List",
-        "--title",
-        "-T",
-        prompt="What is the title of your contact list?",
-        help="The title of your contact list.",
-    ),
-    custom_pdf: bool = typer.Option(
-        False,
-        "--custom-pdf",
-        "-CA",
-        help="Convert your contact list to pdf.",
-    ),
-    attachment: Path = typer.Option(
-        None,
-        "--attachment",
-        "-a",
-        help="The path to the attachment file.",
-    ),
-    custom_pdf_dir: Path = typer.Option(
-        None,
-        "--custom-pdf-dir",
-        "-cpd",
-        help="The path to the custom pdf directory.",
-    ),
-    subject: str = typer.Option(
-        'None',
-        "--subject",
-        "-s",
-        prompt="What is the subject of your email?",
-        help="The subject of your email.",
-    ),
-    template: Optional[Path] = typer.Option(
-        None,
-        "--template",
-        "-t",
-        help="The body of your email.",
-    ),
+        title: str = typer.Option(
+            "Contact List",
+            "--title",
+            "-T",
+            prompt="What is the title of your contact list?",
+            help="The title of your contact list.",
+        ),
+        custom_pdf: bool = typer.Option(
+            False,
+            "--custom-pdf",
+            "-CA",
+            help="Convert your contact list to pdf.",
+        ),
+        attachment: Path = typer.Option(
+            None,
+            "--attachment",
+            "-a",
+            help="The path to the attachment file.",
+        ),
+        custom_pdf_dir: Path = typer.Option(
+            None,
+            "--custom-pdf-dir",
+            "-cpd",
+            help="The path to the custom pdf directory.",
+        ),
+        subject: str = typer.Option(
+            'None',
+            "--subject",
+            "-s",
+            prompt="What is the subject of your email?",
+            help="The subject of your email.",
+        ),
+        template: Optional[Path] = typer.Option(
+            None,
+            "--template",
+            "-t",
+            help="The body of your email.",
+        ),
 
 ) -> None:
     """Register your email account."""
+    logger = init_logger('cli')
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
-        from automail.storage import util
-        from automail import utils
-
         if template is None:
             tmp = typer.confirm("Do you want to use template?", default=False)
             if tmp:
@@ -269,7 +270,7 @@ def register(
         if not os.path.exists(title):
             shutil.os.mkdir(title)
         else:
-            typer.secho(f"Directory {title} already exists. Please choose another title.", fg=typer.colors.RED)
+            logger.error(f"Directory {title} already exists. Please choose another title.")
             raise typer.Exit(code=0)
 
         shutil.copy(contact_list, title)
@@ -282,195 +283,203 @@ def register(
             shutil.copy(template, title)
             template = os.path.join(title, os.path.basename(template))
 
-        typer.echo("Registering your email account...")
+        logger.info(f"Registering your email account...")
+        if email == "default":
+            email = get_config_dict()["user"]
         util.register_new_process(
             email=email,
             contact_list=contact_list,
             title=title,
             custom_pdf=custom_pdf,
             attachment=attachment,
-            custom_pdf_dir=custom_pdf_dir,
+            custom_pdf_dir=str(custom_pdf_dir),
             subject=subject,
             template=template,
         )
 
     else:
-        typer.secho("Please initialize the automail project first.", fg=typer.colors.RED)
+        logger.error("Please initialize the automail project first.")
         raise typer.Exit(code=0)
 
 
 @app.command()
 def start(
-    id: Optional[int] = typer.Argument(
-        None,
-        help="The id of the process.",
-    ),
-    is_test: bool = typer.Option(
-        False,
-        "--test",
-        "-t",
-        help="Test output.",
-    ),
+        pid: Optional[int] = typer.Argument(
+            None,
+            help="The id of the process.",
+        ),
 ) -> None:
     """Start sending emails."""
+    logger = init_logger('cli')
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
-        from automail.storage import util, Process, Record
-
-        print("Starting...")
-    if id is None:
-        typer.secho("Please enter the id of the process.", fg=typer.colors.RED)
-        raise typer.Exit(code=0)
+        logger.info("Starting...")
+        if pid is None:
+            logger.error("Please enter the id of the process.")
+            raise typer.Exit(code=0)
+        else:
+            run_process(pid=pid, is_resume=False)
     else:
-        run_process(pid=id, is_resume=False)
+        logger.error("Please initialize the automail project first.")
+        raise typer.Exit(code=0)
 
 
 @app.command()
 def resume(
-    id: Optional[int] = typer.Argument(
-        None,
-        help="The id of the process.",
-    ),
+        pid: Optional[int] = typer.Argument(
+            None,
+            help="The id of the process.",
+        ),
 
 ) -> None:
     """Resume sending emails."""
+    logger = init_logger('cli')
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
-        from automail.storage import util, Process, Record
-
-        print("Resuming...")
-    if id is None:
-        typer.secho("Please enter the id of the process.", fg=typer.colors.RED)
-        raise typer.Exit(code=0)
+        logger.info("Resuming...")
+        if pid is None:
+            typer.secho("Please enter the id of the process.", fg=typer.colors.RED)
+            raise typer.Exit(code=0)
+        else:
+            run_process(pid=pid, is_resume=True)
     else:
-        run_process(pid=id, is_resume=True)
+        logger.error("Please initialize the automail project first.")
+        raise typer.Exit(code=0)
 
 
 @app.command()
 def stop(
-    pid: Optional[int] = typer.Argument(
-        None,
-        help="The id of the process.",
-    ),
+        pid: Optional[int] = typer.Argument(
+            None,
+            help="The id of the process.",
+        ),
 ) -> None:
-    """Stop sending emails."""
+    """Stop a process."""
+    logger = init_logger('cli')
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
-        from automail.storage import util, Process, Record
-
-        print("Stopping...")
-    if id is None:
-        """This function will stop a process with a specific id"""
-        session, engin = get_session()
-        create_tables(engin)
-
-        session.close()
-        engin.dispose()
-        process = session.query(Process).filter(Process.id == pid).first()
-        if process.status == "in progress":
-            process.status = "paused"
-            session.commit()
-            print(f"ID: {pid} => Pausing the program")
+        logger.info("Stopping...")
+        if pid is None:
+            logger.error("Please enter the id of the process.")
+            raise typer.Exit(code=0)
         else:
-            print(f"ID: {pid} => Program is not running")
+            session, engin = get_session()
+            process = session.query(Process).filter(Process.id == pid).first()
+            if process is None:
+                logger.error(f"Process with id {pid} does not exist.")
+                session.close()
+                engin.dispose()
+                raise typer.Exit(code=0)
+            if process.status == "in progress":
+                process.status = "paused"
+                session.commit()
+                logger.info(f"ID: {pid} => Pausing the program.")
+            else:
+                logger.warning(f"ID: {pid} => Program is not in progress.")
+            session.close()
+            engin.dispose()
+    else:
+        logger.error("Please initialize the automail project first.")
+        raise typer.Exit(code=0)
 
 
 @app.command()
 def delete_process(
-    id: Optional[int] = typer.Argument(
-        None,
-        help="The id of the process.",
-    ),
-    dry_run: bool = typer.Option(
-        False,
-        "--dry-run",
-        "-d",
-        help="Test output.",
-    ),
+        pid: Optional[int] = typer.Argument(
+            None,
+            help="The id of the process.",
+        ),
+        dry_run: bool = typer.Option(
+            False,
+            "--dry-run",
+            "-d",
+            help="Test output.",
+        ),
 ) -> None:
     """Delete a process."""
+    logger = init_logger('cli')
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
         from automail.storage import util, Process, Record
-
-        print("Deleting...")
-    if id is None:
-        typer.secho("Please enter the id of the process.", fg=typer.colors.RED)
-        raise typer.Exit(code=0)
-    else:
-        session, engin = get_session()
-
-        process = session.query(Process).filter(Process.id == id).first()
-        if process is None:
-            typer.secho(f"Process with id {id} does not exist.", fg=typer.colors.RED)
+        logger.info("Deleting...")
+        if pid is None:
+            typer.secho("Please enter the id of the process.", fg=typer.colors.RED)
             raise typer.Exit(code=0)
         else:
-            if dry_run:
-                typer.echo(f"Process with id {id} will be deleted.")
+            session, engin = get_session()
+
+            process = session.query(Process).filter(Process.id == pid).first()
+            if process is None:
+                logger.error(f"Process with id {pid} does not exist.")
+                raise typer.Exit(code=0)
             else:
-                session.delete(process)
-                session.commit()
-                typer.echo(f"Process with id {id} has been deleted.")
-                shutil.rmtree(process.title)
-        session.close()
-        engin.dispose()
+                if dry_run:
+                    logger.info(f"Process with id {pid} will be deleted.")
+                else:
+                    session.delete(process)
+                    session.commit()
+                    logger.info(f"Process with id {pid} has been deleted.")
+                    shutil.rmtree(process.title)
+            session.close()
+            engin.dispose()
+    else:
+        logger.error("Please initialize the automail project first.")
+        raise typer.Exit(code=0)
 
 
 @app.command()
 def delete_record(
-    id: Optional[int] = typer.Argument(
-        None,
-        help="The id of the record.",
-    ),
-    dry_run: bool = typer.Option(
-        False,
-        "--dry-run",
-        "-d",
-        help="Test output.",
-    ),
+        rid: Optional[int] = typer.Argument(
+            None,
+            help="The id of the record.",
+        ),
+        dry_run: bool = typer.Option(
+            False,
+            "--dry-run",
+            "-d",
+            help="Test output.",
+        ),
 ) -> None:
-    """Delete a record."""
+    """Delete a record by ID."""
+    logger = init_logger('cli')
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
-        from automail.storage import util, Process, Record
-
-        print("Deleting...")
-    if id is None:
-        typer.secho("Please enter the id of the record.", fg=typer.colors.RED)
-        raise typer.Exit(code=0)
-    else:
-        session, engin = get_session()
-
-        record = session.query(Record).filter(Record.id == id).first()
-        if record is None:
-            typer.secho(f"Record with id {id} does not exist.", fg=typer.colors.RED)
+        logger.info("Deleting...")
+        if rid is None:
+            logger.error("Please enter the id of the record.")
             raise typer.Exit(code=0)
         else:
-            if dry_run:
-                typer.echo(f"Record with id {id} will be deleted.")
+            session, engin = get_session()
+            record = session.query(Record).filter(Record.id == rid).first()
+            if record is None:
+                logger.error(f"Record with id {rid} does not exist.")
+                raise typer.Exit(code=0)
             else:
-                session.delete(record)
-                session.commit()
-                typer.echo(f"Record with id {id} has been deleted.")
+                if dry_run:
+                    logger.info(f"Record with id {rid} will be deleted.")
+                else:
+                    session.delete(record)
+                    session.commit()
+                    logger.info(f"Record with id {rid} has been deleted.")
+            session.close()
+            engin.dispose()
+    else:
+        logger.error("Please initialize the automail project first.")
+        raise typer.Exit(code=0)
+
+
+@app.command("list")
+def list_processes() -> None:
+    """List all processes."""
+    logger = init_logger('cli')
+    if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
+        logger.info("Listing...")
+        session, engin = get_session()
+        create_tables(engin)
+
+        processes = session.query(Process).all()
+        if len(processes) == 0:
+            logger.warning("There is no process.")
+        else:
+            for process in processes:
+                logger.info(f"ID: {process.id} | Title: {process.title} | Status: {process.status}")
         session.close()
         engin.dispose()
-
-
-@app.command()
-def list() -> None:
-    """List all processes."""
-    if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
-        from automail.storage import util, Process, Record
-
-        print("Listing...")
-    session, engin = get_session()
-    create_tables(engin)
-
-    processes = session.query(Process).all()
-    if len(processes) == 0:
-        typer.echo("There is no process.")
-    else:
-        for process in processes:
-            typer.echo(
-                f"ID: {process.id} | Title: {process.title} | Status: {process.status}"
-            )
-    session.close()
-    engin.dispose()
 
 
 @app.command()
@@ -479,29 +488,31 @@ def list_records(
             None,
             help="The id of the process.",
         )) -> None:
-    """List all records."""
+    """List all records of one process."""
+    logger = init_logger('cli')
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
-        from automail.storage import util, Process, Record
+        logger.info("Listing...")
+        session, engin = get_session()
+        create_tables(engin)
 
-        print("Listing...")
-    session, engin = get_session()
-    create_tables(engin)
-
-    if process_id is None:
-        records = session.query(Record).all()
-    else:
-        records = (
-            session.query(Record).filter(Record.process_id == process_id).all()
-        )
-    if len(records) == 0:
-        typer.echo("There is no record.")
-    else:
-        for record in records:
-            typer.echo(
-                f"ID: {record.id} | Process ID: {record.process_id} | Email: {record.receiver} | Status: {record.status}"
+        if process_id is None:
+            records = session.query(Record).all()
+        else:
+            records = (
+                session.query(Record).filter(Record.process_id == process_id).all()
             )
-    session.close()
-    engin.dispose()
+        if len(records) == 0:
+            logger.warning("There is no record.")
+        else:
+            for record in records:
+                logger.info(f"ID: {record.id} | Process ID: {record.process_id} | Email: {record.receiver} |"
+                            f" Status: {record.status}"
+                            )
+        session.close()
+        engin.dispose()
+    else:
+        logger.error("Please initialize the automail project first.")
+        raise typer.Exit(code=0)
 
 
 if __name__ == "__main__":
