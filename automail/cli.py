@@ -346,7 +346,7 @@ def resume(
 
 @app.command()
 def stop(
-    id: Optional[int] = typer.Argument(
+    pid: Optional[int] = typer.Argument(
         None,
         help="The id of the process.",
     ),
