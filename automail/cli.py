@@ -13,7 +13,7 @@ from automail.storage.model import Record, Process
 app = typer.Typer()
 
 
-def run_process(pid, resume=True):
+def run_process(pid, is_resume=True, wait_time=5):
     """
     This function will run a process with a specific id
 
@@ -21,49 +21,55 @@ def run_process(pid, resume=True):
     ----------
     pid : int
         the process id
-    resume : bool
+    is_resume : bool
         if True, the program will resume the process if it is paused, otherwise it prints a warning message and \
         return without doing anything
     """
+    # initialize the logger
+    logger = init_logger('cli')
+    logger.info("Reading arguments...")
 
+    # get the database session
     session, engin = get_session()
     create_tables(engin)
 
-    logger = init_logger('manager')
-    logger.info("Reading arguments...")
+    # get the process and check if it exists
     process = session.query(Process).filter(Process.id == pid).first()
     if not process:
-        logger.error(f"ID:{pid} => Process not found. You can see all processes with 'mailmanager list' command")
+        logger.error(f"ID:{pid} => Process not found. You can see all processes with 'automail list' command")
         return
+
     sender_email = process.sender
     subject = process.subject
     temp_file = process.temp_file
-    if resume:
+
+    if is_resume:
         if process.status != "paused":
-            print(f"ID:{pid} => Program is already {process.status}")
+            logger.error(f"ID:{pid} => Program is already {process.status}. "
+                         f"For resuming the program, it should be paused")
             return
         contacts = session.query(Record).filter(Record.process_id == pid, Record.status == "unsent").all()
     else:
         if process.status in ["paused", "in progress", 'finished']:
             logger.warning(f"ID:{pid} => Program is already {process.status}")
-            print(f"ID:{pid} => Program is already {process.status}")
-            print(f"You can resume the program with 'mailmanager resume {pid}' command")
-            print(f"You can see all processes with 'mailmanager list' command")
-            while True:
-                check = input(f"Are you sure you want to sent all email again? (y/n)")
-                if check == "n":
-                    return
-                elif check == "y":
-                    break
-                else:
-                    print("Please enter y or n!")
+            logger.warning(f"the `automail start {id}` command will strart the program from the beginning")
+
+            check = typer.confirm(f"Are you sure you want to start the program from the beginning?", default=False)
+            if not check:
+                logger.info(f"ID:{pid} => Program not started")
+                return
+
         contacts = session.query(Record).filter(Record.process_id == pid).all()
 
-    password = typer.prompt(f"Enter password for {sender_email}", hide_input=True)
+    # get the password
+    logger.info("Creating EmailSender obj...")
+    if typer.confirm(f"Do you want to use the initial password for {sender_email}?", default=True):
+        sender = EmailSender(cfg="config.cfg", user=sender_email)
+    else:
+        password = typer.prompt(f"Enter password for {sender_email}", hide_input=True)
+        sender = EmailSender(cfg="config.cfg", user=sender_email, password=password)
 
     # Create a secure SSL context
-    logger.info("Creating EmailSender obj...")
-    sender = EmailSender(cfg="config.cfg", user=sender_email, password=password)
     if temp_file:
         sender.set_template(temp_file)
 
@@ -74,24 +80,20 @@ def run_process(pid, resume=True):
     for contact in contacts:
         process = session.query(Process).filter(Process.id == pid).first()
         if process.status == "paused":
-            logger.info(f"ID:{pid} => Pausing the program")
-            pause = True
-            break
+            logger.info(f"ID:{pid} => is paused by other process")
+            session.close()
+            engin.dispose()
+            return
         logger.info(f"Sending email to: {contact.receiver}")
         sender.send(contact.receiver, subject, contact.data)
         contact.status = "sent"
         session.commit()
         logger.info(f"ID:{contact.id} => Email sent to {contact.receiver}")
-        time.sleep(10)
+        time.sleep(wait_time)
 
-    if not pause:
-        process.status = "finished"
-        session.commit()
-        logger.info(f"ID:{pid} => Program finished successfully")
-
-
-    session.close()
-    engin.dispose()
+    process.status = "finished"
+    session.commit()
+    logger.info(f"ID:{pid} => Program finished successfully")
 
 
 def _version_callback(value: bool) -> None:
@@ -243,8 +245,6 @@ def register(
         None,
         "--template",
         "-t",
-        # exists=True,
-        # file_okay= True,
         help="The body of your email.",
     ),
 
@@ -266,7 +266,6 @@ def register(
                         typer.secho(f"File {template} does not exist. or the file type is not supported. "
                                     f"the file type should be .txt or .html", fg=typer.colors.RED)
                         continue
-        print(title)
         if not os.path.exists(title):
             shutil.os.mkdir(title)
         else:
@@ -322,7 +321,7 @@ def start(
         typer.secho("Please enter the id of the process.", fg=typer.colors.RED)
         raise typer.Exit(code=0)
     else:
-        run_process(pid=id, resume=False)
+        run_process(pid=id, is_resume=False)
 
 
 @app.command()
@@ -330,12 +329,6 @@ def resume(
     id: Optional[int] = typer.Argument(
         None,
         help="The id of the process.",
-    ),
-    is_test: bool = typer.Option(
-        False,
-        "--test",
-        "-t",
-        help="Test output.",
     ),
 ) -> None:
     """Resume sending emails."""
@@ -347,7 +340,7 @@ def resume(
         typer.secho("Please enter the id of the process.", fg=typer.colors.RED)
         raise typer.Exit(code=0)
     else:
-        run_process(pid=id, resume=True)
+        run_process(pid=id, is_resume=True)
 
 
 @app.command()
@@ -355,12 +348,6 @@ def stop(
     id: Optional[int] = typer.Argument(
         None,
         help="The id of the process.",
-    ),
-    is_test: bool = typer.Option(
-        False,
-        "--test",
-        "-t",
-        help="Test output.",
     ),
 ) -> None:
     """Stop sending emails."""

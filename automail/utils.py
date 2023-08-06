@@ -1,7 +1,8 @@
 import logging
 import sys
 import configparser
-import multiprocessing
+import coloredlogs
+
 
 def init_logger(name=''):
     """This function will initialize a logger object
@@ -43,15 +44,15 @@ def init_logger(name=''):
 
     """
     logger_obj = logging.getLogger(name)
-    # logger_obj = multiprocessing.get_logger(name)
+    coloredlogs.install(level='DEBUG', logger=logger_obj, fmt='[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
     logger_obj.setLevel(logging.DEBUG)
     formatter = logging.Formatter('[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
-    handler1 = logging.StreamHandler(sys.stdout)
-    handler1.setFormatter(formatter)
-    # handler2 = logging.FileHandler('../emailsender.log')
-    # handler2.setFormatter(formatter)
-    logger_obj.addHandler(handler1)
-    # logger_obj.addHandler(handler2)
+    # handler1 = logging.StreamHandler(sys.stdout)
+    # handler1.setFormatter(formatter)
+    handler2 = logging.FileHandler('../emailsender.log')
+    handler2.setFormatter(formatter)
+    # logger_obj.addHandler(handler1)
+    logger_obj.addHandler(handler2)
     return logger_obj
 
 
