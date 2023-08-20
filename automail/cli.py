@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 import time
@@ -11,6 +12,10 @@ from automail.storage import get_session, create_tables
 from automail.storage import util, Process, Record
 
 app = typer.Typer()
+
+
+def get_logger():
+    return init_logger('cli', filename='cli.log', level=logging.DEBUG)
 
 
 def run_process(pid, is_resume=True, wait_time=.05):
@@ -28,7 +33,7 @@ def run_process(pid, is_resume=True, wait_time=.05):
         the time to wait between sending emails
     """
     # initialize the logger
-    logger = init_logger('cli')
+    logger = get_logger()
     logger.info("Reading arguments...")
 
     # get the database session
@@ -162,7 +167,7 @@ def init(
         ),
 ) -> None:
     """Initialize the mail database."""
-    logger = init_logger('cli')
+    logger = get_logger()
     if not shutil.os.path.exists(db_path):
         shutil.os.mkdir(db_path)
     else:
@@ -253,7 +258,7 @@ def register(
 
 ) -> None:
     """Register your email account."""
-    logger = init_logger('cli')
+    logger = get_logger()
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
         if template is None:
             tmp = typer.confirm("Do you want to use template?", default=False)
@@ -310,7 +315,7 @@ def start(
         ),
 ) -> None:
     """Start sending emails."""
-    logger = init_logger('cli')
+    logger = get_logger()
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
         logger.info("Starting...")
         if pid is None:
@@ -332,7 +337,7 @@ def resume(
 
 ) -> None:
     """Resume sending emails."""
-    logger = init_logger('cli')
+    logger = get_logger()
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
         logger.info("Resuming...")
         if pid is None:
@@ -353,7 +358,7 @@ def stop(
         ),
 ) -> None:
     """Stop a process."""
-    logger = init_logger('cli')
+    logger = get_logger()
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
         logger.info("Stopping...")
         if pid is None:
@@ -394,7 +399,7 @@ def delete_process(
         ),
 ) -> None:
     """Delete a process."""
-    logger = init_logger('cli')
+    logger = get_logger()
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
         from automail.storage import util, Process, Record
         logger.info("Deleting...")
@@ -437,7 +442,7 @@ def delete_record(
         ),
 ) -> None:
     """Delete a record by ID."""
-    logger = init_logger('cli')
+    logger = get_logger()
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
         logger.info("Deleting...")
         if rid is None:
@@ -466,7 +471,7 @@ def delete_record(
 @app.command("list")
 def list_processes() -> None:
     """List all processes."""
-    logger = init_logger('cli')
+    logger = get_logger()
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
         logger.info("Listing...")
         session, engin = get_session()
@@ -489,7 +494,7 @@ def list_records(
             help="The id of the process.",
         )) -> None:
     """List all records of one process."""
-    logger = init_logger('cli')
+    logger = get_logger()
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
         logger.info("Listing...")
         session, engin = get_session()

@@ -19,8 +19,8 @@ def setup():
     os.chdir(test_dir)
     print(os.getcwd())
     yield
-    os.chdir('..')
-    shutil.rmtree(test_dir)
+    # os.chdir('..')
+    # shutil.rmtree(test_dir)
 
 
 def usual_output(result):
