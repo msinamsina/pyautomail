@@ -141,8 +141,11 @@ class EmailSender:
         is_test = config.getboolean('smtp', 'is_test')
         user = config.get('account', 'user')
         password = config.get('account', 'password')
+        log_file = config.get('log', 'file-path')
+        log_level = config.getint('log', 'level')
 
-        return {'host': host, 'port': port, 'user': user, 'password': password, 'is_test': is_test}
+        return {'host': host, 'port': port, 'user': user, 'password': password,
+                'is_test': is_test, 'log_file': log_file, 'log_level': log_level}
 
     def set_template(self, template_path=None, plain_temp=None):
         """
@@ -213,6 +216,8 @@ class EmailSender:
             if self.template_type == 'html':
                 message.attach(MIMEText(body, "html"))
             elif self.template_type == 'txt':
+                message.attach(MIMEText(body, "plain"))
+            elif self.template_type == 'plain':
                 message.attach(MIMEText(body, "plain"))
         else:
             self.__logger.warning("No template is set. Sending email with no body.")
