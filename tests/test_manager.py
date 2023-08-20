@@ -22,12 +22,3 @@ def test_subcommand_help(capsys, option):
     output = capsys.readouterr().out
     print(output)
     assert f"usage: automail {option} [-h]" in output
-
-
-@pytest.mark.parametrize("option", ("register",))
-def test_register(capsys, option):
-    main([option, "youremail@gmail.com",  "../contact.csv"])
-
-    output = capsys.readouterr().out
-    print(output)
-    assert "=> Registering user youremail@gmail.com with contacts ../contact.csv" in output

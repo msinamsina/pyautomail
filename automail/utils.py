@@ -1,16 +1,19 @@
 import logging
-import sys
 import configparser
 import coloredlogs
 
 
-def init_logger(name=''):
+def init_logger(name='', filename=None, level=logging.CRITICAL):
     """This function will initialize a logger object
 
     Parameters
     ----------
     name : str
         The name of the logger object. If not specified, the name will be the root logger.
+    filename : str
+        The path where the log file is created. If it isn't set, no log file is created.
+    level : int
+        the level of logger
 
     Returns
     -------
@@ -44,15 +47,13 @@ def init_logger(name=''):
 
     """
     logger_obj = logging.getLogger(name)
-    coloredlogs.install(level='DEBUG', logger=logger_obj, fmt='[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
-    logger_obj.setLevel(logging.DEBUG)
+    coloredlogs.install(logger=logger_obj, fmt='[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
+    logger_obj.setLevel(level)
     formatter = logging.Formatter('[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
-    # handler1 = logging.StreamHandler(sys.stdout)
-    # handler1.setFormatter(formatter)
-    handler2 = logging.FileHandler('../emailsender.log')
-    handler2.setFormatter(formatter)
-    # logger_obj.addHandler(handler1)
-    logger_obj.addHandler(handler2)
+    if filename is not None:
+        handler2 = logging.FileHandler(filename)
+        handler2.setFormatter(formatter)
+        logger_obj.addHandler(handler2)
     return logger_obj
 
 

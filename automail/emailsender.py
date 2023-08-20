@@ -10,6 +10,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from configparser import ConfigParser
 from automail.config import configurable
+from automail.utils import init_logger
 
 
 __all__ = ['EmailSender']
@@ -66,7 +67,7 @@ class EmailSender:
     """
 
     @configurable
-    def __init__(self, user, password, host="smtp.gmail.com", port=465, is_test=False):
+    def __init__(self, user, password, host="smtp.gmail.com", port=465, is_test=False, log_file=None, log_level=10):
         """
         Parameters
         ----------
@@ -80,8 +81,19 @@ class EmailSender:
             The port of the SMTP server.
         is_test : bool
             If this flag is set, no email will be sent. This flag is useful for testing purposes.
+        log_file : str
+            The path to the log file.
+        log_level : int
+            The level of the logger. The default value is 100. You can use the following values:
+
+            - 10: DEBUG
+            - 20: INFO
+            - 30: WARNING
+            - 40: ERROR
+            - 50: CRITICAL
         """
-        self.__set_logger()
+        self.__logger = init_logger('EmailSender', filename=log_file, level=log_level)
+        # self.__set_logger()
         self.__logger.info("Initializing EmailSender...")
         self.template_type = None
         self.template = None
@@ -102,27 +114,6 @@ class EmailSender:
             self.__logger.warning("Test Mode is enabled. In this mode no email will be sent.")
             self.__logger.warning("To disable test mode, set is_test=False when initializing this class.")
             self.__logger.warning(f"user account: {self.user}...")
-
-    # TODO: Add support for multiple choices of logging format
-    def __set_logger(self):
-        """
-        This function sets the logger for this class. The logger will log to both stdout and a file.
-        After colling this function you can use self.__logger to log.
-        self.__logger.debug('debug message')
-        self.__logger.info('info message')
-        self.__logger.warning('warning message')
-        self.__logger.error('error message')
-        self.__logger.critical('critical message')
-        """
-        self.__logger = logging.getLogger('EmailSender')
-        self.__logger.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
-        handler1 = logging.StreamHandler(sys.stdout)
-        handler1.setFormatter(formatter)
-        handler2 = logging.FileHandler('emailsender.log')
-        handler2.setFormatter(formatter)
-        self.__logger.addHandler(handler1)
-        self.__logger.addHandler(handler2)
 
     def __del__(self):
         """This function is called when the class is destroyed.
@@ -153,22 +144,30 @@ class EmailSender:
 
         return {'host': host, 'port': port, 'user': user, 'password': password, 'is_test': is_test}
 
-    def set_template(self, template_path):
+    def set_template(self, template_path=None, plain_temp=None):
         """
 
         :param template_path: Path to template file. the template file should be either HTML or TXT.
+        :param plain_temp: A string template.
         :raises: NotImplemented if template type is not supported.
         """
-        with open(template_path) as f:
-            self.template = f.read()
+        assert template_path is not None or plain_temp is not None,\
+            "one of 'template_path' or 'plain_temp' should be set"
 
-        if template_path.endswith('.html'):
-            self.template_type = 'html'
-        elif template_path.endswith('.txt'):
-            self.template_type = 'txt'
-        else:
-            self.__logger.error("Template type not supported! Exiting! (please use HTML or TXT templates.)")
-            raise (NotImplemented, "Template type not supported! Exiting! (please use HTML or TXT templates.)")
+        if template_path is not None:
+            with open(template_path) as f:
+                self.template = f.read()
+
+            if template_path.endswith('.html'):
+                self.template_type = 'html'
+            elif template_path.endswith('.txt'):
+                self.template_type = 'txt'
+            else:
+                self.__logger.error("Template type not supported! Exiting! (please use HTML or TXT templates.)")
+                raise (NotImplemented, "Template type not supported! Exiting! (please use HTML or TXT templates.)")
+        elif plain_temp is not None:
+            self.template = plain_temp
+            self.template_type = 'plain'
 
     def render_template(self, data):
         """This method is used by send method.
