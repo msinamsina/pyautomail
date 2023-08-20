@@ -1,6 +1,35 @@
 import logging
+import logging.handlers
 import configparser
 import coloredlogs
+import automail
+
+
+class AutomailLogHandler(logging.handlers.BufferingHandler):
+    def __init__(self, user, password, capacity=1, to=None, host="smtp.gmail.com", port=465,
+                 formatter="%(asctime)s %(levelname)-5s %(message)s",
+                 sub='no-reply-logger', plain_temp="{{ msg }}", template_path=None):
+        logging.handlers.BufferingHandler.__init__(self, capacity)
+
+        self.__host = host
+        self.__port = port
+        self.__sub = sub
+        if to is None:
+            self.__to = user
+        else:
+            self.__to = to
+        self.setFormatter(logging.Formatter(formatter))
+        self.email_sender = automail.EmailSender(user=user, password=password, log_level=100)
+        self.email_sender.set_template(plain_temp=plain_temp, template_path=template_path)
+
+    def flush(self):
+        if len(self.buffer) > 0:
+            msg = ''
+            for record in self.buffer:
+                s = self.format(record)
+                msg = msg + s + "\r\n"
+            self.email_sender.send(self.__to, self.__sub, {"msg": msg})
+        self.buffer = []
 
 
 def init_logger(name='', filename=None, level=logging.CRITICAL):
