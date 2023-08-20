@@ -90,12 +90,8 @@ class EmailSender:
         self.host = host
         self.port = port
         self.password = None
-
-        print(password)
-        print("-" * 100)
         if not self.__test_flg:
             self.__logger.info("Connecting to SMTP server...")
-
             self.password = password
             self.server = smtplib.SMTP_SSL(self.host, self.port)
             self.__logger.info("Connected to SMTP server.")
@@ -193,19 +189,24 @@ class EmailSender:
             self.__logger.error("Template type not supported! Exiting! (please use HTML or TXT templates.)")
             raise (NotImplemented, "Template type not supported! Exiting! (please use HTML or TXT templates.)")
 
-    def send(self, receiver_email_address: str, subject: str, data: dict, attachment_path=None) -> dict:
+    def send(self, receiver_email_address: str, subject: str,
+             data: dict, attachment_path=None, from_address=None) -> dict:
         """
 
         :param receiver_email_address: Email address of the receiver.
         :param subject: Subject of the email.
         :param data: dictionary of data to be replaced in the template.
         :param attachment_path: Path to attachment file.
+        :param from_address: Email address of the sender.
         :return:
         """
         message = MIMEMultipart("alternative")
         message["Subject"] = subject
-        message["From"] = self.user
         message["To"] = receiver_email_address
+        if from_address is None:
+            message["From"] = self.user
+        else:
+            message["From"] = from_address
         if self.template_type is not None:
             body = self.render_template(data)
             if self.template_type == 'html':
