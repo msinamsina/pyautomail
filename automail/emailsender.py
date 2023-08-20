@@ -182,7 +182,9 @@ class EmailSender:
             return jinja2.Template(self.template).render(data)
         elif self.template_type == 'txt':
             self.__logger.debug("Rendering TXT template...")
-            # return self.template.format(**data)
+            return jinja2.Template(self.template).render(data)
+        elif self.template_type == 'plain':
+            self.__logger.debug("Rendering plain template...")
             return jinja2.Template(self.template).render(data)
         else:
             self.__logger.error("Template type not supported! Exiting! (please use HTML or TXT templates.)")
