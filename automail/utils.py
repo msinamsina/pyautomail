@@ -32,22 +32,22 @@ def init_logger(name='', filename=None, level=logging.CRITICAL):
     The logger object will log to both stdout and a file.
     After colling this function you can use logger_obj to log.
 
-    >>> logger_obj = init_logger('EmailSender')
+    >>> logger_obj = init_logger('EmailSender', level=logging.DEBUG)
     >>> logger_obj.debug('debug message')
-    [2019-08-20 15:30:00,000 - DEBUG (EmailSender) ] : debug message
+    ... - DEBUG (EmailSender) ] : debug message
     >>> logger_obj.info('info message')
-    [2019-08-20 15:30:00,000 - INFO (EmailSender) ] : info message
+    ... - INFO (EmailSender) ] : info message
     >>> logger_obj.warning('warning message')
-    [2019-08-20 15:30:00,000 - WARNING (EmailSender) ] : warning message
+    ... - WARNING (EmailSender) ] : warning message
     >>> logger_obj.error('error message')
-    [2019-08-20 15:30:00,000 - ERROR (EmailSender) ] : error message
+    ... - ERROR (EmailSender) ] : error message
     >>> logger_obj.critical('critical message')
-    [2019-08-20 15:30:00,000 - CRITICAL (EmailSender) ] : critical message
+    ... - CRITICAL (EmailSender) ] : critical message
 
 
     """
     logger_obj = logging.getLogger(name)
-    coloredlogs.install(logger=logger_obj, fmt='[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
+    coloredlogs.install(level=level, logger=logger_obj, fmt='[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
     logger_obj.setLevel(level)
     formatter = logging.Formatter('[%(asctime)s - %(levelname)s (%(name)s) ] : %(message)s')
     if filename is not None:
@@ -95,6 +95,10 @@ def create_config_file(smtp_server, smtp_port, sender_email='', password='', is_
         f.write('[account]\n')
         f.write(f'user = {sender_email}\n')
         f.write(f'password = {password}\n')
+        f.write('\n')
+        f.write('[log]\n')
+        f.write(f'level = 10\n')
+        f.write(f'file-path = automail.log\n')
 
 
 def read_config_file():
