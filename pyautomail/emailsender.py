@@ -1,8 +1,6 @@
 import smtplib
 import os
-import sys
 import jinja2
-import logging
 import json
 from email import encoders
 from email.mime.base import MIMEBase
@@ -93,7 +91,6 @@ class EmailSender:
             - 50: CRITICAL
         """
         self.__logger = init_logger('EmailSender', filename=log_file, level=log_level)
-        # self.__set_logger()
         self.__logger.info("Initializing EmailSender...")
         self.template_type = None
         self.template = None
@@ -108,8 +105,14 @@ class EmailSender:
             self.server = smtplib.SMTP_SSL(self.host, self.port)
             self.__logger.info("Connected to SMTP server.")
             self.__logger.info(f"Logging in to user account: {self.user}...")
-            self.server.login(self.user, self.password)
-            self.__logger.info("Logged in.")
+            try:
+                self.server.login(self.user, self.password)
+                self.__logger.info("Logged in.")
+            except smtplib.SMTPException as e:
+                self.__logger.error('Authentication ERROR: Username and Password not accepted. '
+                                    'Please check username and password and try again')
+                self.__logger.debug(self.password)
+                exit(1)
         else:
             self.__logger.warning("Test Mode is enabled. In this mode no email will be sent.")
             self.__logger.warning("To disable test mode, set is_test=False when initializing this class.")

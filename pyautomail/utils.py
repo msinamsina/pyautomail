@@ -86,7 +86,8 @@ def init_logger(name='', filename=None, level=logging.CRITICAL):
     return logger_obj
 
 
-def create_config_file(smtp_server, smtp_port, sender_email='', password='', is_test=False):
+def create_config_file(smtp_server, smtp_port, sender_email='<enter-your-email>',
+                       password='<enter-your-password>', is_test=False):
     """This function will create a config file for the email sender.
 
     Parameters

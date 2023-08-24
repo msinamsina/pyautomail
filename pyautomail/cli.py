@@ -147,17 +147,20 @@ def init(
             help="Your smtp port.",
         ),
         email: str = typer.Option(
-            '',
+            '<your-email>',
             "--email",
             "-e",
             help="Your email address.",
+            prompt="Enter a default email address?",
         ),
         password: str = typer.Option(
-            '',
+            'None',
             "--password",
             "-p",
             help="Your email password.",
             hide_input=True,
+            prompt="If you want to save the password of default email please enter your password"
+                   " otherwise press enter to continue?",
         ),
         is_test: bool = typer.Option(
             False,
@@ -169,19 +172,25 @@ def init(
     """Initialize the mail database."""
     logger = get_logger()
     if not shutil.os.path.exists(db_path):
-        shutil.os.mkdir(db_path)
+        shutil.os.makedirs(db_path)
+    elif not os.listdir(db_path):
+        pass
     else:
         logger.error(f"Directory {db_path} already exists.")
-        # delete the folder if it exists
-        if typer.confirm(f"Do you want to delete {db_path} directory?", default=False):
-            shutil.rmtree(db_path)
-            logger.info(f"Deleting {db_path} directory...")
-            time.sleep(0.5)
-            shutil.os.mkdir(db_path)
+        if shutil.os.path.exists(db_path + '/mail.db') and shutil.os.path.exists(db_path + '/config.cfg'):
+            # delete the folder if it exists
+            if typer.confirm(f"Do you want to delete {db_path} directory?", default=False):
+                shutil.rmtree(db_path)
+                logger.info(f"Deleting {db_path} directory...")
+                time.sleep(0.5)
+                shutil.os.mkdir(db_path)
+            else:
+                logger.info(f"Aborted!")
+                raise typer.Exit(code=0)
         else:
-            logger.info(f"Aborted!")
+            logger.error(f"This directory is not a previous automail project."
+                         f" please choose another directory or project name.")
             raise typer.Exit(code=0)
-
     # create the database
     logger.info(f"Initializing {__app_name__} database...")
     os.chdir(db_path)
@@ -196,6 +205,7 @@ def init(
         smtp_server=smtp_server, smtp_port=smtp_port, password=password, sender_email=email, is_test=is_test
     )
     logger.info(f"Done!")
+    logger.info(f"You can see and change the configuration file in the {os.path.abspath('./config.cfg')}!")
 
     os.chdir("../")
     session.close()
@@ -206,7 +216,7 @@ def init(
 @app.command()
 def register(
         email: str = typer.Option(
-            "default",
+            "default(see config.cfg)",
             "--email",
             "-e",
             prompt="What is your email address?",
@@ -289,7 +299,7 @@ def register(
             template = os.path.join(title, os.path.basename(template))
 
         logger.info(f"Registering your email account...")
-        if email == "default":
+        if email == "default(see config.cfg)":
             email = get_config_dict()["user"]
         util.register_new_process(
             email=email,
