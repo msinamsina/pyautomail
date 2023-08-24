@@ -59,7 +59,7 @@ def run_process(pid, is_resume=True, wait_time=.05):
     else:
         if process.status in ["paused", "in progress", 'finished']:
             logger.warning(f"ID:{pid} => Program is already {process.status}")
-            logger.warning(f"the `automail start {id}` command will strart the program from the beginning")
+            logger.warning(f"the `automail start {id}` command will start the program from the beginning")
 
             check = typer.confirm(f"Are you sure you want to start the program from the beginning?", default=False)
             if not check:
