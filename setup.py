@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name='pyautomail',
-    version=1.7.0.3,
+    version='1.7.0.3',
     packages=find_packages(),
     url='https://github.com/msinamsina/pyautomail',
     license='MIT',
