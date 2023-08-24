@@ -23,7 +23,8 @@ setup(
     python_requires='>=3.9',
     entry_points={
         'console_scripts': [
-            'pyautomail = pyautomail.manager:main',
+            'pyautomail = pyautomail.__main__:main',
+            'pyautomail-manager = pyautomail.manager:main'
         ],
     },
 )
