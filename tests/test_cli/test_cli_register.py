@@ -17,7 +17,8 @@ def setup():
     test_dir = tempfile.mkdtemp()
     os.chdir(test_dir)
     # initialize the pyautomail project
-    runner.invoke(cli.app, ["init", "-db", "test-reg", "-ss", "smtp.gmail.com", "-sp", "111", "-t", '-e', 'example@gmail.com'], input="y\n")
+    runner.invoke(cli.app, ["init", "-db", "test-reg", "-ss", "smtp.gmail.com", "-sp", "111", "-t",
+                            '-e', 'example@gmail.com'], input="y\n")
 
     # create a contact list
     with open("contact.csv", "w") as f:
@@ -64,7 +65,6 @@ def test_register_3():
 
     result = runner.invoke(cli.app, ["register", "../contact.csv"])
     assert result.exit_code == 0
-    print(result.output)
 
     assert " => Registering Process example@gmail.com with contacts Contact List\\contact.csv" in result.output
     assert " => Registering record for john@gmail.com" in result.output
