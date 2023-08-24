@@ -4,7 +4,7 @@
 from sqlalchemy import Column, Date, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy_utils import ChoiceType
-from automail.storage.util import Base
+from pyautomail.storage.util import Base
 
 
 class Record(Base):
@@ -33,7 +33,7 @@ class Record(Base):
     process_id = Column(Integer, ForeignKey("process.id", ondelete="CASCADE"), nullable=False)
     """int : the id of the process which this record belongs to"""
     process = relationship("Process", backref=backref("records", order_by=id, cascade="all, delete"))
-    """automail.storage.database.Process : the process of the record"""
+    """pyautomail.storage.database.Process : the process of the record"""
 
 
 class Process(Base):

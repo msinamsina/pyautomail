@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 import os
 import datetime
 import pandas as pd
-from automail.utils import init_logger
+from pyautomail.utils import init_logger
 
 Base = declarative_base()
 
@@ -81,7 +81,7 @@ def register_new_process(title, subject, email, template, contact_list, custom_p
     >>> register_new_process(title="test", subject="test", email="test", template="test",\
      contact_list="test", custom_pdf=False, attachment=None, custom_pdf_dir=None)
     """
-    from automail.storage import Record, Process
+    from pyautomail.storage import Record, Process
 
     session, engin = get_session()
     create_tables(engin)

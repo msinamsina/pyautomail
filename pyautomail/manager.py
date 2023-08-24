@@ -1,4 +1,4 @@
-"""This module is responsible for managing the automail pkg.
+"""This module is responsible for managing the pyautomail pkg.
 It has below commands:
 
 1. register: register a new contact list and a new process this command will get below arguments:
@@ -12,19 +12,19 @@ It has below commands:
     - attachment(optional): the path to the attachment file if you want to attach a same file to all emails
     - pdf_dir(optional): the path to the directory which contains the pdf files if you want to use cpdf flag
 2. start: this command will start a process and get the process id as argument you can find the process id in the list\
- of processes by: `automail list` command
+ of processes by: `pyautomail list` command
 3. list: list processes
 4. stop: this command will stop one specific process by process id
 5. resume: this command will resume one specific process by process id
 """
 import argparse
-from automail.storage import Record, Process, get_session, create_tables
+from pyautomail.storage import Record, Process, get_session, create_tables
 import datetime
 import pandas as pd
 import os
 import getpass
-from automail import EmailSender
-from automail.utils import init_logger
+from pyautomail import EmailSender
+from pyautomail.utils import init_logger
 import time
 # TODO: add a command to delete a process
 # TODO: add a command to delete a record
@@ -85,12 +85,12 @@ def registration(username, contacts, name="", cpdf=False, attachment="", pdf_dir
     This function will register a new process plus records for each contact in the contacts csv file.
 
     """
-    from automail.storage import register_new_process
+    from pyautomail.storage import register_new_process
 
     register_new_process(title=name, email=username, contact_list=contacts, custom_pdf=cpdf, attachment=attachment,
                          custom_pdf_dir=pdf_dir, subject=args.get('subject', ""), template=args.get('template', ""))
     print("Process registered successfully!")
-    print("You can start the process with 'automail start <process_id>' command")
+    print("You can start the process with 'pyautomail start <process_id>' command")
 
 
 def run(pid, resume=True):
@@ -223,7 +223,7 @@ def list_processes(pid=None, **kwargs):
 
 
 def _parser():
-    parser_obj = argparse.ArgumentParser(description='Automail', prog="automail")
+    parser_obj = argparse.ArgumentParser(description='Automail', prog="pyautomail")
     sud_parser = parser_obj.add_subparsers(dest='command')
 
     init_parser = sud_parser.add_parser('init', help='Initialize the database')

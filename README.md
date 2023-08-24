@@ -27,13 +27,13 @@ pip install git+https://github.com/msinamsina/pyautomail.git
 
 1. At first, you should initialize project
     ```bash
-    pyhhon -m automail init
+    pyhhon -m pyautomail init
     ```
     
    After running this command, you will see a some questions. You should answer them.
     
    ```bash
-   Where do you want to initialize the automail project? [./automail-workspace]
+   Where do you want to initialize the pyautomail project? [./pyautomail-workspace]
    What is your smtp server? [smtp.gmail.com]:
    What is your smtp port? [465]:
    ```
@@ -47,7 +47,7 @@ pip install git+https://github.com/msinamsina/pyautomail.git
    ```--pasword``` switch.
     5. Moreover, if you want to initialize a test project, you can use ```-t``` or ```--test```. 
        ```bash
-       $ pyhhon -m automail init -t -p <your-password>
+       $ pyhhon -m pyautomail init -t -p <your-password>
        ```
 
    > **[📙 Important]()**  
@@ -56,13 +56,13 @@ pip install git+https://github.com/msinamsina/pyautomail.git
 1. Then you should go to the project directory and register your contact list
     ```bash
     cd <your-project-name>
-    pyhhon -m automail register <Path-to-your-contact-list> [options]
+    pyhhon -m pyautomail register <Path-to-your-contact-list> [options]
    ```
    **📘 Note:**   
    For using a template, use ```--template``` switch. The template can be ```.txt``` or ```.html```
    Format.
    ```bash
-   pyhhon -m automail register contact-list.csv --template ./body.html
+   pyhhon -m pyautomail register contact-list.csv --template ./body.html
    ```
    **body.html:**
    ```html
@@ -78,12 +78,13 @@ pip install git+https://github.com/msinamsina/pyautomail.git
    
 1. Now you can start sending emails by running the following command
    ```bash
-   pyhhon -m automail start <process-id>
+   pyhhon -m pyautomail start <process-id>
    ```
    
 ## How to use in python
+
 ```python
-    from automail import EmailSender
+    from pyautomail import EmailSender
     email_sender = EmailSender()
     email_sender.set_template('body.txt')
     data = {'name': 'Jon', 'age': 30}

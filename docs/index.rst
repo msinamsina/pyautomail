@@ -30,7 +30,7 @@ and versatile features make it suitable for a wide range of applications, from
 startups to enterprises, professionals, and developers.
 
 Whether you need to send bulk emails, automate Gmail tasks, or
-improve your email communication efficiency, **PYautomail** is here to streamline
+improve your email communication efficiency, **PyAutoMail** is here to streamline
 your workflow and enhance productivity.
 
 .. note::

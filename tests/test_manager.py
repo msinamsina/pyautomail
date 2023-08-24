@@ -1,5 +1,5 @@
 import pytest
-from automail.manager import main
+from pyautomail.manager import main
 
 
 @pytest.mark.parametrize("option", ("-h", "--help"))
@@ -10,7 +10,7 @@ def test_help(capsys, option):
         pass
     output = capsys.readouterr().out
     print(output)
-    assert "usage: automail [-h] {init,register,start,stop,resume,list}" in output
+    assert "usage: pyautomail [-h] {init,register,start,stop,resume,list}" in output
 
 
 @pytest.mark.parametrize("option", ("register", "start", "stop", "resume", "list"))
@@ -21,4 +21,4 @@ def test_subcommand_help(capsys, option):
         pass
     output = capsys.readouterr().out
     print(output)
-    assert f"usage: automail {option} [-h]" in output
+    assert f"usage: pyautomail {option} [-h]" in output

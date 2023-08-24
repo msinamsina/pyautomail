@@ -1,7 +1,7 @@
 from typer.testing import CliRunner
 import shutil
 import os
-from automail import cli
+from pyautomail import cli
 import pytest
 import tempfile
 
@@ -48,7 +48,8 @@ def test_init_2():
     assert os.path.exists("test/mail.db") is True
     with open("test/config.cfg") as f:
         config = f.read()
-    assert "[smtp]\nhost = smtp.gmail.com\nport = 465\nis_test = False\n\n[account]\nuser = \npassword = \n" == config
+    assert "[smtp]\nhost = smtp.gmail.com\nport = 465\nis_test = False\n\n[account]\n" \
+           "user = \npassword = \n\n[log]\nlevel = 10\nfile-path = automail.log\n" == config
 
 
 def test_init_3():
@@ -102,20 +103,23 @@ def test_init_7():
     assert "What is your smtp port? [465]: " in result.stdout
     with open("test/config.cfg") as f:
         config = f.read()
-    assert "[smtp]\nhost = smtp.server.com\nport = 465\nis_test = False\n\n[account]\nuser = \npassword = \n" == config
+    assert "[smtp]\nhost = smtp.server.com\nport = 465\nis_test = False\n\n[account]\n" \
+           "user = \npassword = \n\n[log]\nlevel = 10\nfile-path = automail.log\n" == config
 
 
 def test_init_8():
-    result = runner.invoke(cli.app, ["init", "-db", "test", "-ss", "smtp.gmail.com", "-sp", "111"], input="y\n")
+    result = runner.invoke(cli.app, ["init", "-db", "test", "-ss", "smtp.server.com", "-sp", "465"], input="y\n")
     _helper_init(result)
     with open("test/config.cfg") as f:
         config = f.read()
-    assert "[smtp]\nhost = smtp.gmail.com\nport = 111\nis_test = False\n\n[account]\nuser = \npassword = \n" == config
+    assert "[smtp]\nhost = smtp.server.com\nport = 465\nis_test = False\n\n[account]\n" \
+           "user = \npassword = \n\n[log]\nlevel = 10\nfile-path = automail.log\n" == config
 
 
 def test_init_9():
-    result = runner.invoke(cli.app, ["init", "-db", "test", "-ss", "smtp.gmail.com", "-sp", "111", "-t"], input="y\n")
+    result = runner.invoke(cli.app, ["init", "-db", "test", "-ss", "smtp.server.com", "-sp", "465", "-t"], input="y\n")
     _helper_init(result)
     with open("test/config.cfg") as f:
         config = f.read()
-    assert "[smtp]\nhost = smtp.gmail.com\nport = 111\nis_test = True\n\n[account]\nuser = \npassword = \n" == config
+    assert "[smtp]\nhost = smtp.server.com\nport = 465\nis_test = True\n\n[account]\n" \
+           "user = \npassword = \n\n[log]\nlevel = 10\nfile-path = automail.log\n" == config

@@ -2,9 +2,9 @@ from typer.testing import CliRunner
 import typer
 import shutil
 import os
-from automail import cli
-from automail.storage import get_session, Process, Record
-from automail.utils import get_config_dict
+from pyautomail import cli
+from pyautomail.storage import get_session, Process, Record
+from pyautomail.utils import get_config_dict
 import pytest
 import tempfile
 
@@ -16,7 +16,7 @@ def setup():
     # create a temporary directory
     test_dir = tempfile.mkdtemp()
     os.chdir(test_dir)
-    # initialize the automail project
+    # initialize the pyautomail project
     runner.invoke(cli.app, ["init", "-db", "test-reg", "-ss", "smtp.gmail.com", "-sp", "111", "-t", '-e', 'example@gmail.com'], input="y\n")
 
     # create a contact list

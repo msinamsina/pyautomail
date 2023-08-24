@@ -1,4 +1,4 @@
-from automail import EmailSender
+from pyautomail import EmailSender
 
 # Creating a sender object
 sender = EmailSender(cfg="./assets/config.cfg")

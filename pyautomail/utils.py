@@ -2,7 +2,7 @@ import logging
 import logging.handlers
 import configparser
 import coloredlogs
-import automail
+import pyautomail
 
 
 class AutomailLogHandler(logging.handlers.BufferingHandler):
@@ -19,7 +19,7 @@ class AutomailLogHandler(logging.handlers.BufferingHandler):
         else:
             self.__to = to
         self.setFormatter(logging.Formatter(formatter))
-        self.email_sender = automail.EmailSender(user=user, password=password, log_level=100)
+        self.email_sender = pyautomail.EmailSender(user=user, password=password, log_level=100)
         self.email_sender.set_template(plain_temp=plain_temp, template_path=template_path)
 
     def flush(self):
