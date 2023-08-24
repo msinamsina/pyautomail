@@ -27,7 +27,7 @@ pip install git+https://github.com/msinamsina/pyautomail.git
 
 1. At first, you should initialize project
     ```bash
-    pyhhon -m pyautomail init
+    python -m pyautomail init
     ```
     
    After running this command, you will see a some questions. You should answer them.
@@ -56,13 +56,13 @@ pip install git+https://github.com/msinamsina/pyautomail.git
 1. Then you should go to the project directory and register your contact list
     ```bash
     cd <your-project-name>
-    pyhhon -m pyautomail register <Path-to-your-contact-list> [options]
+    python -m pyautomail register <Path-to-your-contact-list> [options]
    ```
    **📘 Note:**   
    For using a template, use ```--template``` switch. The template can be ```.txt``` or ```.html```
    Format.
    ```bash
-   pyhhon -m pyautomail register contact-list.csv --template ./body.html
+   python -m pyautomail register contact-list.csv --template ./body.html
    ```
    **body.html:**
    ```html
@@ -78,7 +78,7 @@ pip install git+https://github.com/msinamsina/pyautomail.git
    
 1. Now you can start sending emails by running the following command
    ```bash
-   pyhhon -m pyautomail start <process-id>
+   python -m pyautomail start <process-id>
    ```
    
 ## How to use in python
