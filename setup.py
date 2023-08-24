@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-from pyautomail import __version__
+from .pyautomail import __version__
 setup(
     name='pyautomail',
     version=__version__,
