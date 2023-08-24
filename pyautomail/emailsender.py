@@ -9,8 +9,8 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from configparser import ConfigParser
-from automail.config import configurable
-from automail.utils import init_logger
+from pyautomail.config import configurable
+from pyautomail.utils import init_logger
 
 
 __all__ = ['EmailSender']
@@ -26,7 +26,7 @@ class EmailSender:
 
     Examples
     --------
-    >>> from automail import EmailSender
+    >>> from pyautomail import EmailSender
     >>> sender = EmailSender(cfg="config.cfg")
     >>> sender.set_template('body.txt')
     >>> data = {'name': 'Jon', 'age': 30}

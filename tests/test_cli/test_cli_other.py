@@ -2,8 +2,8 @@ from typer.testing import CliRunner
 import typer
 import shutil
 import os
-from automail import cli
-from automail.storage import get_session, Process, Record
+from pyautomail import cli
+from pyautomail.storage import get_session, Process, Record
 import pytest
 import tempfile
 import time
@@ -33,8 +33,8 @@ def setup():
     os.chdir("test-reg")
 
     # register the contact list
-    runner.invoke(cli.app, ["register", "../contact.csv", "-t", '../template.html'])
-
+    result = runner.invoke(cli.app, ["register", "../contact.csv", "-t", '../template.html'])
+    print(result)
     yield
     # remove the directory after the test
     os.chdir("../..")
@@ -127,6 +127,3 @@ def test_delete_process():
 
     process = session.query(Process).filter_by(id=process.id).first()
     assert process is None
-
-
-

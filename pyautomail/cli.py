@@ -5,11 +5,11 @@ import time
 import typer
 from typing import Optional
 from pathlib import Path
-from automail import __app_name__, __version__, EmailSender
-from automail import utils
-from automail.utils import get_config_dict, init_logger
-from automail.storage import get_session, create_tables
-from automail.storage import util, Process, Record
+from pyautomail import __app_name__, __version__, EmailSender
+from pyautomail import utils
+from pyautomail.utils import get_config_dict, init_logger
+from pyautomail.storage import get_session, create_tables
+from pyautomail.storage import util, Process, Record
 
 app = typer.Typer()
 
@@ -401,7 +401,6 @@ def delete_process(
     """Delete a process."""
     logger = get_logger()
     if os.path.exists('./mail.db') and os.path.exists('./config.cfg'):
-        from automail.storage import util, Process, Record
         logger.info("Deleting...")
         if pid is None:
             typer.secho("Please enter the id of the process.", fg=typer.colors.RED)

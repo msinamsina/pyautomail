@@ -9,8 +9,8 @@ import argparse
 import getpass 
 import pandas as pd
 import os
-from automail import EmailSender
-from automail.utils import init_logger
+from pyautomail import EmailSender
+from pyautomail.utils import init_logger
 
 
 def arg_parser():

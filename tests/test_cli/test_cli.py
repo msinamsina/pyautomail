@@ -1,5 +1,5 @@
 from typer.testing import CliRunner
-from automail import __app_name__, __version__, cli
+from pyautomail import __app_name__, __version__, cli
 
 
 runner = CliRunner()
