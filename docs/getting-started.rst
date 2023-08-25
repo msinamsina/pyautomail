@@ -56,7 +56,7 @@ Alternatively, you can clone the repository and install the package from source:
 .. code-block:: bash
 
     $ git clone git@github.com:msinamsina/pyautomail.git
-    $ cd automail
+    $ cd pyautomail
     $ pip install .
 
 .. _htu:
@@ -76,22 +76,39 @@ and the :doc:`API reference <api/index>`.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When you install pyautomail, you will also get a command-line interface (CLI) tool
-called `automail`. This tool can be used to send emails from the command line,
+called `pyautomail`. This tool can be used to send emails from the command line,
 without writing any Python code. So if you want to send a quick email without
 writing a script, you can use the CLI tool.
 
+
+.. note::
+    To see more example please see the :doc:`cli best practices <tutorial/cli-best-practices>`
+
 To use the CLI tool, you will need to provide your contact list in a CSV file.
-The CSV file should contain the following columns: `name`, `email` and other
-columns can be added as contact information which will be used in the email template.
+The CSV file should contain the ``email`` column and other columns like `name` can
+be added as contact information which will be used in the email template.
 
 Here's an example of a CSV file containing a list of contacts:
 
 .. literalinclude:: ../examples/assets/contact.csv
    :language: text
 
+And, here's an example of HTML template:
+
+.. literalinclude:: ../examples/templates/html.html
+   :language: html
+
 To send emails using the CLI tool, you should do the following steps:
 
-#. At first you should register a process
+#. At first you should init project using the following commands:
+
+.. code-block:: bash
+
+    pyautomail init -db PAM-workspace -ss smtp.gmail.com -sp 465 -e example@gmail.com
+    cd PAM-workspace
+
+
+#. In the next step you should register a process
 
     - The process contains the email template and the contact list
       data and some other configurations.
@@ -99,10 +116,11 @@ To send emails using the CLI tool, you should do the following steps:
 
         .. code-block:: bash
 
-            $ pyautomail register youremail@email.com\
-            contacts.csv\
-            --template template.html\
-            --subject "Hello from automail!"
+            $ pyautomail register contacts.csv\
+            -e youremail@email.com\
+            -t template.html\
+            -s "Hello from automail!"
+            -T "list1"
 
     - This command will register a process with the given email,
       contacts and template and give you a process id.
@@ -162,17 +180,20 @@ Here's two basic examples of sending an email to a single recipient:
 Configuration
 -------------
 
-Before you start sending emails, you'll need to set up some configurations for automail.
-This includes providing your email credentials, choosing the email service provider (e.g., Gmail),
-and customizing other settings according to your needs.
+Before you start sending emails, you may need to set up some configurations for pyautomail.
+This includes providing your email address, password and so on. You can do this by editing
+the config.cfg file. An example of config file is given below:
 
-For more advanced usage, such as sending emails to multiple recipients or using custom email templates,
-please refer to the relevant sections in the documentation.
+.. literalinclude:: ../examples/assets/config.cfg
+   :language: ini
+
+For more advanced usage, such as sending emails with attachments file please refer to the
+:doc:`tutorial <tutorial/index>` sections in the documentation.
 
 Conclusion
 ----------
 
-You've completed the getting started guide for automail!
+You've completed the getting started guide for pyautomail!
 You should now be ready to automate your email communication with ease.
 Feel free to explore the extensive documentation for more features, examples, and best practices.
 
