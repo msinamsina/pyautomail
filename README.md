@@ -1,7 +1,18 @@
 # PyAutoMail: A Python package and command-line interface for automation sending email to your contact list
 
 
-![pyautomail-image](./docs/_static/automail-logo.png)
+[![Documentation Status](https://readthedocs.org/projects/pyautomail/badge/?version=latest)](https://pyautomail.readthedocs.io/en/latest/?badge=latest)
+![PyPI](https://img.shields.io/pypi/v/pyautomail?label=pypi%20pyautomail)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/pyautomail)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+![example workflow](https://github.com/msinamsina/pyautomail/actions/workflows/publish.yml/badge.svg)
+
+-----
+
+<div align="center">
+  <img src="./docs/_static/automail-logo.png"/>
+</div>
+<br>
 
 
 Pyautomail, an incredibly powerful Python package meticulously crafted for the purpose of automated email delivery, catering especially to large-scale Email or Gmail automation. In today's fast-paced digital era, effective communication stands as a crucial cornerstone for numerous businesses and projects that heavily rely on email as their primary medium of interaction. Nonetheless, the manual handling of individual emails or the management of bulk email campaigns can prove to be both time-consuming and prone to errors.
@@ -47,7 +58,7 @@ pip install git+https://github.com/msinamsina/pyautomail.git
    ```--pasword``` switch.
     5. Moreover, if you want to initialize a test project, you can use ```-t``` or ```--test```. 
        ```bash
-       $ pyhhon -m pyautomail init -t -p <your-password>
+       $ python -m pyautomail init -t -p <your-password>
        ```
 
    > **[📙 Important]()**  
