@@ -96,7 +96,7 @@ pip install git+https://github.com/msinamsina/pyautomail.git
 
 ```python
     from pyautomail import EmailSender
-    email_sender = EmailSender()
+    email_sender = EmailSender('config.cfg')
     email_sender.set_template('body.txt')
     data = {'name': 'Jon', 'age': 30}
     email_sender.send('msinamsina@gmail.com', 'sub1', data)

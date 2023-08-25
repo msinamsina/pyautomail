@@ -11,7 +11,7 @@ sys.path.insert(0, '../')
 project = 'PyAutoMail'
 copyright = '2023, Mohammad Sina Allahkaram'
 author = 'Mohammad Sina Allahkaram'
-release = '1.1.1'
+release = '1.7.0.4'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
