@@ -5,6 +5,7 @@ Tutorial
    :caption: Contents
 
    ./cli
+   ./cli-best-practices
 
 
 

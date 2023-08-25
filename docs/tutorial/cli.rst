@@ -25,60 +25,86 @@ It support the following commands:
 init command
 ------------
 
-Before anything else, you need to initialize your project. This is done by the following command:
+Before anything else, pyautomail project should be initialized. This is done by the following command:
 
 .. code-block:: bash
 
-    pyautomail init
+    pyautomail init [options]
 
-After running this command, some questions will be asked. You need to answer them to initialize your project.
-The questions are as follows:
+This command has the following options:
+
+    - ``--db-path`` or ``-db``: This option is used for setting the name of project and refers to
+      the path of database directory.
+    - ``--smtp-serve`` or ``-ss``: This option is used for setting the smtp host of your project.
+    - ``--smtp-port`` or ``-sp``: This option is used for setting the smtp port of your project.
+    - ``--email`` or ``-e``: This option is used for setting the default email address of your project.
+    - ``--password`` or ``-p``: This option is used for setting the default email password of your project.
+    - ``--test`` or ``-t``: This option sets the testing mode and in this mode no email will be sent.
+    - ``--help``: This option is used for showing the help message.
+
+
+If the ``init`` command is run without necessary options, some questions will be asked that help client
+to initialize the project. The questions are as follows:
+
+1. If ``--db-path`` or ``-db`` option is not set, the following question will be asked:
 
     .. code-block:: text
 
         Where do you want to initialize the automail project? [./automail-workspace]:
 
-    After this question, you need to enter the path or name of the directory that you want to initialize your project on it.
-    The directory should be empty or be an old pyautomail project and if that directory doesn't exist it will be created.
+    The path or name of the directory in which the project should be initialized must be entered after this question.
+
+    .. note::
+        The directory should be empty or be an old pyautomail project and if that directory doesn't exist it will be
+        created after ``init`` command.
+
+2. If ``--smtp-serve``, ``-ss``, ``--smtp-port`` or ``-sp`` options is not set, the following questions will be asked:
 
     .. code-block:: text
 
         What is your smtp server? [smtp.gmail.com]:
         What is your smtp port? [465]:
 
-    The two next questions are about your smtp server, you should enter your smtp host and port
+    These two questions are about smtp server setting. The smtp host and port should be entered.
     (by default the pyautomail is set on GMAIL server).
-    For more information please see the following links:
 
-    - https://sendgrid.com/blog/what-is-an-smtp-server/
-    - https://blog.cpanel.com/setting-up-and-troubleshooting-smtp-in-cpanel/
+    .. note::
+        For more information about smtp server please see the following links:
+
+        - https://sendgrid.com/blog/what-is-an-smtp-server/
+        - https://blog.cpanel.com/setting-up-and-troubleshooting-smtp-in-cpanel/
+
+3. If ``--email`` or ``-e`` option is not set, the following question will be asked:
 
     .. code-block:: text
 
         Enter a default email address? [<your-email>]:
 
-    Now you can set a default email address for your project.
+    The answer of this question will set a default email address for your project.
 
     .. note::
         This email address can be used as the default sender email address but you can set another email
         address for every list of your contacts. For more information please
         see :ref:`register <register command>` command.
 
+
+4. If ``--password`` or ``-p`` option is not set, the following question will be asked:
+
     .. code-block:: text
 
         If you want to save the password of default email please enter your password
         otherwise press enter to continue? [None]:
 
-    The last question is about your default email password. If you want to save your password in the config\
-    file, you can enter your password here. Otherwise, you can leave it empty and enter your password every\
-    time you want to :ref:`start <start command>` a process.
+    This question is about default email password. If the password is entered, it will be saved in the config file.
+    Otherwise, if it's leaved empty the password should be entered every time you want to :ref:`start <start command>`
+    a process.
 
     .. warning::
         If you want to save your password in the config file, you should know that it will be saved in plain
         text format. So, it is not recommended to save your password in the config file.
 
-When the initialization process is done, the pyautomail project will be initialized.
-A new directory with the name of your project will be created which the following files exist on it:
+When the pyautomail project initialization process is done, a new directory with the name of your project will be
+created which the following files exist on it:
 
 .. code-block:: text
 
@@ -86,23 +112,23 @@ A new directory with the name of your project will be created which the followin
         |_ config.cfg
         |_ mail.db
 
-The init command also has some options which are as follows:
+The config.cfg file contains the configuration of your project and the mail.db file is a sqlite database which is stored
+the processes ans records of your project.
 
-    - ``--db-path`` or ``-db``: You can set the path of the directory that you want to initialize your project on it.
-    - ``--smtp-serve`` or ``-ss``: You can set the smtp host of your project.
-    - ``--smtp-port`` or ``-sp``: You can set the smtp port of your project.
-    - ``--email`` or ``-e``: You can set the default email address of your project.
-    - ``--password`` or ``-p``: You can save your default email password in the config file.
-    - ``--test`` or ``-t``: This is used for testing and in this mode no email will be sent.
-    - ``--help``: This is used for showing the help message.
+**config.cfg**:
+
+.. literalinclude::
+    ../../examples/assets/config.cfg
+    :language: text
+
+
+User can edit this file manually. But, it is recommended to use the ``init`` command for editing this file.
+
 
 .. important::
-    All the other command must be run from the inside of the project folder.
+    All the other command must be run from the inside of the project folder. For more information see
+    :doc:`cli best practices <./cli-best-practices>`
 
-    .. code-block:: bash
-
-        pyautomail init
-        cd <path-to-your-project>
 
 register command
 ----------------
@@ -112,11 +138,10 @@ command:
 
 .. code-block:: bash
 
-    pyautomail register <path/to/contacts/file>
+    pyautomail register <path/to/contacts/file> [options]
 
 The ``<path/to/contacts/file>`` is the path of your contacts file. The contacts file should be a ``.csv`` file and
-must have a column with the name of ``email``.
-every row of this column should be a valid email address.
+must have a column with the name of ``email``. Every row of this column should be a valid email address.
 
 Other columns of the contacts file are optional and you can add as many columns as you want. The name of the columns
 will be used as the name of the variables in the template file. For example, if you have a column with the name of
