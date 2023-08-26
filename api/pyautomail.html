@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyautomail &mdash; PyAutoMail 1.7.0.4 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=490a1136"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyautomail.config" href="pyautomail.config.html" />
+    <link rel="prev" title="API Rrf." href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyAutoMail
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Quickstart with pyautomail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Rrf.</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyautomail</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyautomail.config.html">pyautomail.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyautomail.storage.html">pyautomail.storage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyautomail-cli">pyautomail.cli</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.delete_process"><code class="docutils literal notranslate"><span class="pre">delete_process()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.delete_record"><code class="docutils literal notranslate"><span class="pre">delete_record()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.init"><code class="docutils literal notranslate"><span class="pre">init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.list_processes"><code class="docutils literal notranslate"><span class="pre">list_processes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.list_records"><code class="docutils literal notranslate"><span class="pre">list_records()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.register"><code class="docutils literal notranslate"><span class="pre">register()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.resume"><code class="docutils literal notranslate"><span class="pre">resume()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.run_process"><code class="docutils literal notranslate"><span class="pre">run_process()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.start"><code class="docutils literal notranslate"><span class="pre">start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.cli.stop"><code class="docutils literal notranslate"><span class="pre">stop()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyautomail-emailsender">pyautomail.emailsender</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.emailsender.EmailSender"><code class="docutils literal notranslate"><span class="pre">EmailSender</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyautomail-manager">pyautomail.manager</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.manager.list_processes"><code class="docutils literal notranslate"><span class="pre">list_processes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.manager.registration"><code class="docutils literal notranslate"><span class="pre">registration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.manager.resume_process"><code class="docutils literal notranslate"><span class="pre">resume_process()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.manager.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.manager.start"><code class="docutils literal notranslate"><span class="pre">start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.manager.stop"><code class="docutils literal notranslate"><span class="pre">stop()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyautomail-utils">pyautomail.utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.utils.AutomailLogHandler"><code class="docutils literal notranslate"><span class="pre">AutomailLogHandler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.utils.create_config_file"><code class="docutils literal notranslate"><span class="pre">create_config_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.utils.get_config_dict"><code class="docutils literal notranslate"><span class="pre">get_config_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.utils.init_logger"><code class="docutils literal notranslate"><span class="pre">init_logger()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyautomail.utils.read_config_file"><code class="docutils literal notranslate"><span class="pre">read_config_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyAutoMail</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Rrf.</a></li>
+      <li class="breadcrumb-item active">pyautomail</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyautomail.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyautomail">
+<h1>pyautomail<a class="headerlink" href="#pyautomail" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound" id="module-pyautomail">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyautomail.config.html">pyautomail.config</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyautomail.config.html#pyautomail-config-config">pyautomail.config.config</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyautomail.storage.html">pyautomail.storage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyautomail.storage.html#pyautomail-storage-model">pyautomail.storage.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyautomail.storage.html#pyautomail-storage-util">pyautomail.storage.util</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="pyautomail-cli">
+<h2>pyautomail.cli<a class="headerlink" href="#pyautomail-cli" title="Link to this heading"></a></h2>
+<dl class="py function" id="module-pyautomail.cli">
+<dt class="sig sig-object py" id="pyautomail.cli.delete_process">
+<span class="sig-name descname"><span class="pre">delete_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.ArgumentInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyautomail/cli.html#delete_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.delete_process" title="Link to this definition"></a></dt>
+<dd><p>Delete a process.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.cli.delete_record">
+<span class="sig-name descname"><span class="pre">delete_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rid:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.ArgumentInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyautomail/cli.html#delete_record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.delete_record" title="Link to this definition"></a></dt>
+<dd><p>Delete a record by ID.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.cli.get_logger">
+<span class="sig-name descname"><span class="pre">get_logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/cli.html#get_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.get_logger" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.cli.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smtp_server:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smtp_port:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_test:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyautomail/cli.html#init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.init" title="Link to this definition"></a></dt>
+<dd><p>Initialize the mail database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.cli.list_processes">
+<span class="sig-name descname"><span class="pre">list_processes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyautomail/cli.html#list_processes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.list_processes" title="Link to this definition"></a></dt>
+<dd><p>List all processes.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.cli.list_records">
+<span class="sig-name descname"><span class="pre">list_records</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_id:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.ArgumentInfo</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyautomail/cli.html#list_records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.list_records" title="Link to this definition"></a></dt>
+<dd><p>List all records of one process.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.cli.main">
+<span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version:</span> <span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyautomail/cli.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.cli.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_list:</span> <span class="pre">~pathlib.Path</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.ArgumentInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_pdf:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachment:</span> <span class="pre">~pathlib.Path</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_pdf_dir:</span> <span class="pre">~pathlib.Path</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template:</span> <span class="pre">~pathlib.Path</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.OptionInfo</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyautomail/cli.html#register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.register" title="Link to this definition"></a></dt>
+<dd><p>Register your email account.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.cli.resume">
+<span class="sig-name descname"><span class="pre">resume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.ArgumentInfo</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyautomail/cli.html#resume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.resume" title="Link to this definition"></a></dt>
+<dd><p>Resume sending emails.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.cli.run_process">
+<span class="sig-name descname"><span class="pre">run_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/cli.html#run_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.run_process" title="Link to this definition"></a></dt>
+<dd><p>This function will run a process with a specific id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pid</strong> (<em>int</em>) – the process id</p></li>
+<li><p><strong>is_resume</strong> (<em>bool</em>) – if True, the program will resume the process if it is paused, otherwise it prints a warning message and         return without doing anything</p></li>
+<li><p><strong>wait_time</strong> (<em>int</em>) – the time to wait between sending emails</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.cli.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.ArgumentInfo</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyautomail/cli.html#start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.start" title="Link to this definition"></a></dt>
+<dd><p>Start sending emails.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.cli.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;typer.models.ArgumentInfo</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyautomail/cli.html#stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.cli.stop" title="Link to this definition"></a></dt>
+<dd><p>Stop a process.</p>
+</dd></dl>
+
+</section>
+<section id="pyautomail-emailsender">
+<h2>pyautomail.emailsender<a class="headerlink" href="#pyautomail-emailsender" title="Link to this heading"></a></h2>
+<dl class="py class" id="module-pyautomail.emailsender">
+<dt class="sig sig-object py" id="pyautomail.emailsender.EmailSender">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EmailSender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'smtp.gmail.com'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">465</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/emailsender.html#EmailSender"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.emailsender.EmailSender" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is for sending emails to multiple users.</p>
+<p>This class uses a template engine to render the email body. Currently, it supports two template types: ‘.txt’ and
+‘.html’. You can use the template type that suits your needs. The template engine that is used in this class is
+Jinja2. You can find more information about Jinja2 in the following link:
+<a class="reference external" href="https://jinja.palletsprojects.com/en/2.11.x/">https://jinja.palletsprojects.com/en/2.11.x/</a></p>
+<div class="admonition-examples admonition">
+<p class="admonition-title">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyautomail</span> <span class="kn">import</span> <span class="n">EmailSender</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sender</span> <span class="o">=</span> <span class="n">EmailSender</span><span class="p">(</span><span class="n">cfg</span><span class="o">=</span><span class="s2">&quot;config.cfg&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sender</span><span class="o">.</span><span class="n">set_template</span><span class="p">(</span><span class="s1">&#39;body.txt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Jon&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;contact1@gmail.com&#39;</span><span class="p">,</span> <span class="s1">&#39;sub1&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>a simple example of a template file:</p>
+<p>body.txt:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Hello {{name}}, your age is {{age}}.
+</pre></div>
+</div>
+<p>a simple example of a config.cfg file:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[smtp]</span>
+<span class="na">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">smtp.gmail.com</span>
+<span class="na">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">465</span>
+<span class="na">is_test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">True</span>
+
+<span class="k">[account]</span>
+<span class="na">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="na">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+</pre></div>
+</div>
+<p>Or you can use the class without a config file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">automail</span> <span class="kn">import</span> <span class="n">EmailSender</span>
+<span class="n">sender</span> <span class="o">=</span> <span class="n">EmailSender</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s2">&quot;your-email-address&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;your-password&quot;</span><span class="p">)</span>
+<span class="n">sender</span><span class="o">.</span><span class="n">set_template</span><span class="p">(</span><span class="s1">&#39;body.txt&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Jon&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+<span class="n">sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;contact1@gmail.com&#39;</span><span class="p">,</span> <span class="s1">&#39;sub1&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyautomail.emailsender.EmailSender.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'smtp.gmail.com'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">465</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/emailsender.html#EmailSender.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.emailsender.EmailSender.__init__" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<em>str</em>) – The email address of the sender.</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – The password of the sender.</p></li>
+<li><p><strong>host</strong> (<em>str</em>) – The host of the SMTP server.</p></li>
+<li><p><strong>port</strong> (<em>int</em>) – The port of the SMTP server.</p></li>
+<li><p><strong>is_test</strong> (<em>bool</em>) – If this flag is set, no email will be sent. This flag is useful for testing purposes.</p></li>
+<li><p><strong>log_file</strong> (<em>str</em>) – The path to the log file.</p></li>
+<li><p><strong>log_level</strong> (<em>int</em>) – <p>The level of the logger. The default value is 100. You can use the following values:</p>
+<ul>
+<li><p>10: DEBUG</p></li>
+<li><p>20: INFO</p></li>
+<li><p>30: WARNING</p></li>
+<li><p>40: ERROR</p></li>
+<li><p>50: CRITICAL</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyautomail.emailsender.EmailSender.from_config">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/emailsender.html#EmailSender.from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.emailsender.EmailSender.from_config" title="Link to this definition"></a></dt>
+<dd><p>This method is used to initialize this class from a config file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyautomail.emailsender.EmailSender.render_template">
+<span class="sig-name descname"><span class="pre">render_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/emailsender.html#EmailSender.render_template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.emailsender.EmailSender.render_template" title="Link to this definition"></a></dt>
+<dd><p>This method is used by send method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – dictionary of data to be replaced in the template.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>body: the string of the rendered template.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyautomail.emailsender.EmailSender.send">
+<span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">receiver_email_address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachment_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/pyautomail/emailsender.html#EmailSender.send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.emailsender.EmailSender.send" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>receiver_email_address</strong> – Email address of the receiver.</p></li>
+<li><p><strong>subject</strong> – Subject of the email.</p></li>
+<li><p><strong>data</strong> – dictionary of data to be replaced in the template.</p></li>
+<li><p><strong>attachment_path</strong> – Path to attachment file.</p></li>
+<li><p><strong>from_address</strong> – Email address of the sender.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyautomail.emailsender.EmailSender.set_template">
+<span class="sig-name descname"><span class="pre">set_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plain_temp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/emailsender.html#EmailSender.set_template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.emailsender.EmailSender.set_template" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template_path</strong> – Path to template file. the template file should be either HTML or TXT.</p></li>
+<li><p><strong>plain_temp</strong> – A string template.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>NotImplemented if template type is not supported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="pyautomail-manager">
+<h2>pyautomail.manager<a class="headerlink" href="#pyautomail-manager" title="Link to this heading"></a></h2>
+<p id="module-pyautomail.manager">This module is responsible for managing the pyautomail pkg.
+It has below commands:</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>register: register a new contact list and a new process this command will get below arguments:</dt><dd><ul class="simple">
+<li><p>username: the email address of the sender</p></li>
+<li><p>contacts: the path to the csv file which contains the contacts</p></li>
+<li><p>name(optional): an arbitrary name for the process</p></li>
+<li><p>subject(optional): the subject of the email</p></li>
+<li><p>template(optional): the path to the template file</p></li>
+<li><p>cpdf(optional): this is a flag that if it is set, the pdf file will be customized for each contact based on the     path to the pdf file which is in the contacts csv file in the column ‘cpdf’</p></li>
+<li><p>attachment(optional): the path to the attachment file if you want to attach a same file to all emails</p></li>
+<li><p>pdf_dir(optional): the path to the directory which contains the pdf files if you want to use cpdf flag</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>start: this command will start a process and get the process id as argument you can find the process id in the list of processes by: <cite>pyautomail list</cite> command</p></li>
+<li><p>list: list processes</p></li>
+<li><p>stop: this command will stop one specific process by process id</p></li>
+<li><p>resume: this command will resume one specific process by process id</p></li>
+</ol>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.manager.list_processes">
+<span class="sig-name descname"><span class="pre">list_processes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/manager.html#list_processes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.manager.list_processes" title="Link to this definition"></a></dt>
+<dd><p>This function will print the list of all processes or a specific process with a specific id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pid</strong> (<em>int</em>) – the process id if you want to see the information of a specific process or None if you want to see the         information of all processes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.manager.registration">
+<span class="sig-name descname"><span class="pre">registration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contacts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpdf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdf_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/manager.html#registration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.manager.registration" title="Link to this definition"></a></dt>
+<dd><p>This function will register a new process and a new contact list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>str</em>) – the email address of the sender</p></li>
+<li><p><strong>contacts</strong> (<em>str</em>) – the path to the csv file which contains the contacts</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – an arbitrary name for the process</p></li>
+<li><p><strong>cpdf</strong> (<em>bool</em>) – this is a flag that if it is set, the pdf file will be customized for each contact based on the         path to the pdf file which is in the contacts csv file in the column ‘cpdf’</p></li>
+<li><p><strong>attachment</strong> (<em>str</em>) – the path to the attachment file if you want to attach a same file to all emails</p></li>
+<li><p><strong>pdf_dir</strong> (<em>str</em>) – the path to the directory which contains the pdf files if you want to use cpdf flag</p></li>
+<li><p><strong>args</strong> (<em>dict</em>) – the other arguments which are passed to the function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<div class="admonition-notes admonition">
+<p class="admonition-title">Notes</p>
+<p>This function will register a new process plus records for each contact in the contacts csv file.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.manager.resume_process">
+<span class="sig-name descname"><span class="pre">resume_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/manager.html#resume_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.manager.resume_process" title="Link to this definition"></a></dt>
+<dd><p>This function will resume a process with a specific id</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.manager.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/manager.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.manager.run" title="Link to this definition"></a></dt>
+<dd><p>This function will run a process with a specific id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pid</strong> (<em>int</em>) – the process id</p></li>
+<li><p><strong>resume</strong> (<em>bool</em>) – if True, the program will resume the process if it is paused, otherwise it prints a warning message and         return without doing anything</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.manager.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/manager.html#start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.manager.start" title="Link to this definition"></a></dt>
+<dd><p>This function will start a process with a specific id</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.manager.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/manager.html#stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.manager.stop" title="Link to this definition"></a></dt>
+<dd><p>This function will stop a process with a specific id</p>
+</dd></dl>
+
+</section>
+<section id="pyautomail-utils">
+<h2>pyautomail.utils<a class="headerlink" href="#pyautomail-utils" title="Link to this heading"></a></h2>
+<dl class="py class" id="module-pyautomail.utils">
+<dt class="sig sig-object py" id="pyautomail.utils.AutomailLogHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AutomailLogHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'smtp.gmail.com'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">465</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%(asctime)s</span> <span class="pre">%(levelname)-5s</span> <span class="pre">%(message)s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'no-reply-logger'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plain_temp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'{{</span> <span class="pre">msg</span> <span class="pre">}}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/utils.html#AutomailLogHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.utils.AutomailLogHandler" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BufferingHandler</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyautomail.utils.AutomailLogHandler.flush">
+<span class="sig-name descname"><span class="pre">flush</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/utils.html#AutomailLogHandler.flush"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.utils.AutomailLogHandler.flush" title="Link to this definition"></a></dt>
+<dd><p>Override to implement custom flushing behaviour.</p>
+<p>This version just zaps the buffer to empty.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.utils.create_config_file">
+<span class="sig-name descname"><span class="pre">create_config_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smtp_server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smtp_port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender_email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;enter-your-email&gt;'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;enter-your-password&gt;'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/utils.html#create_config_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.utils.create_config_file" title="Link to this definition"></a></dt>
+<dd><p>This function will create a config file for the email sender.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>smtp_server</strong> (<em>str</em>) – The SMTP server address.</p></li>
+<li><p><strong>smtp_port</strong> (<em>int</em>) – The SMTP server port.</p></li>
+<li><p><strong>sender_email</strong> (<em>str</em>) – The email address of the sender.</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – The password of the sender.</p></li>
+<li><p><strong>is_test</strong> (<em>bool</em>) – If True, the email will not be sent.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition-notes admonition">
+<p class="admonition-title">Notes</p>
+<p>This function will create a config file with the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">SMTP</span><span class="p">]</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">smtp</span><span class="o">.</span><span class="n">gmail</span><span class="o">.</span><span class="n">com</span>
+<span class="n">port</span> <span class="o">=</span> <span class="mi">465</span>
+
+<span class="p">[</span><span class="n">SENDER</span><span class="p">]</span>
+<span class="n">email</span> <span class="o">=</span> <span class="n">example</span><span class="nd">@gmail</span><span class="o">.</span><span class="n">com</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.utils.get_config_dict">
+<span class="sig-name descname"><span class="pre">get_config_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/utils.html#get_config_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.utils.get_config_dict" title="Link to this definition"></a></dt>
+<dd><p>This function will get the email sender config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The config object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>configparser.ConfigParser</p>
+</dd>
+</dl>
+<div class="admonition-notes admonition">
+<p class="admonition-title">Notes</p>
+<p>This function will read the config file with the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">SMTP</span><span class="p">]</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">smtp</span><span class="o">.</span><span class="n">gmail</span><span class="o">.</span><span class="n">com</span>
+<span class="n">port</span> <span class="o">=</span> <span class="mi">465</span>
+
+<span class="p">[</span><span class="n">SENDER</span><span class="p">]</span>
+<span class="n">email</span> <span class="o">=</span>
+<span class="n">password</span> <span class="o">=</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.utils.init_logger">
+<span class="sig-name descname"><span class="pre">init_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/utils.html#init_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.utils.init_logger" title="Link to this definition"></a></dt>
+<dd><p>This function will initialize a logger object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the logger object. If not specified, the name will be the root logger.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – The path where the log file is created. If it isn’t set, no log file is created.</p></li>
+<li><p><strong>level</strong> (<em>int</em>) – the level of logger</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>logger_obj</strong> – The logger object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>logging.Logger</p>
+</dd>
+</dl>
+<div class="admonition-notes admonition">
+<p class="admonition-title">Notes</p>
+<p>This function will initialize a logger object with the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">%</span><span class="p">(</span><span class="n">asctime</span><span class="p">)</span><span class="n">s</span> <span class="o">-</span> <span class="o">%</span><span class="p">(</span><span class="n">levelname</span><span class="p">)</span><span class="n">s</span> <span class="p">(</span><span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="n">s</span><span class="p">)</span> <span class="p">]</span> <span class="p">:</span> <span class="o">%</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="n">s</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>The logger object will log to both stdout and a file.
+After colling this function you can use logger_obj to log.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logger_obj</span> <span class="o">=</span> <span class="n">init_logger</span><span class="p">(</span><span class="s1">&#39;EmailSender&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger_obj</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;debug message&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="o">-</span> <span class="n">DEBUG</span> <span class="p">(</span><span class="n">EmailSender</span><span class="p">)</span> <span class="p">]</span> <span class="p">:</span> <span class="n">debug</span> <span class="n">message</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger_obj</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;info message&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="o">-</span> <span class="n">INFO</span> <span class="p">(</span><span class="n">EmailSender</span><span class="p">)</span> <span class="p">]</span> <span class="p">:</span> <span class="n">info</span> <span class="n">message</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger_obj</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;warning message&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="o">-</span> <span class="n">WARNING</span> <span class="p">(</span><span class="n">EmailSender</span><span class="p">)</span> <span class="p">]</span> <span class="p">:</span> <span class="n">warning</span> <span class="n">message</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger_obj</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;error message&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="o">-</span> <span class="n">ERROR</span> <span class="p">(</span><span class="n">EmailSender</span><span class="p">)</span> <span class="p">]</span> <span class="p">:</span> <span class="n">error</span> <span class="n">message</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger_obj</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;critical message&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="o">-</span> <span class="n">CRITICAL</span> <span class="p">(</span><span class="n">EmailSender</span><span class="p">)</span> <span class="p">]</span> <span class="p">:</span> <span class="n">critical</span> <span class="n">message</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyautomail.utils.read_config_file">
+<span class="sig-name descname"><span class="pre">read_config_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyautomail/utils.html#read_config_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyautomail.utils.read_config_file" title="Link to this definition"></a></dt>
+<dd><p>This function will read the config file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The config object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>configparser.ConfigParser</p>
+</dd>
+</dl>
+<div class="admonition-notes admonition">
+<p class="admonition-title">Notes</p>
+<p>This function will read the config file with the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">SMTP</span><span class="p">]</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">smtp</span><span class="o">.</span><span class="n">gmail</span><span class="o">.</span><span class="n">com</span>
+<span class="n">port</span> <span class="o">=</span> <span class="mi">465</span>
+
+<span class="p">[</span><span class="n">SENDER</span><span class="p">]</span>
+<span class="n">email</span> <span class="o">=</span> <span class="n">exxample</span><span class="nd">@gmail</span><span class="o">.</span><span class="n">com</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="API Rrf." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyautomail.config.html" class="btn btn-neutral float-right" title="pyautomail.config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Mohammad Sina Allahkaram.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

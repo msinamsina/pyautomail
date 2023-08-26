@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyautomail.storage.util &mdash; PyAutoMail 1.7.0.4 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=490a1136"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyAutoMail
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started.html">Quickstart with pyautomail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Rrf.</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyAutoMail</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyautomail.storage.util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyautomail.storage.util</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span><span class="p">,</span> <span class="n">declarative_base</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pyautomail.utils</span> <span class="kn">import</span> <span class="n">init_logger</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="create_tables">
+<a class="viewcode-back" href="../../../api/pyautomail.storage.html#pyautomail.storage.util.create_tables">[docs]</a>
+<span class="k">def</span> <span class="nf">create_tables</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;create tables in database</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    engine: sqlalchemy.engine.base.Engine</span>
+<span class="sd">        an engine from database</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; create_tables(engine)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_session">
+<a class="viewcode-back" href="../../../api/pyautomail.storage.html#pyautomail.storage.util.get_session">[docs]</a>
+<span class="k">def</span> <span class="nf">get_session</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;get a session from database</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    session: sqlalchemy.orm.session.Session</span>
+<span class="sd">        a session from database</span>
+<span class="sd">    engine: sqlalchemy.engine.base.Engine</span>
+<span class="sd">        an engine from database</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; get_session()</span>
+<span class="sd">    (&lt;sqlalchemy.orm.session.Session object at 0x0000020F4F6F6F98&gt;, &lt;sqlalchemy.engine.base.Engine object at 0x0000020F4F6F6F28&gt;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;sqlite:///mail.db&#39;</span><span class="p">,</span> <span class="n">echo</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># create a Session</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">session</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">session</span><span class="p">,</span> <span class="n">engine</span></div>
+
+
+
+<div class="viewcode-block" id="register_new_process">
+<a class="viewcode-back" href="../../../api/pyautomail.storage.html#pyautomail.storage.util.register_new_process">[docs]</a>
+<span class="k">def</span> <span class="nf">register_new_process</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">contact_list</span><span class="p">,</span> <span class="n">custom_pdf</span><span class="p">,</span> <span class="n">attachment</span><span class="p">,</span> <span class="n">custom_pdf_dir</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;register a new process in database</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    title: str</span>
+<span class="sd">        title of the process</span>
+<span class="sd">    subject: str</span>
+<span class="sd">        subject of the process</span>
+<span class="sd">    email: str</span>
+<span class="sd">        email of the sender</span>
+<span class="sd">    template: str</span>
+<span class="sd">        path to the template</span>
+<span class="sd">    contact_list: str</span>
+<span class="sd">        path to the contact list</span>
+<span class="sd">    custom_pdf: bool</span>
+<span class="sd">        if True, convert the contact list to pdf</span>
+<span class="sd">    attachment: str</span>
+<span class="sd">        path to the attachment</span>
+<span class="sd">    custom_pdf_dir: str</span>
+<span class="sd">        path to the custom pdf</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; register_new_process(title=&quot;test&quot;, subject=&quot;test&quot;, email=&quot;test&quot;, template=&quot;test&quot;,\</span>
+<span class="sd">     contact_list=&quot;test&quot;, custom_pdf=False, attachment=None, custom_pdf_dir=None)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">pyautomail.storage</span> <span class="kn">import</span> <span class="n">Record</span><span class="p">,</span> <span class="n">Process</span>
+
+    <span class="n">session</span><span class="p">,</span> <span class="n">engin</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">()</span>
+    <span class="n">create_tables</span><span class="p">(</span><span class="n">engin</span><span class="p">)</span>
+
+    <span class="n">process</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">email</span><span class="p">,</span>
+                      <span class="n">temp_file</span><span class="o">=</span><span class="n">template</span><span class="p">,</span> <span class="n">release_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()))</span>
+
+    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">process</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID: </span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> =&gt; Registering Process </span><span class="si">{</span><span class="n">email</span><span class="si">}</span><span class="s2"> with contacts </span><span class="si">{</span><span class="n">contact_list</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">contact_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">contact_list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">contact_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">attachment</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">attachment</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">custom_pdf</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">custom_pdf_dir</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;cpdf&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;.pdf&#39;</span><span class="p">)</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="n">receiver</span><span class="o">=</span><span class="n">email</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span> <span class="n">process_id</span><span class="o">=</span><span class="n">process</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">attachment_path</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID:</span><span class="si">{</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> =&gt; Registering record for </span><span class="si">{</span><span class="n">email</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">engin</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Mohammad Sina Allahkaram.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

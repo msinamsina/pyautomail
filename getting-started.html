@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quickstart with pyautomail &mdash; PyAutoMail 1.7.0.4 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=490a1136"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorial" href="tutorial/index.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyAutoMail
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart with pyautomail</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-use">How to Use</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyautomail-command-line-interface-cli-tool">1. Pyautomail command-line interface (CLI) tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-your-own-python-script">2. Writing your own python script</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Rrf.</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyAutoMail</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quickstart with pyautomail</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/getting-started.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quickstart-with-pyautomail">
+<h1>Quickstart with pyautomail<a class="headerlink" href="#quickstart-with-pyautomail" title="Link to this heading"></a></h1>
+<p>This guide will help you get up and running with <code class="docutils literal notranslate"><span class="pre">pyautomail</span></code> Python package in no time.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If you are not a Python developer, don’t worry! You don’t need to write any
+Python code to use pyautomail. You can use the command-line interface (CLI) tool
+to send emails without writing any code. Please refer to the
+<a class="reference internal" href="#cli"><span class="std std-ref">pyautomail command-line interface (CLI) tool</span></a></p>
+<p>If you are new to the command line, you can check out this
+<a class="reference external" href="https://www.codecademy.com/learn/learn-the-command-line">tutorial</a>.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>Additionally a graphical user interface will be provided in the future.</strong></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are new to Python, you can check out the official Python tutorial
+<a class="reference external" href="https://docs.python.org/3/tutorial/index.html">here</a>.</p>
+</div>
+<p>Before you begin, make sure you have Python installed on your system, preferably
+Python 3.9 or higher.</p>
+<section id="installation">
+<span id="install"></span><h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>To install pyautomail, you can use pip to install the package directly from PyPI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>pyautomail
+</pre></div>
+</div>
+<p>Or you can use pip and git to install the latest version directly from GitHub:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/msinamsina/pyautomail.git
+</pre></div>
+</div>
+<p>This will download and install the latest version of automail along with its dependencies.</p>
+<p>You can also install any specific version using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/msinamsina/pyautomail.git@&lt;develop&gt;
+</pre></div>
+</div>
+<p>Alternatively, you can clone the repository and install the package from source:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:msinamsina/pyautomail.git
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>pyautomail
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="how-to-use">
+<span id="htu"></span><h2>How to Use<a class="headerlink" href="#how-to-use" title="Link to this heading"></a></h2>
+<p>There are two ways to use pyautomail to send emails. You can either use the most powerful
+command-line interface (CLI) tool without writing any Python code, or you can use the
+Python package in your custom scripts. We’ll cover a quick overview of both of these
+options in this guide. For more details, please refer to
+<a class="reference internal" href="tutorial/index.html"><span class="doc">the Tutorial section</span></a>
+and the <a class="reference internal" href="api/index.html"><span class="doc">API reference</span></a>.</p>
+<section id="pyautomail-command-line-interface-cli-tool">
+<span id="cli"></span><h3>1. Pyautomail command-line interface (CLI) tool<a class="headerlink" href="#pyautomail-command-line-interface-cli-tool" title="Link to this heading"></a></h3>
+<p>When you install pyautomail, you will also get a command-line interface (CLI) tool
+called <cite>pyautomail</cite>. This tool can be used to send emails from the command line,
+without writing any Python code. So if you want to send a quick email without
+writing a script, you can use the CLI tool.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To see more example please see the <a class="reference internal" href="tutorial/cli-best-practices.html"><span class="doc">cli best practices</span></a></p>
+</div>
+<p>To use the CLI tool, you will need to provide your contact list in a CSV file.
+The CSV file should contain the <code class="docutils literal notranslate"><span class="pre">email</span></code> column and other columns like <cite>name</cite> can
+be added as contact information which will be used in the email template.</p>
+<p>Here’s an example of a CSV file containing a list of contacts:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>email,name,data1,cpdf
+contact1@gmail.com,contact1,ali,/path/to/pdf1
+contact2@gmail.com,contact2,mohammad,/path/to/pdf2
+contact3@gmail.com,contact3,soheila,/path/to/pdf3
+</pre></div>
+</div>
+<p>And, here’s an example of HTML template:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Hi,{{ name }}<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+        you can see more example <span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+	<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://realpython.com/python-send-email/&quot;</span><span class="p">&gt;</span>here <span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> 
+	and last version of my code is 
+        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://github.com/msinamsina/auto_Gmail_sending&quot;</span><span class="p">&gt;</span>here <span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> 
+        .
+    <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>To send emails using the CLI tool, you should do the following steps:</p>
+<ol class="arabic simple">
+<li><p>At first you should init project using the following commands:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>init<span class="w"> </span>-db<span class="w"> </span>PAM-workspace<span class="w"> </span>-ss<span class="w"> </span>smtp.gmail.com<span class="w"> </span>-sp<span class="w"> </span><span class="m">465</span><span class="w"> </span>-e<span class="w"> </span>example@gmail.com
+<span class="nb">cd</span><span class="w"> </span>PAM-workspace
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p>In the next step you should register a process</p>
+<blockquote>
+<div><ul>
+<li><p>The process contains the email template and the contact list
+data and some other configurations.</p></li>
+<li><p>You can register a process by running the following command:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pyautomail<span class="w"> </span>register<span class="w"> </span>contacts.csv<span class="se">\</span>
+-e<span class="w"> </span>youremail@email.com<span class="se">\</span>
+-t<span class="w"> </span>template.html<span class="se">\</span>
+-s<span class="w"> </span><span class="s2">&quot;Hello from automail!&quot;</span>
+-T<span class="w"> </span><span class="s2">&quot;list1&quot;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>This command will register a process with the given email,
+contacts and template and give you a process id.</p></li>
+<li><p>You can see all the registered processes by running the following command:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pyautomail<span class="w"> </span>list
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Now to start a process the following command should be run:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pyautomail<span class="w"> </span>start<span class="w"> </span>&lt;process_id&gt;
+</pre></div>
+</div>
+<ul>
+<li><p>This command will start the process with the given id and send the emails.</p></li>
+<li><p>You also can stop a process by running the following command in another terminal:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pyautomail<span class="w"> </span>stop<span class="w"> </span>&lt;process_id&gt;
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>And you can resume a stopped process by running the following command:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pyautomail<span class="w"> </span>resume<span class="w"> </span>&lt;process_id&gt;
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="writing-your-own-python-script">
+<h3>2. Writing your own python script<a class="headerlink" href="#writing-your-own-python-script" title="Link to this heading"></a></h3>
+<p>If you want to automate your email sending process, you can also use the Python package in your custom scripts.
+This will give you more flexibility and control over the email sending process.
+You can use the Python package to send emails to multiple recipients, use custom email templates,
+and customize other settings according to your needs.</p>
+<p>You can also use pyautomail in your custom Python scripts to send emails.
+Here’s two basic examples of sending an email to a single recipient:</p>
+<ul>
+<li><dl>
+<dt><strong>First example</strong></dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyautomail</span> <span class="kn">import</span> <span class="n">EmailSender</span>
+
+<span class="c1"># Initialize automail with your email credentials and configurations</span>
+<span class="n">automailer</span> <span class="o">=</span> <span class="n">EmailSender</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;your_email@gmail.com&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;your_email_password&#39;</span><span class="p">)</span>
+
+<span class="c1"># Send a single email</span>
+<span class="n">sender</span><span class="o">.</span><span class="n">set_template</span><span class="p">(</span><span class="s1">&#39;body.txt&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Jon&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+<span class="n">sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;msinamsina@gmail.com&#39;</span><span class="p">,</span> <span class="s1">&#39;sub1&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>Second example</strong></dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyautomail</span> <span class="kn">import</span> <span class="n">EmailSender</span>
+
+<span class="c1"># Creating a sender object</span>
+<span class="n">sender</span> <span class="o">=</span> <span class="n">EmailSender</span><span class="p">(</span><span class="n">cfg</span><span class="o">=</span><span class="s2">&quot;./assets/config.cfg&quot;</span><span class="p">)</span>
+<span class="c1"># Set the template</span>
+<span class="n">sender</span><span class="o">.</span><span class="n">set_template</span><span class="p">(</span><span class="s1">&#39;./templates/body.txt&#39;</span><span class="p">)</span>
+<span class="c1"># Custom data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Jon&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+<span class="c1"># Send the email to &#39;contact1@gmail.com&#39; with Subject &#39;sub1&#39; and custom date</span>
+<span class="n">sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;contact1@gmail.com&#39;</span><span class="p">,</span> <span class="s1">&#39;sub1&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="c1"># Repeat the above steps but using a &#39;.html&#39; template</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Mike&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+<span class="n">sender</span><span class="o">.</span><span class="n">set_template</span><span class="p">(</span><span class="s1">&#39;./templates/html.html&#39;</span><span class="p">)</span>
+<span class="n">sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;contact2@gmail.com&#39;</span><span class="p">,</span> <span class="s1">&#39;sub2&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="c1"># plain_temp</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Mike&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+<span class="n">sender</span><span class="o">.</span><span class="n">set_template</span><span class="p">(</span><span class="n">plain_temp</span><span class="o">=</span><span class="s2">&quot;{{ name }}-{{ age }}&quot;</span><span class="p">)</span>
+<span class="n">sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;contact2@gmail.com&#39;</span><span class="p">,</span> <span class="s1">&#39;sub2&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>Before you start sending emails, you may need to set up some configurations for pyautomail.
+This includes providing your email address, password and so on. You can do this by editing
+the config.cfg file. An example of config file is given below:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[smtp]</span>
+<span class="na">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">smtp.gmail.com</span>
+<span class="na">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">465</span>
+<span class="na">is_test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">True</span>
+
+<span class="k">[account]</span>
+<span class="na">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">example@gmail.com</span>
+<span class="na">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">12345678</span>
+
+<span class="k">[log]</span>
+<span class="na">file-path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">./log.log</span>
+<span class="na">level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10</span>
+</pre></div>
+</div>
+<p>For more advanced usage, such as sending emails with attachments file please refer to the
+<a class="reference internal" href="tutorial/index.html"><span class="doc">tutorial</span></a> sections in the documentation.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>You’ve completed the getting started guide for pyautomail!
+You should now be ready to automate your email communication with ease.
+Feel free to explore the extensive documentation for more features, examples, and best practices.</p>
+<p><strong>Keywords</strong>: automail, Getting Started, Installation, Python Package, Automated Email Sending,
+Email Configuration, Email Credentials, Gmail Integration, SMTP Server, Custom Email Templates, Send Email.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial/index.html" class="btn btn-neutral float-right" title="Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Mohammad Sina Allahkaram.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

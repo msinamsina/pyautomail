@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLI Best Practices &mdash; PyAutoMail 1.7.0.4 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=490a1136"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Rrf." href="../api/index.html" />
+    <link rel="prev" title="Command-line interface (CLI) tool" href="cli.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyAutoMail
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Quickstart with pyautomail</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#config-file">Config file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#templates">Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#python-usage">Python usage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#cli-usage">CLI Usage</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cli.html">Command-line interface (CLI) tool</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CLI Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initializing-project">Initializing Project</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-1-sending-a-common-email-to-all-recipients">Example 1: Sending a common Email to all recipients</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Rrf.</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyAutoMail</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorial</a></li>
+      <li class="breadcrumb-item active">CLI Best Practices</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorial/cli-best-practices.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cli-best-practices">
+<h1>CLI Best Practices<a class="headerlink" href="#cli-best-practices" title="Link to this heading"></a></h1>
+<p>This part of document describes the best practices for using the Pyautomail CLI. It is intended to be a living document,
+and will be updated as new best practices are discovered.</p>
+<p>Before anything else, It’s needed to discuss the basic concepts of Pyautomail CLI. The Pyautomail CLI needs three main
+steps to send emails to the recipients.</p>
+<p>1. For working with pyautomail at first a project should be initialized. This step is done by
+<a class="reference internal" href="cli.html#init-command"><span class="std std-ref">pyautomail init</span></a> command. This command creates a project directory with the name of the project
+and a config file named <cite>config.cfg</cite> in the project directory. The config file contains the project settings and user
+can change the settings by editing the config file.
+After initializing the project, the other steps must be done in the project directory.</p>
+<p>2. The second step is to register a <strong>Process</strong>. A process has a set of common information that is needed to send
+emails to recipients. The common information includes the email <strong>template</strong>, the email <strong>subject</strong>, the email
+<strong>attachments</strong> and the email <strong>sender</strong>. Processes also have <strong>Records</strong>. Every record contain the <strong>recipients</strong>
+information like <strong>email addresses</strong> and related <strong>datas</strong> of every recipient.</p>
+<p>3. In the last step of the user can <strong>start</strong>, <strong>stop</strong>, <strong>resume</strong>, <strong>delete</strong> processes which is registered in the
+project. The user can also <strong>list</strong> the processes and see the status of them.</p>
+<section id="initializing-project">
+<h2>Initializing Project<a class="headerlink" href="#initializing-project" title="Link to this heading"></a></h2>
+<p>At first you need init the project and go inside of project directory.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>init<span class="w"> </span>-db<span class="w"> </span>PAM-workspace<span class="w"> </span>-ss<span class="w"> </span>smtp.gmail.com<span class="w"> </span>-sp<span class="w"> </span><span class="m">465</span><span class="w"> </span>-e<span class="w"> </span>example@gmail.com
+<span class="nb">cd</span><span class="w"> </span>PAM-workspace
+</pre></div>
+</div>
+</section>
+<section id="example-1-sending-a-common-email-to-all-recipients">
+<h2>Example 1: Sending a common Email to all recipients<a class="headerlink" href="#example-1-sending-a-common-email-to-all-recipients" title="Link to this heading"></a></h2>
+<p>For sending a common email to all recipients, you need create a template file anywhere you want. We recommend to create
+<code class="docutils literal notranslate"><span class="pre">.html</span></code> format. There is no limitation for the template file name. For example we create a template file named
+<code class="docutils literal notranslate"><span class="pre">template.html</span></code> . The template file can contain any information you want. For example we create a template file
+with the following content:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hi everyone!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>This is a test email.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>After creating the template file, you need to register a process, but before that you need to prepare a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file
+that contains the recipients information. The <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file must contain a column named which is <strong>EXACTLY</strong> <code class="docutils literal notranslate"><span class="pre">email</span></code>
+that contains the email addresses of the recipients. For example we create a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file named <code class="docutils literal notranslate"><span class="pre">recipients.csv</span></code>
+with the following:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>email,
+receiver1@gmail.com
+receiver2@gmail.com
+receiver2@gmail.com
+other@email.co
+...
+</pre></div>
+</div>
+<p>After creating the <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file, you can register a process with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>register<span class="w">  </span>recipients.csv<span class="w"> </span>-t<span class="w"> </span>template.html<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;Test Email&quot;</span><span class="w"> </span>-T<span class="w"> </span><span class="s2">&quot;list1&quot;</span><span class="w"> </span>-e<span class="w"> </span>sender@gmail.com
+</pre></div>
+</div>
+<p>This command registers a process with the name of <code class="docutils literal notranslate"><span class="pre">recipients.csv</span></code> and the template file <code class="docutils literal notranslate"><span class="pre">template.html</span></code> and the
+subject of <code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">Email</span></code> and the sender email address of <code class="docutils literal notranslate"><span class="pre">sender&#64;gmail.com</span></code>. The process is registered with the
+name of <code class="docutils literal notranslate"><span class="pre">list1</span></code>. As you sow, the sender email address can be different from the email address that you used for
+initializing the project but you can use the same one. After registering the process, the following output will be
+shown:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ID:<span class="w"> </span><span class="nv">1</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span>Registering<span class="w"> </span>Process<span class="w"> </span>sender@gmail.com<span class="w"> </span>with<span class="w"> </span>contacts<span class="w"> </span>list1<span class="se">\r</span>ecipients.csv
+ID:1<span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span>Registering<span class="w"> </span>record<span class="w"> </span><span class="k">for</span><span class="w"> </span>receiver1@gmail.com
+ID:2<span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span>Registering<span class="w"> </span>record<span class="w"> </span><span class="k">for</span><span class="w"> </span>receiver2@gmail.com
+ID:3<span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span>Registering<span class="w"> </span>record<span class="w"> </span><span class="k">for</span><span class="w"> </span>receiver2@gmail.com
+ID:4<span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span>Registering<span class="w"> </span>record<span class="w"> </span><span class="k">for</span><span class="w"> </span>other@email.co
+...
+</pre></div>
+</div>
+<p>As you can see the process is registered with the ID of <code class="docutils literal notranslate"><span class="pre">1</span></code> and the records are registered with the ID of <code class="docutils literal notranslate"><span class="pre">2</span></code>,
+<code class="docutils literal notranslate"><span class="pre">3</span></code>, <code class="docutils literal notranslate"><span class="pre">4</span></code> and so on. The ID of the process is used for starting, stopping, resuming and deleting the process.</p>
+<p>After registering the process, now you are ready to start the process and send emails to the recipients. You can start
+the process with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>start<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+<p>After running this command the following question will be asked:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Do you want to use the initial password for sender@gmail.com? [Y/n]:
+</pre></div>
+</div>
+<p>And you should enter <code class="docutils literal notranslate"><span class="pre">n</span></code> then enter your password.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is recommended to don’t save you password in config file, because it is not secure.</p>
+</div>
+<p>After entering the password, if you email address and password are correct, the process will be started, otherwise the
+following output will be shown:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="m">2023</span>-08-25<span class="w"> </span><span class="m">14</span>:27:36<span class="w"> </span>-<span class="w"> </span>INFO<span class="w"> </span><span class="o">(</span>EmailSender<span class="o">)</span><span class="w"> </span><span class="o">]</span><span class="w"> </span>:<span class="w"> </span>Initializing<span class="w"> </span>EmailSender...
+<span class="o">[</span><span class="m">2023</span>-08-25<span class="w"> </span><span class="m">14</span>:27:36<span class="w"> </span>-<span class="w"> </span>INFO<span class="w"> </span><span class="o">(</span>EmailSender<span class="o">)</span><span class="w"> </span><span class="o">]</span><span class="w"> </span>:<span class="w"> </span>Connecting<span class="w"> </span>to<span class="w"> </span>SMTP<span class="w"> </span>server...
+<span class="o">[</span><span class="m">2023</span>-08-25<span class="w"> </span><span class="m">14</span>:27:36<span class="w"> </span>-<span class="w"> </span>INFO<span class="w"> </span><span class="o">(</span>EmailSender<span class="o">)</span><span class="w"> </span><span class="o">]</span><span class="w"> </span>:<span class="w"> </span>Connected<span class="w"> </span>to<span class="w"> </span>SMTP<span class="w"> </span>server.
+<span class="o">[</span><span class="m">2023</span>-08-25<span class="w"> </span><span class="m">14</span>:27:36<span class="w"> </span>-<span class="w"> </span>INFO<span class="w"> </span><span class="o">(</span>EmailSender<span class="o">)</span><span class="w"> </span><span class="o">]</span><span class="w"> </span>:<span class="w"> </span>Logging<span class="w"> </span><span class="k">in</span><span class="w"> </span>to<span class="w"> </span>user<span class="w"> </span>account:<span class="w"> </span>sender@gmail.com...
+<span class="o">[</span><span class="m">2023</span>-08-25<span class="w"> </span><span class="m">14</span>:27:37<span class="w"> </span>-<span class="w"> </span>ERROR<span class="w"> </span><span class="o">(</span>EmailSender<span class="o">)</span><span class="w"> </span><span class="o">]</span><span class="w"> </span>:<span class="w"> </span>Authentication<span class="w"> </span>ERROR:<span class="w"> </span>Username<span class="w"> </span>and<span class="w"> </span>Password<span class="w"> </span>not<span class="w"> </span>accepted.<span class="w"> </span>Please<span class="w"> </span>check<span class="w"> </span>username<span class="w"> </span>and<span class="w"> </span>password<span class="w"> </span>and<span class="w"> </span>try<span class="w"> </span>again
+<span class="o">[</span><span class="m">2023</span>-08-25<span class="w"> </span><span class="m">14</span>:27:37<span class="w"> </span>-<span class="w"> </span>INFO<span class="w"> </span><span class="o">(</span>EmailSender<span class="o">)</span><span class="w"> </span><span class="o">]</span><span class="w"> </span>:<span class="w"> </span>Closing<span class="w"> </span>connection<span class="w"> </span>to<span class="w"> </span>SMTP<span class="w"> </span>server...
+<span class="o">[</span><span class="m">2023</span>-08-25<span class="w"> </span><span class="m">14</span>:27:37<span class="w"> </span>-<span class="w"> </span>INFO<span class="w"> </span><span class="o">(</span>EmailSender<span class="o">)</span><span class="w"> </span><span class="o">]</span><span class="w"> </span>:<span class="w"> </span>Connection<span class="w"> </span>closed.
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cli.html" class="btn btn-neutral float-left" title="Command-line interface (CLI) tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/index.html" class="btn btn-neutral float-right" title="API Rrf." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Mohammad Sina Allahkaram.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

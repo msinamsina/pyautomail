@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyautomail.manager &mdash; PyAutoMail 1.7.0.4 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=490a1136"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyAutoMail
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Quickstart with pyautomail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Rrf.</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyAutoMail</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyautomail.manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyautomail.manager</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module is responsible for managing the pyautomail pkg.</span>
+<span class="sd">It has below commands:</span>
+
+<span class="sd">1. register: register a new contact list and a new process this command will get below arguments:</span>
+<span class="sd">    - username: the email address of the sender</span>
+<span class="sd">    - contacts: the path to the csv file which contains the contacts</span>
+<span class="sd">    - name(optional): an arbitrary name for the process</span>
+<span class="sd">    - subject(optional): the subject of the email</span>
+<span class="sd">    - template(optional): the path to the template file</span>
+<span class="sd">    - cpdf(optional): this is a flag that if it is set, the pdf file will be customized for each contact based on the \</span>
+<span class="sd">    path to the pdf file which is in the contacts csv file in the column &#39;cpdf&#39;</span>
+<span class="sd">    - attachment(optional): the path to the attachment file if you want to attach a same file to all emails</span>
+<span class="sd">    - pdf_dir(optional): the path to the directory which contains the pdf files if you want to use cpdf flag</span>
+<span class="sd">2. start: this command will start a process and get the process id as argument you can find the process id in the list\</span>
+<span class="sd"> of processes by: `pyautomail list` command</span>
+<span class="sd">3. list: list processes</span>
+<span class="sd">4. stop: this command will stop one specific process by process id</span>
+<span class="sd">5. resume: this command will resume one specific process by process id</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">pyautomail.storage</span> <span class="kn">import</span> <span class="n">Record</span><span class="p">,</span> <span class="n">Process</span><span class="p">,</span> <span class="n">get_session</span><span class="p">,</span> <span class="n">create_tables</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">getpass</span>
+<span class="kn">from</span> <span class="nn">pyautomail</span> <span class="kn">import</span> <span class="n">EmailSender</span>
+<span class="kn">from</span> <span class="nn">pyautomail.utils</span> <span class="kn">import</span> <span class="n">init_logger</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="c1"># TODO: add a command to delete a process</span>
+<span class="c1"># TODO: add a command to delete a record</span>
+<span class="c1"># TODO: table for process in process_list function</span>
+<span class="c1"># TODO: table for record</span>
+<span class="c1"># TODO: add a command to edit a process</span>
+<span class="c1"># TODO: add a command to edit a record</span>
+<span class="c1"># TODO: create a logger pkg</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;registration&#39;</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">,</span> <span class="s1">&#39;resume_process&#39;</span><span class="p">,</span> <span class="s1">&#39;list_processes&#39;</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">project_name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter the name of your project: &#39;</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter the path to your project (default is current directory): &#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">engin</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">()</span>
+    <span class="n">create_tables</span><span class="p">(</span><span class="n">engin</span><span class="p">)</span>
+
+    <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">engin</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="registration">
+<a class="viewcode-back" href="../../api/pyautomail.html#pyautomail.manager.registration">[docs]</a>
+<span class="k">def</span> <span class="nf">registration</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">contacts</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">cpdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">attachment</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">pdf_dir</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function will register a new process and a new contact list</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    username : str</span>
+<span class="sd">        the email address of the sender</span>
+<span class="sd">    contacts : str</span>
+<span class="sd">        the path to the csv file which contains the contacts</span>
+<span class="sd">    name : str</span>
+<span class="sd">        an arbitrary name for the process</span>
+<span class="sd">    cpdf : bool</span>
+<span class="sd">        this is a flag that if it is set, the pdf file will be customized for each contact based on the \</span>
+<span class="sd">        path to the pdf file which is in the contacts csv file in the column &#39;cpdf&#39;</span>
+<span class="sd">    attachment : str</span>
+<span class="sd">        the path to the attachment file if you want to attach a same file to all emails</span>
+<span class="sd">    pdf_dir : str</span>
+<span class="sd">        the path to the directory which contains the pdf files if you want to use cpdf flag</span>
+<span class="sd">    args : dict</span>
+<span class="sd">        the other arguments which are passed to the function</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function will register a new process plus records for each contact in the contacts csv file.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">pyautomail.storage</span> <span class="kn">import</span> <span class="n">register_new_process</span>
+
+    <span class="n">register_new_process</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">contact_list</span><span class="o">=</span><span class="n">contacts</span><span class="p">,</span> <span class="n">custom_pdf</span><span class="o">=</span><span class="n">cpdf</span><span class="p">,</span> <span class="n">attachment</span><span class="o">=</span><span class="n">attachment</span><span class="p">,</span>
+                         <span class="n">custom_pdf_dir</span><span class="o">=</span><span class="n">pdf_dir</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">template</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;template&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Process registered successfully!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You can start the process with &#39;pyautomail start &lt;process_id&gt;&#39; command&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="run">
+<a class="viewcode-back" href="../../api/pyautomail.html#pyautomail.manager.run">[docs]</a>
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function will run a process with a specific id</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pid : int</span>
+<span class="sd">        the process id</span>
+<span class="sd">    resume : bool</span>
+<span class="sd">        if True, the program will resume the process if it is paused, otherwise it prints a warning message and \</span>
+<span class="sd">        return without doing anything</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">engin</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">()</span>
+    <span class="n">create_tables</span><span class="p">(</span><span class="n">engin</span><span class="p">)</span>
+
+    <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">engin</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">init_logger</span><span class="p">(</span><span class="s1">&#39;manager&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Reading arguments...&quot;</span><span class="p">)</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Process</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Process</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">pid</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">process</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID:</span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s2"> =&gt; Process not found. You can see all processes with &#39;mailmanager list&#39; command&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="n">sender_email</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">sender</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">subject</span>
+    <span class="n">temp_file</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">temp_file</span>
+    <span class="k">if</span> <span class="n">resume</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s2">&quot;paused&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID:</span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s2"> =&gt; Program is already </span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">contacts</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Record</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Record</span><span class="o">.</span><span class="n">process_id</span> <span class="o">==</span> <span class="n">pid</span><span class="p">,</span> <span class="n">Record</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;unsent&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">status</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;paused&quot;</span><span class="p">,</span> <span class="s2">&quot;in progress&quot;</span><span class="p">,</span> <span class="s1">&#39;finished&#39;</span><span class="p">]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID:</span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s2"> =&gt; Program is already </span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID:</span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s2"> =&gt; Program is already </span><span class="si">{</span><span class="n">process</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You can resume the program with &#39;mailmanager resume </span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s2">&#39; command&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You can see all processes with &#39;mailmanager list&#39; command&quot;</span><span class="p">)</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">check</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Are you sure you want to sent all email again? (y/n)&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">check</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+                    <span class="k">return</span>
+                <span class="k">elif</span> <span class="n">check</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please enter y or n!&quot;</span><span class="p">)</span>
+        <span class="n">contacts</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Record</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Record</span><span class="o">.</span><span class="n">process_id</span> <span class="o">==</span> <span class="n">pid</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s2">&quot;Enter you email password  :&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Create a secure SSL context</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating EmailSender obj...&quot;</span><span class="p">)</span>
+    <span class="n">sender</span> <span class="o">=</span> <span class="n">EmailSender</span><span class="p">(</span><span class="n">cfg</span><span class="o">=</span><span class="s2">&quot;config.cfg&quot;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">sender_email</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">temp_file</span><span class="p">:</span>
+        <span class="n">sender</span><span class="o">.</span><span class="n">set_template</span><span class="p">(</span><span class="n">temp_file</span><span class="p">)</span>
+
+    <span class="n">process</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;in progress&quot;</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="n">pause</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">contact</span> <span class="ow">in</span> <span class="n">contacts</span><span class="p">:</span>
+        <span class="n">process</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Process</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Process</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">pid</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;paused&quot;</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID:</span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s2"> =&gt; Pausing the program&quot;</span><span class="p">)</span>
+            <span class="n">pause</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">break</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sending email to </span><span class="si">{</span><span class="n">contact</span><span class="o">.</span><span class="n">receiver</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">contact</span><span class="o">.</span><span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">contact</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">contact</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;sent&quot;</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID:</span><span class="si">{</span><span class="n">contact</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> =&gt; Email sent to </span><span class="si">{</span><span class="n">contact</span><span class="o">.</span><span class="n">receiver</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pause</span><span class="p">:</span>
+        <span class="n">process</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;finished&quot;</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID:</span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s2"> =&gt; Program finished successfully&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="start">
+<a class="viewcode-back" href="../../api/pyautomail.html#pyautomail.manager.start">[docs]</a>
+<span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function will start a process with a specific id&quot;&quot;&quot;</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="stop">
+<a class="viewcode-back" href="../../api/pyautomail.html#pyautomail.manager.stop">[docs]</a>
+<span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function will stop a process with a specific id&quot;&quot;&quot;</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">engin</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">()</span>
+    <span class="n">create_tables</span><span class="p">(</span><span class="n">engin</span><span class="p">)</span>
+
+    <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">engin</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Process</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Process</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">pid</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;in progress&quot;</span><span class="p">:</span>
+        <span class="n">process</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;paused&quot;</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID: </span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s2"> =&gt; Pausing the program&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID: </span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s2"> =&gt; Program is not running&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="resume_process">
+<a class="viewcode-back" href="../../api/pyautomail.html#pyautomail.manager.resume_process">[docs]</a>
+<span class="k">def</span> <span class="nf">resume_process</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function will resume a process with a specific id&quot;&quot;&quot;</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="list_processes">
+<a class="viewcode-back" href="../../api/pyautomail.html#pyautomail.manager.list_processes">[docs]</a>
+<span class="k">def</span> <span class="nf">list_processes</span><span class="p">(</span><span class="n">pid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function will print the list of all processes or a specific process with a specific id</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pid : int</span>
+<span class="sd">        the process id if you want to see the information of a specific process or None if you want to see the \</span>
+<span class="sd">        information of all processes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">engin</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">()</span>
+    <span class="n">create_tables</span><span class="p">(</span><span class="n">engin</span><span class="p">)</span>
+
+    <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">engin</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">pid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">processes</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Process</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">processes</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Process</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Process</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">pid</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">process</span> <span class="ow">in</span> <span class="n">processes</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">process</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">process</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
+              <span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Record</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Record</span><span class="o">.</span><span class="n">process_id</span> <span class="o">==</span> <span class="n">process</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">Record</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;unsent&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()),</span>
+              <span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Record</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Record</span><span class="o">.</span><span class="n">process_id</span> <span class="o">==</span> <span class="n">process</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">Record</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;sent&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()))</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_parser</span><span class="p">():</span>
+    <span class="n">parser_obj</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Automail&#39;</span><span class="p">,</span> <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;pyautomail&quot;</span><span class="p">)</span>
+    <span class="n">sud_parser</span> <span class="o">=</span> <span class="n">parser_obj</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;command&#39;</span><span class="p">)</span>
+
+    <span class="n">init_parser</span> <span class="o">=</span> <span class="n">sud_parser</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s1">&#39;init&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Initialize the database&#39;</span><span class="p">)</span>
+    <span class="n">init_parser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">init</span><span class="p">)</span>
+
+    <span class="n">register_parser</span> <span class="o">=</span> <span class="n">sud_parser</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s1">&#39;register&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Register a new user&#39;</span><span class="p">)</span>
+    <span class="n">register_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Username&#39;</span><span class="p">)</span>
+    <span class="n">register_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;contacts&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Contacts&#39;</span><span class="p">)</span>
+    <span class="n">register_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--name&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;A name&#39;</span><span class="p">)</span>
+    <span class="n">register_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--template&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Path to HTML or TXT Template&#39;</span><span class="p">)</span>
+    <span class="n">register_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--subject&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Subject of the email&#39;</span><span class="p">)</span>
+    <span class="n">register_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--attachment&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;path to pdf file that you want to attach to your E-mail&quot;</span><span class="p">)</span>
+    <span class="n">register_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--cpdf&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;custom pdf file that you want to attach to&quot;</span>
+                                                                     <span class="s2">&quot; your E-mail&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">register_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--pdf_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">register_parser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">registration</span><span class="p">)</span>
+
+    <span class="n">start_parser</span> <span class="o">=</span> <span class="n">sud_parser</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Start a process that is registered by id&#39;</span><span class="p">)</span>
+    <span class="n">start_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;pid&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;process id&#39;</span><span class="p">)</span>
+    <span class="n">start_parser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">start</span><span class="p">)</span>
+
+    <span class="n">stop_parser</span> <span class="o">=</span> <span class="n">sud_parser</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s1">&#39;stop&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Stop a process that is running by id&#39;</span><span class="p">)</span>
+    <span class="n">stop_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;pid&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;process id&#39;</span><span class="p">)</span>
+    <span class="n">stop_parser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">stop</span><span class="p">)</span>
+
+    <span class="n">resume_parser</span> <span class="o">=</span> <span class="n">sud_parser</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s1">&#39;resume&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Resume a process that is paused by id&#39;</span><span class="p">)</span>
+    <span class="n">resume_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;pid&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;process id&#39;</span><span class="p">)</span>
+    <span class="n">resume_parser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">resume_process</span><span class="p">)</span>
+
+    <span class="n">list_parser</span> <span class="o">=</span> <span class="n">sud_parser</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;List processes (all or a specific proces  by id&#39;</span><span class="p">)</span>
+    <span class="n">list_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--pid&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;process id&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">list_parser</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">list_processes</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">parser_obj</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">parser_</span> <span class="o">=</span> <span class="n">_parser</span><span class="p">()</span>
+    <span class="n">args_</span> <span class="o">=</span> <span class="n">parser_</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">args_</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="nb">vars</span><span class="p">(</span><span class="n">args_</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Mohammad Sina Allahkaram.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

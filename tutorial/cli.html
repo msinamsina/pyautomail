@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command-line interface (CLI) tool &mdash; PyAutoMail 1.7.0.4 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=490a1136"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CLI Best Practices" href="cli-best-practices.html" />
+    <link rel="prev" title="Tutorial" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyAutoMail
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Quickstart with pyautomail</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#config-file">Config file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#templates">Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#python-usage">Python usage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#cli-usage">CLI Usage</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Command-line interface (CLI) tool</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#init-command">init command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#register-command">register command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#start-command">start command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-command">list command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-records-command">list-records command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stop-command">stop command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resume-command">resume command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-process-command">delete-process command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-record-command">delete-record command</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli-best-practices.html">CLI Best Practices</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Rrf.</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyAutoMail</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorial</a></li>
+      <li class="breadcrumb-item active">Command-line interface (CLI) tool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorial/cli.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="command-line-interface-cli-tool">
+<h1>Command-line interface (CLI) tool<a class="headerlink" href="#command-line-interface-cli-tool" title="Link to this heading"></a></h1>
+<p>Pyautomail has prepared an easy to use CLI tool which gather several useful command for creating and editing lists of
+your contacts emails, templates and so on.</p>
+<p>Pyautomail CLI can be used by following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyautomail</span> <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>It support the following commands:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#init-command"><span class="std std-ref">init</span></a></p></li>
+<li><p><a class="reference internal" href="#register-command"><span class="std std-ref">register</span></a></p></li>
+<li><p><a class="reference internal" href="#list-command"><span class="std std-ref">list</span></a></p></li>
+<li><p><a class="reference internal" href="#list-records-command"><span class="std std-ref">list-records</span></a></p></li>
+<li><p><a class="reference internal" href="#start-command"><span class="std std-ref">start</span></a></p></li>
+<li><p><a class="reference internal" href="#stop-command"><span class="std std-ref">stop</span></a></p></li>
+<li><p><a class="reference internal" href="#resume-command"><span class="std std-ref">resume</span></a></p></li>
+<li><p><a class="reference internal" href="#delete-process-command"><span class="std std-ref">delete-process</span></a></p></li>
+<li><p><a class="reference internal" href="#stop-command"><span class="std std-ref">delete-record</span></a></p></li>
+</ul>
+</div></blockquote>
+<section id="init-command">
+<h2>init command<a class="headerlink" href="#init-command" title="Link to this heading"></a></h2>
+<p>Before anything else, pyautomail project should be initialized. This is done by the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>init<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+</pre></div>
+</div>
+<p>This command has the following options:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--db-path</span></code> or <code class="docutils literal notranslate"><span class="pre">-db</span></code>: This option is used for setting the name of project and refers to
+the path of database directory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--smtp-serve</span></code> or <code class="docutils literal notranslate"><span class="pre">-ss</span></code>: This option is used for setting the smtp host of your project.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--smtp-port</span></code> or <code class="docutils literal notranslate"><span class="pre">-sp</span></code>: This option is used for setting the smtp port of your project.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--email</span></code> or <code class="docutils literal notranslate"><span class="pre">-e</span></code>: This option is used for setting the default email address of your project.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--password</span></code> or <code class="docutils literal notranslate"><span class="pre">-p</span></code>: This option is used for setting the default email password of your project.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--test</span></code> or <code class="docutils literal notranslate"><span class="pre">-t</span></code>: This option sets the testing mode and in this mode no email will be sent.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--help</span></code>: This option is used for showing the help message.</p></li>
+</ul>
+</div></blockquote>
+<p>If the <code class="docutils literal notranslate"><span class="pre">init</span></code> command is run without necessary options, some questions will be asked that help client
+to initialize the project. The questions are as follows:</p>
+<ol class="arabic">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">--db-path</span></code> or <code class="docutils literal notranslate"><span class="pre">-db</span></code> option is not set, the following question will be asked:</p>
+<blockquote>
+<div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Where do you want to initialize the automail project? [./automail-workspace]:
+</pre></div>
+</div>
+<p>The path or name of the directory in which the project should be initialized must be entered after this question.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The directory should be empty or be an old pyautomail project and if that directory doesn’t exist it will be
+created after <code class="docutils literal notranslate"><span class="pre">init</span></code> command.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">--smtp-serve</span></code>, <code class="docutils literal notranslate"><span class="pre">-ss</span></code>, <code class="docutils literal notranslate"><span class="pre">--smtp-port</span></code> or <code class="docutils literal notranslate"><span class="pre">-sp</span></code> options is not set, the following questions will be asked:</p>
+<blockquote>
+<div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>What is your smtp server? [smtp.gmail.com]:
+What is your smtp port? [465]:
+</pre></div>
+</div>
+<p>These two questions are about smtp server setting. The smtp host and port should be entered.
+(by default the pyautomail is set on GMAIL server).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about smtp server please see the following links:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://sendgrid.com/blog/what-is-an-smtp-server/">https://sendgrid.com/blog/what-is-an-smtp-server/</a></p></li>
+<li><p><a class="reference external" href="https://blog.cpanel.com/setting-up-and-troubleshooting-smtp-in-cpanel/">https://blog.cpanel.com/setting-up-and-troubleshooting-smtp-in-cpanel/</a></p></li>
+</ul>
+</div>
+</div></blockquote>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">--email</span></code> or <code class="docutils literal notranslate"><span class="pre">-e</span></code> option is not set, the following question will be asked:</p>
+<blockquote>
+<div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Enter a default email address? [&lt;your-email&gt;]:
+</pre></div>
+</div>
+<p>The answer of this question will set a default email address for your project.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This email address can be used as the default sender email address but you can set another email
+address for every list of your contacts. For more information please
+see <a class="reference internal" href="#register-command"><span class="std std-ref">register</span></a> command.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">--password</span></code> or <code class="docutils literal notranslate"><span class="pre">-p</span></code> option is not set, the following question will be asked:</p>
+<blockquote>
+<div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>If you want to save the password of default email please enter your password
+otherwise press enter to continue? [None]:
+</pre></div>
+</div>
+<p>This question is about default email password. If the password is entered, it will be saved in the config file.
+Otherwise, if it’s leaved empty the password should be entered every time you want to <a class="reference internal" href="#start-command"><span class="std std-ref">start</span></a>
+a process.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you want to save your password in the config file, you should know that it will be saved in plain
+text format. So, it is not recommended to save your password in the config file.</p>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<p>When the pyautomail project initialization process is done, a new directory with the name of your project will be
+created which the following files exist on it:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;project-name&gt;
+    |_ config.cfg
+    |_ mail.db
+</pre></div>
+</div>
+<p>The config.cfg file contains the configuration of your project and the mail.db file is a sqlite database which is stored
+the processes ans records of your project.</p>
+<p><strong>config.cfg</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[smtp]
+host = smtp.gmail.com
+port = 465
+is_test = True
+
+[account]
+user = example@gmail.com
+password = 12345678
+
+[log]
+file-path = ./log.log
+level = 10
+</pre></div>
+</div>
+<p>User can edit this file manually. But, it is recommended to use the <code class="docutils literal notranslate"><span class="pre">init</span></code> command for editing this file.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>All the other command must be run from the inside of the project folder. For more information see
+<a class="reference internal" href="cli-best-practices.html"><span class="doc">cli best practices</span></a></p>
+</div>
+</section>
+<section id="register-command">
+<h2>register command<a class="headerlink" href="#register-command" title="Link to this heading"></a></h2>
+<p>This command is used to register a new list of contacts. You can register a new list of contacts by the following
+command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>register<span class="w"> </span>&lt;path/to/contacts/file&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;path/to/contacts/file&gt;</span></code> is the path of your contacts file. The contacts file should be a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file and
+must have a column with the name of <code class="docutils literal notranslate"><span class="pre">email</span></code>. Every row of this column should be a valid email address.</p>
+<p>Other columns of the contacts file are optional and you can add as many columns as you want. The name of the columns
+will be used as the name of the variables in the template file. For example, if you have a column with the name of
+<code class="docutils literal notranslate"><span class="pre">name</span></code>, you can use the <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">name</span> <span class="pre">}}</span></code> in your template file.</p>
+<p>Additionally, if you want to attach a custom file to every email the <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file should have a column with name of
+<code class="docutils literal notranslate"><span class="pre">cpdf</span></code>, every row of this column should be the path of your file.</p>
+<p>There is an example of the contact-list.csv:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>email,name,data1,cpdf
+contact1@gmail.com,contact1,ali,/path/to/pdf1
+contact2@gmail.com,contact2,mohammad,/path/to/pdf2
+contact3@gmail.com,contact3,soheila,/path/to/pdf3
+</pre></div>
+</div>
+<p>The register command also has some options which are as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--email</span></code> or <code class="docutils literal notranslate"><span class="pre">-e</span></code>: This is used for setting the sender email address of the list.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--title</span></code> or <code class="docutils literal notranslate"><span class="pre">-T</span></code>: This is used to set a title for the list. The title should be unique.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--template</span></code> or <code class="docutils literal notranslate"><span class="pre">-t</span></code>: The path of the template file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--subject</span></code> or <code class="docutils literal notranslate"><span class="pre">-s</span></code>: The subject of the email.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--custom-pdf</span></code> or <code class="docutils literal notranslate"><span class="pre">-CA</span></code>: This is a switch option and if is set, the custom pdf file will be attached to
+every email. based on the <code class="docutils literal notranslate"><span class="pre">cpdf</span></code> column of the contacts file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">attachment</span></code> or <code class="docutils literal notranslate"><span class="pre">-a</span></code>: The path of the attachment file. This file will be attached to every email.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--custom-pdf-dir</span></code> or <code class="docutils literal notranslate"><span class="pre">-cpd</span></code>: The path of the directory that contains the custom pdf files. This option
+will be used if the <code class="docutils literal notranslate"><span class="pre">--custom-pdf</span></code> option is set.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--help</span></code>: This is used for showing the help message.</p></li>
+</ul>
+</div></blockquote>
+<p>If the <code class="docutils literal notranslate"><span class="pre">register</span></code> command is run without any option, the pyautomail will ask some questions. The questions are as
+follows:</p>
+<blockquote>
+<div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>What is your email address? [default(see config.cfg)]:
+What is the title of your contact list? [Contact List]:
+What is the subject of your email? [None]:
+Do you want to use template? [y/N]:
+</pre></div>
+</div>
+</div></blockquote>
+<p>After registering a new list of contacts, a new directory with the name of your list will be created in the
+<code class="docutils literal notranslate"><span class="pre">&lt;project-name&gt;/&lt;title&gt;</span></code> directory and returns the id of the list.</p>
+<blockquote>
+<div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 1 =&gt; Registering Process &lt;your-email&gt; with contacts Contact List\contact.csv
+</pre></div>
+</div>
+</div></blockquote>
+<p>Additionally, all registered lists can be seen by the <a class="reference internal" href="#list-command"><span class="std std-ref">list</span></a> command.</p>
+</section>
+<section id="start-command">
+<h2>start command<a class="headerlink" href="#start-command" title="Link to this heading"></a></h2>
+<p>This command is used to start a process. You can start a process by the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>start<span class="w"> </span>&lt;process-id&gt;
+</pre></div>
+</div>
+</section>
+<section id="list-command">
+<h2>list command<a class="headerlink" href="#list-command" title="Link to this heading"></a></h2>
+<p>This command is used to show all registered lists. You can see all registered lists by the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>list
+</pre></div>
+</div>
+</section>
+<section id="list-records-command">
+<h2>list-records command<a class="headerlink" href="#list-records-command" title="Link to this heading"></a></h2>
+<p>This command is used to show all records of a list. You can see all records of a list by the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>list-records<span class="w"> </span>&lt;process-id&gt;
+</pre></div>
+</div>
+</section>
+<section id="stop-command">
+<h2>stop command<a class="headerlink" href="#stop-command" title="Link to this heading"></a></h2>
+<p>This command is used to stop a process. You can stop a process by the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>stop<span class="w"> </span>&lt;process-id&gt;
+</pre></div>
+</div>
+</section>
+<section id="resume-command">
+<h2>resume command<a class="headerlink" href="#resume-command" title="Link to this heading"></a></h2>
+<p>This command is used to resume a process. You can resume a process by the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>resume<span class="w"> </span>&lt;process-id&gt;
+</pre></div>
+</div>
+</section>
+<section id="delete-process-command">
+<h2>delete-process command<a class="headerlink" href="#delete-process-command" title="Link to this heading"></a></h2>
+<p>This command is used to delete a list. You can delete a list by the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>delete-process<span class="w"> </span>&lt;process-id&gt;
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This command will delete all data of the list. So, be careful when you want to use this command.</p>
+</div>
+</section>
+<section id="delete-record-command">
+<h2>delete-record command<a class="headerlink" href="#delete-record-command" title="Link to this heading"></a></h2>
+<p>This command is used to delete a record of a list. You can delete a record by the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyautomail<span class="w"> </span>delete-record<span class="w"> </span>&lt;process-id&gt;<span class="w"> </span>&lt;record-id&gt;
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This command will delete the record of the list. So, be careful when you want to use this command.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cli-best-practices.html" class="btn btn-neutral float-right" title="CLI Best Practices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Mohammad Sina Allahkaram.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
