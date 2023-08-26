@@ -13,7 +13,10 @@ jobs:
           pip install sphinx sphinx_rtd_theme
       - name: Sphinx build
         run: |
-          sphinx-build doc _build
+          sphinx-build docs _build
+      - name: API
+        run: |
+          sphinx-apidoc ../pyautomail -o api -H "API Rrf." -Mf  --tocfile index --templatedir ./_templates/apidoc -d 2
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
