@@ -11,11 +11,9 @@ jobs:
       - name: Install dependencies
         run: |
           pip install sphinx sphinx_rtd_theme recommonmark git+https://github.com/msinamsina/pyautomail.git
-      - name: API
-        run: |
-          sphinx-apidoc ../pyautomail -o api -H "API Rrf." -Mf  --tocfile index --templatedir ./_templates/apidoc -d 2
       - name: Sphinx build
         run: |
+          sphinx-apidoc ../pyautomail -o api -H "API Rrf." -Mf  --tocfile index --templatedir ./_templates/apidoc -d 2
           sphinx-build docs _build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
