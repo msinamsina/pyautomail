@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-python@v3
       - name: Install dependencies
         run: |
-          pip install sphinx sphinx_rtd_theme recommonmark
+          pip install sphinx sphinx_rtd_theme recommonmark git+https://github.com/msinamsina/pyautomail.git
       - name: API
         run: |
           sphinx-apidoc ../pyautomail -o api -H "API Rrf." -Mf  --tocfile index --templatedir ./_templates/apidoc -d 2
