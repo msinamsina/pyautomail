@@ -5,7 +5,7 @@
 ![PyPI](https://img.shields.io/pypi/v/pyautomail?label=pypi%20pyautomail)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/pyautomail)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-![example workflow](https://github.com/msinamsina/pyautomail/actions/workflows/publish.yml/badge.svg)
+![example workflow](https://github.com/msinamsina/pyautomail/actions/workflows/python-publish.yml/badge.svg)
 
 -----
 
